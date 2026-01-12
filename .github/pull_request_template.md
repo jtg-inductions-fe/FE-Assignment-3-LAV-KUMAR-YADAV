@@ -1,8 +1,10 @@
-#### Description:
+# Pull Request
+
+## Description:
 
 - Add tasks done in this is Pull Request
 
-#### Development Checklist
+## Development Checklist
 
 - [ ] Documentation added at appropriate places
 - [ ] UI & Responsiveness verified if needed
@@ -12,12 +14,12 @@
 - [ ] Lint issues resolved
 - [ ] Files Formatted as per preferred formatter
 
-#### Review Checklist
+## Review Checklist
 
 - [ ] Checked edge cases
 - [ ] Reviewed code and documentation
 - [ ] Verified best practices
 
-#### Screenshots (if applicable)
+## Screenshots (if applicable)
 
 Add screenshots if applicable

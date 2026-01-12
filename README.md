@@ -1,11 +1,12 @@
-# FE-Assignment-3-LAV-KUMAR-YADAV## React Base Template
+# FE-Assignment-3-LAV-KUMAR-YADAV
+
+## React Base Shad CN Template
 
 ## Getting Started
 
 ### Prerequisites
 
 - **Node.js**: Version 20+. You can download and install it from nodejs.org.
-- **yarn**: Version 4.5.0. If Yarn is not installed, you can follow the instruction below in Installing section
 
 ### Installing
 
