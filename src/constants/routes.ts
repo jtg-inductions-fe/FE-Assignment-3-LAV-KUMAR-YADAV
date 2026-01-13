@@ -12,4 +12,7 @@ export const ROUTES = {
     LOGIN: '/login',
     SIGNUP: '/signup',
     NOT_FOUND: '*',
+    MOVIES: '/movies',
+    CINEMAS: '/cinemas',
+    PROFILE: '/profile',
 } as const;

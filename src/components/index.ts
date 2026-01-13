@@ -9,3 +9,5 @@ export {
     TypographyP,
     TypographySmall,
 } from './Typography';
+export { ModeToggle } from './ModeToggle';
+export { ThemeProvider } from './ThemeProvider';

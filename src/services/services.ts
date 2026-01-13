@@ -73,10 +73,36 @@ export const api = createApi({
                 credentials: 'include',
             }),
         }),
+        logout: builder.mutation<void, void>({
+            query: () => ({
+                url: 'users/logout/',
+                method: 'POST',
+                credentials: 'include',
+            }),
+        }),
+        refreshToken: builder.mutation<{ access: string }, void>({
+            query: () => ({
+                url: 'users/refresh/',
+                method: 'POST',
+                credentials: 'include',
+            }),
+        }),
+        userDetails: builder.query<Omit<SignupResponse, 'access'>, string>({
+            query: (token) => ({
+                url: 'users/profile/',
+                credentials: 'include',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+            }),
+        }),
     }),
 });
 
-/**
- * Auto-generated RTK Query hooks for API endpoints.
- */
-export const { useRegisterUserMutation, useLoginUserMutation } = api;
+export const {
+    useRegisterUserMutation,
+    useLoginUserMutation,
+    useLogoutMutation,
+    useRefreshTokenMutation,
+    useUserDetailsQuery,
+} = api;

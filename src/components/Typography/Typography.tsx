@@ -1,15 +1,20 @@
 import type { ReactNode } from 'react';
 
+import { cn } from '@/lib';
+
 export const TypographyH1 = ({
     children,
     className,
     ...args
 }: {
     children: ReactNode;
-    className: string;
+    className?: string;
 }) => (
     <h1
-        className={`scroll-m-20 text-4xl font-extrabold tracking-tight text-balance ${className}`}
+        className={cn(
+            'scroll-m-20 text-4xl font-extrabold tracking-tight text-balance',
+            className,
+        )}
         {...args}
     >
         {children}
@@ -22,10 +27,13 @@ export const TypographyH2 = ({
     ...args
 }: {
     children: ReactNode;
-    className: string;
+    className?: string;
 }) => (
     <h2
-        className={`scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 ${className}`}
+        className={cn(
+            'scroll-m-20  text-3xl font-semibold tracking-tight first:mt-0',
+            className,
+        )}
         {...args}
     >
         {children}
@@ -38,10 +46,13 @@ export const TypographyH3 = ({
     ...args
 }: {
     children: ReactNode;
-    className: string;
+    className?: string;
 }) => (
     <h3
-        className={`scroll-m-20 text-2xl font-semibold tracking-tight ${className}`}
+        className={cn(
+            'scroll-m-20 text-2xl font-semibold tracking-tight',
+            className,
+        )}
         {...args}
     >
         {children}
@@ -54,10 +65,13 @@ export const TypographyH4 = ({
     ...args
 }: {
     children: ReactNode;
-    className: string;
+    className?: string;
 }) => (
     <h4
-        className={`scroll-m-20 text-xl font-semibold tracking-tight ${className}`}
+        className={cn(
+            'scroll-m-20 text-xl font-semibold tracking-tight',
+            className,
+        )}
         {...args}
     >
         {children}
@@ -70,12 +84,9 @@ export const TypographyP = ({
     ...args
 }: {
     children: ReactNode;
-    className: string;
+    className?: string;
 }) => (
-    <p
-        className={`leading-7 [&:not(:first-child)]:mt-6 ${className}`}
-        {...args}
-    >
+    <p className={cn('leading-7 not-first:mt-6 ', className)} {...args}>
         {children}
     </p>
 );
@@ -86,9 +97,9 @@ export const TypographyLead = ({
     ...args
 }: {
     children: ReactNode;
-    className: string;
+    className?: string;
 }) => (
-    <p className={`text-muted-foreground text-xl ${className}`} {...args}>
+    <p className={cn('text-muted-foreground text-xl', className)} {...args}>
         {children}
     </p>
 );
@@ -99,9 +110,9 @@ export const TypographyLarge = ({
     ...args
 }: {
     children: ReactNode;
-    className: string;
+    className?: string;
 }) => (
-    <div className={`text-lg font-semibold ${className}`} {...args}>
+    <div className={cn('text-lg font-semibold', className)} {...args}>
         {children}
     </div>
 );
@@ -112,10 +123,10 @@ export const TypographySmall = ({
     ...args
 }: {
     children: ReactNode;
-    className: string;
+    className?: string;
 }) => (
     <small
-        className={`text-sm leading-none font-medium ${className}`}
+        className={cn('text-sm leading-none font-medium', className)}
         {...args}
     >
         {children}
@@ -128,9 +139,9 @@ export const TypographyMuted = ({
     ...args
 }: {
     children: ReactNode;
-    className: string;
+    className?: string;
 }) => (
-    <p className={`text-muted-foreground text-sm ${className}`} {...args}>
+    <p className={cn('text-muted-foreground text-sm', className)} {...args}>
         {children}
     </p>
 );
