@@ -75,3 +75,32 @@ export type LoginResponse = {
      */
     access: string;
 };
+
+export type Language = {
+    id: number;
+    language: string;
+};
+
+export type Genre = {
+    id: number;
+    genre: string;
+};
+
+export type Movie = {
+    id: number;
+    name: string;
+    languages: Language[];
+    genres: Genre[];
+    description: string;
+    duration: string;
+    slug: string;
+    release_date: string;
+    movie_poster: string | null;
+};
+
+export type PaginatedQueryResponse<DataType> = {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: DataType[];
+};

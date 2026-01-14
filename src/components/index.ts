@@ -11,3 +11,5 @@ export {
 } from './Typography';
 export { ModeToggle } from './ModeToggle';
 export { ThemeProvider } from './ThemeProvider';
+
+export { Card } from './Card';
