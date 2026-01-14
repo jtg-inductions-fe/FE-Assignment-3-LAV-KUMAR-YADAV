@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 
 export const Home = () => (
-    <div className="h-[80vh] w-[80%] flex justify-center items-center">
+    <div className="flex justify-center">
         <Button>Home</Button>
     </div>
 );

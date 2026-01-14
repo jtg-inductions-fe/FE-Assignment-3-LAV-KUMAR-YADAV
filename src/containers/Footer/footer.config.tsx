@@ -1,11 +1,10 @@
 import { Facebook, Instagram, Linkedin, X, Youtube } from 'lucide-react';
-import type { ReactNode } from 'react';
 
-type SocialMediaConfigTYpe = {
-    link: string;
-    name: string;
-    icon: ReactNode;
-};
+import type { SocialMediaConfigTYpe } from './footer.types';
+
+/**
+ * Social Media Links for footer
+ */
 export const socialMediaConfig: SocialMediaConfigTYpe[] = [
     {
         name: 'Facebook',

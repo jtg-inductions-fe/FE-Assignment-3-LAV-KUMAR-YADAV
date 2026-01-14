@@ -1,7 +1,10 @@
 import { TypographyMuted } from '@/components';
 
 import { socialMediaConfig } from './footer.config';
-
+/**
+ *
+ * @returns Footer container
+ */
 export const Footer = () => (
     <footer>
         <div className="h-0.5 w-full bg-accent mb-5"></div>

@@ -29,6 +29,17 @@ import {
 } from '@/services';
 import { useAppDispatch, useAppSelector } from '@/store';
 
+/**
+ * Application header component.
+ *
+ * Displays the main navigation bar, authentication controls,
+ * theme toggle, and user profile menu.
+ *
+ * Handles:
+ * - Token refresh on application load
+ * - User data synchronization
+ * - Login / logout UI state
+ */
 export const Header = () => {
     const { token, user, isAuthenticated } = useAppSelector(
         (state) => state.authReducer,
@@ -71,14 +82,14 @@ export const Header = () => {
         <div>
             <NavigationMenu className="max-w-full flex justify-between p-2">
                 <Link to="/" className="flex justify-center items-center">
-                    <div className="h-10 w-10 mr-2">
+                    <div className="size-10 mr-2">
                         <img
                             src={Logo}
                             alt="bookmyshow logo"
-                            className="h-full w-full object-contain"
+                            className="size-full  object-contain"
                         />
                     </div>
-                    <TypographyH2 className="hidden sm:block">
+                    <TypographyH2 className="hidden sm:block text-primary">
                         BookMyShow
                     </TypographyH2>
                 </Link>
@@ -88,18 +99,33 @@ export const Header = () => {
                     </li>
                     <NavigationMenuLink asChild>
                         <li>
-                            <Link to={ROUTES.MOVIES}>Movies</Link>
+                            <Link
+                                to={ROUTES.MOVIES}
+                                className="text-lg font-semibold"
+                            >
+                                Movies
+                            </Link>
                         </li>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
                         <li>
-                            <Link to={ROUTES.CINEMAS}>Cinemas</Link>
+                            <Link
+                                to={ROUTES.CINEMAS}
+                                className="text-lg font-semibold"
+                            >
+                                Cinemas
+                            </Link>
                         </li>
                     </NavigationMenuLink>
                     {!isAuthenticated && (
                         <NavigationMenuLink asChild>
                             <li>
-                                <Link to={ROUTES.LOGIN}>Login</Link>
+                                <Link
+                                    to={ROUTES.LOGIN}
+                                    className="text-lg font-semibold"
+                                >
+                                    Login
+                                </Link>
                             </li>
                         </NavigationMenuLink>
                     )}
