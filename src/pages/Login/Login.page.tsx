@@ -23,11 +23,30 @@ import { loginSchema } from '@/schemas';
 import { useLoginUserMutation } from '@/services';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+/**
+ * Login page component.
+ *
+ * Provides a form for user authentication, handles form validation,
+ * performs login API request, updates global authentication state,
+ * and redirects the user upon successful login.
+ */
 export const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    /**
+     * RTK Query mutation for logging in the user.
+     */
     const [loginUser, result] = useLoginUserMutation();
+
+    /**
+     * Indicates whether login request is in progress.
+     */
     const { isLoading } = result;
+
+    /**
+     * React Hook Form instance with Zod validation.
+     */
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -36,6 +55,11 @@ export const Login = () => {
         },
     });
 
+    /**
+     * Handles form submission.
+     * Sends login request, stores authentication token,
+     * shows error toast on failure, and redirects on success.
+     */
     const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (
         values,
     ) => {
@@ -46,7 +70,11 @@ export const Login = () => {
             await navigate('/');
         } catch (e) {
             const error = e as Record<'data', Record<string, string>>;
-            toast.error(Object.values(error.data).flat().join('\n'));
+            toast.error(Object.values(error.data).flat().join('\n'), {
+                style: {
+                    color: 'var(--primary)',
+                },
+            });
         }
     };
 
@@ -80,7 +108,10 @@ export const Login = () => {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>
+                                        Email
+                                        <span className="text-primary">*</span>
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="Type Your Email"
@@ -97,7 +128,10 @@ export const Login = () => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>
+                                        Password
+                                        <span className="text-primary">*</span>
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             type="password"
@@ -124,7 +158,9 @@ export const Login = () => {
                             )}
                         </Button>
                         Don&apos;t have an Account ?{' '}
-                        <Link to={ROUTES.SIGNUP}>Click Here.</Link>
+                        <Link to={ROUTES.SIGNUP} className="underline">
+                            Click Here.
+                        </Link>
                     </form>
                 </Form>
             </div>

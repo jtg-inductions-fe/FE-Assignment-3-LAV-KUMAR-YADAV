@@ -23,13 +23,32 @@ import { signupSchema } from '@/schemas';
 import { useRegisterUserMutation } from '@/services';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+/**
+ * SignUp page component.
+ *
+ * Allows new users to register by submitting their details,
+ * handles form validation, performs registration API request,
+ * stores authentication data, and redirects on success.
+ */
 export const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    /**
+     * RTK Query mutation for registering a new user.
+     */
     const [registerUser, result] = useRegisterUserMutation({
         fixedCacheKey: undefined,
     });
+
+    /**
+     * Indicates whether signup request is in progress.
+     */
     const { isLoading } = result;
+
+    /**
+     * React Hook Form instance with Zod validation.
+     */
     const form = useForm<z.infer<typeof signupSchema>>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
@@ -42,6 +61,12 @@ export const SignUp = () => {
         },
     });
 
+    /**
+     * Handles signup form submission.
+     *
+     * Registers the user, stores authentication token and user info,
+     * shows error toast on failure, and redirects on success.
+     */
     const onSubmit: SubmitHandler<z.infer<typeof signupSchema>> = async (
         values,
     ) => {
@@ -53,7 +78,11 @@ export const SignUp = () => {
             await navigate('/');
         } catch (e) {
             const error = e as Record<'data', Record<string, string>>;
-            toast.error(Object.values(error.data).flat().join('\n'));
+            toast.error(Object.values(error.data).flat().join('\n'), {
+                style: {
+                    color: 'var(--primary)',
+                },
+            });
         }
     };
 
@@ -111,7 +140,10 @@ export const SignUp = () => {
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>
+                                        Name
+                                        <span className="text-primary">*</span>
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="Type Your Name"
@@ -128,7 +160,10 @@ export const SignUp = () => {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>
+                                        Email
+                                        <span className="text-primary">*</span>
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="Type Your Email"
@@ -148,7 +183,7 @@ export const SignUp = () => {
                                     <FormLabel>Phone Number</FormLabel>
                                     <FormControl>
                                         <Input
-                                            type="number"
+                                            type="text"
                                             placeholder="Type Your Phone Number"
                                             {...field}
                                         />
@@ -162,7 +197,10 @@ export const SignUp = () => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>
+                                        Password
+                                        <span className="text-primary">*</span>
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             type="password"
@@ -179,7 +217,10 @@ export const SignUp = () => {
                             name="confirm_password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Confirm Password</FormLabel>
+                                    <FormLabel>
+                                        Confirm Password
+                                        <span className="text-primary">*</span>
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             type="password"
@@ -206,7 +247,9 @@ export const SignUp = () => {
                             )}
                         </Button>
                         Already have an Account ?{' '}
-                        <Link to={ROUTES.LOGIN}>Click Here.</Link>
+                        <Link to={ROUTES.LOGIN} className="underline">
+                            Click Here.
+                        </Link>
                     </form>
                 </Form>
             </div>
