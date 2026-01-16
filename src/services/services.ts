@@ -136,16 +136,22 @@ export const api = createApi({
          *
          * Supports infinite scrolling.
          */
-        latestMovies: builder.infiniteQuery<Movie[], void, number>({
+        latestMovies: builder.infiniteQuery<
+            PaginatedQueryResponse<Movie>,
+            void,
+            number
+        >({
             query: ({ pageParam }) => ({
                 url: `${API_ROUTES.LATEST_MOVIES}?page=${pageParam}`,
             }),
             infiniteQueryOptions: {
                 initialPageParam: 1,
-                getNextPageParam: (_, __, lastPageParam) => lastPageParam + 1,
+                getNextPageParam: (lastPage, __, lastPageParam) => {
+                    if (lastPage.next) {
+                        return lastPageParam + 1;
+                    }
+                },
             },
-            transformResponse: (response: PaginatedQueryResponse<Movie>) =>
-                response.results,
         }),
 
         /**
@@ -153,16 +159,22 @@ export const api = createApi({
          *
          * Supports infinite scrolling.
          */
-        upcomingMovies: builder.infiniteQuery<Movie[], void, number>({
+        upcomingMovies: builder.infiniteQuery<
+            PaginatedQueryResponse<Movie>,
+            void,
+            number
+        >({
             query: ({ pageParam }) => ({
                 url: `${API_ROUTES.UPCOMING_MOVIES}?page=${pageParam}`,
             }),
             infiniteQueryOptions: {
                 initialPageParam: 1,
-                getNextPageParam: (_, __, lastPageParam) => lastPageParam + 1,
+                getNextPageParam: (lastPage, __, lastPageParam) => {
+                    if (lastPage.next) {
+                        return lastPageParam + 1;
+                    }
+                },
             },
-            transformResponse: (response: PaginatedQueryResponse<Movie>) =>
-                response.results,
         }),
     }),
 });

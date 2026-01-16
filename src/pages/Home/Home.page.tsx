@@ -23,10 +23,16 @@ import {
  * Supports infinite loading for both movie lists.
  */
 export const Home = () => {
-    const { data: latestMovies, fetchNextPage: SeeMoreLatestMovies } =
-        useLatestMoviesInfiniteQuery();
-    const { data: upcomingMovies, fetchNextPage: SeeMoreUpcomingMovies } =
-        useUpcomingMoviesInfiniteQuery();
+    const {
+        data: latestMovies,
+        fetchNextPage: SeeMoreLatestMovies,
+        hasNextPage: hasNextLatestMovies,
+    } = useLatestMoviesInfiniteQuery();
+    const {
+        data: upcomingMovies,
+        fetchNextPage: SeeMoreUpcomingMovies,
+        hasNextPage: hasNextUpcomingMovies,
+    } = useUpcomingMoviesInfiniteQuery();
 
     return (
         <div className="gap-8 flex flex-col items-center">
@@ -43,6 +49,7 @@ export const Home = () => {
                     <Button
                         variant="ghost"
                         onClick={() => void SeeMoreUpcomingMovies()}
+                        disabled={!hasNextUpcomingMovies}
                     >
                         See More
                     </Button>
@@ -51,7 +58,7 @@ export const Home = () => {
                     <Carousel className="w-full">
                         <CarouselContent>
                             {upcomingMovies?.pages
-                                .flat()
+                                .flatMap((page) => page.results)
                                 .map((movie, index) => (
                                     <CarouselItem key={index}>
                                         <Card
@@ -85,6 +92,7 @@ export const Home = () => {
                     <Button
                         variant="ghost"
                         onClick={() => void SeeMoreLatestMovies()}
+                        disabled={!hasNextLatestMovies}
                     >
                         See More
                     </Button>
@@ -92,19 +100,21 @@ export const Home = () => {
                 <div className="flex justify-center w-full">
                     <Carousel className="w-full">
                         <CarouselContent>
-                            {latestMovies?.pages.flat().map((movie, index) => (
-                                <CarouselItem key={index}>
-                                    <Card
-                                        heading={movie.name}
-                                        imageUrl={movie.movie_poster || ''}
-                                        subheading={movie.genres
-                                            .map((genre) => genre.genre)
-                                            .join('/')
-                                            .slice(0, 60)}
-                                        className="h-60 sm:h-80 w-75 sm:w-100"
-                                    />
-                                </CarouselItem>
-                            ))}
+                            {latestMovies?.pages
+                                .flatMap((page) => page.results)
+                                .map((movie, index) => (
+                                    <CarouselItem key={index}>
+                                        <Card
+                                            heading={movie.name}
+                                            imageUrl={movie.movie_poster || ''}
+                                            subheading={movie.genres
+                                                .map((genre) => genre.genre)
+                                                .join('/')
+                                                .slice(0, 60)}
+                                            className="h-60 sm:h-80 w-75 sm:w-100"
+                                        />
+                                    </CarouselItem>
+                                ))}
                         </CarouselContent>
                         <CarouselPrevious />
                         <CarouselNext />
