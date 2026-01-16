@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router';
 
 import { ROUTES } from '@/constants';
 import { RootLayout } from '@/layouts';
-import { Home, Login, Movies, NotFound, SignUp } from '@/pages';
+import { Cinemas, Home, Login, Movies, NotFound, SignUp } from '@/pages';
 
 /**
  * Application router configuration using react-router's createBrowserRouter.
@@ -32,6 +32,10 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.MOVIES,
                 element: <Movies />,
+            },
+            {
+                path: ROUTES.CINEMAS,
+                element: <Cinemas />,
             },
             {
                 path: ROUTES.NOT_FOUND,

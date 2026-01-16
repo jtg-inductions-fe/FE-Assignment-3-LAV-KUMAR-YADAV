@@ -5,6 +5,7 @@ import type {
     Cinema,
     Genre,
     Language,
+    Location,
     LoginRequest,
     LoginResponse,
     Movie,
@@ -222,9 +223,21 @@ export const api = createApi({
         /**
          * Retrieve all cinemas
          */
-        cinemas: builder.query<Cinema[], void>({
-            query: () => ({
+        cinemas: builder.query<Cinema[], { location: string | undefined }>({
+            query: ({ location }) => ({
                 url: API_ROUTES.CINEMAS.LIST,
+                params: {
+                    location,
+                },
+            }),
+        }),
+
+        /**
+         * Retrieves all locations
+         */
+        locations: builder.query<Location[], void>({
+            query: () => ({
+                url: API_ROUTES.CINEMAS.LOCATION,
             }),
         }),
     }),
@@ -242,4 +255,5 @@ export const {
     useGenresQuery,
     useLanguagesQuery,
     useCinemasQuery,
+    useLocationsQuery,
 } = api;
