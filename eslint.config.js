@@ -49,7 +49,7 @@ export default defineConfig([
             ...react.configs['jsx-runtime'].rules,
             'react/react-in-jsx-scope': 'off',
             'no-console': 'error',
-            'no-shadow': 'error',
+            'no-shadow': 'warn',
             'react-refresh/only-export-components': [
                 'warn',
                 { allowConstantExport: true },

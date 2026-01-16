@@ -2,6 +2,9 @@ import { API_ROUTES } from '@/constants';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import type {
+    Cinema,
+    Genre,
+    Language,
     LoginRequest,
     LoginResponse,
     Movie,
@@ -56,7 +59,7 @@ export const api = createApi({
          */
         registerUser: builder.mutation<SignupResponse, SignupRequest>({
             query: (data) => ({
-                url: API_ROUTES.REGISTER_USER,
+                url: API_ROUTES.USERS.REGISTER,
                 method: 'POST',
                 body: getFormData(data),
                 credentials: 'include',
@@ -70,7 +73,7 @@ export const api = createApi({
          */
         loginUser: builder.mutation<LoginResponse, LoginRequest>({
             query: (data) => ({
-                url: API_ROUTES.LOGIN_USER,
+                url: API_ROUTES.USERS.LOGIN,
                 method: 'POST',
                 body: data,
                 credentials: 'include',
@@ -82,7 +85,7 @@ export const api = createApi({
          */
         logout: builder.mutation<void, void>({
             query: () => ({
-                url: API_ROUTES.LOGOUT,
+                url: API_ROUTES.USERS.LOGOUT,
                 method: 'POST',
                 credentials: 'include',
             }),
@@ -93,7 +96,7 @@ export const api = createApi({
          */
         refreshToken: builder.mutation<{ access: string }, void>({
             query: () => ({
-                url: API_ROUTES.REFRESH_TOKEN,
+                url: API_ROUTES.USERS.REFRESH_TOKEN,
                 method: 'POST',
                 credentials: 'include',
             }),
@@ -106,7 +109,7 @@ export const api = createApi({
          */
         userDetails: builder.query<Omit<SignupResponse, 'access'>, string>({
             query: (token) => ({
-                url: API_ROUTES.USER_PROFILE,
+                url: API_ROUTES.USERS.PROFILE,
                 credentials: 'include',
                 headers: {
                     authorization: `Bearer ${token}`,
@@ -119,16 +122,31 @@ export const api = createApi({
          *
          * Supports infinite scrolling.
          */
-        movies: builder.infiniteQuery<Movie[], void, number>({
-            query: ({ pageParam }) => ({
-                url: `${API_ROUTES.MOVIES}?page=${pageParam}`,
+        movies: builder.infiniteQuery<
+            PaginatedQueryResponse<Movie>,
+            {
+                languages?: string | undefined;
+                genres?: string | undefined;
+                cinema?: string | undefined;
+                slot_date?: string | undefined;
+            },
+            number
+        >({
+            query: ({ pageParam, queryArg }) => ({
+                url: API_ROUTES.MOVIES.LIST,
+                params: {
+                    page: pageParam,
+                    ...queryArg,
+                },
             }),
             infiniteQueryOptions: {
                 initialPageParam: 1,
-                getNextPageParam: (_, __, lastPageParam) => lastPageParam + 1,
+                getNextPageParam: (lastPage, __, lastPageParam) => {
+                    if (lastPage.next) {
+                        return lastPageParam + 1;
+                    }
+                },
             },
-            transformResponse: (response: PaginatedQueryResponse<Movie>) =>
-                response.results,
         }),
 
         /**
@@ -142,7 +160,10 @@ export const api = createApi({
             number
         >({
             query: ({ pageParam }) => ({
-                url: `${API_ROUTES.LATEST_MOVIES}?page=${pageParam}`,
+                url: API_ROUTES.MOVIES.LATEST,
+                params: {
+                    page: pageParam,
+                },
             }),
             infiniteQueryOptions: {
                 initialPageParam: 1,
@@ -165,7 +186,10 @@ export const api = createApi({
             number
         >({
             query: ({ pageParam }) => ({
-                url: `${API_ROUTES.UPCOMING_MOVIES}?page=${pageParam}`,
+                url: API_ROUTES.MOVIES.UPCOMING,
+                params: {
+                    page: pageParam,
+                },
             }),
             infiniteQueryOptions: {
                 initialPageParam: 1,
@@ -175,6 +199,33 @@ export const api = createApi({
                     }
                 },
             },
+        }),
+
+        /***
+         * Retrieves all the languages
+         */
+        languages: builder.query<Language[], void>({
+            query: () => ({
+                url: API_ROUTES.MOVIES.LANGUAGES,
+            }),
+        }),
+
+        /**
+         * Retrieves all Genres
+         */
+        genres: builder.query<Genre[], void>({
+            query: () => ({
+                url: API_ROUTES.MOVIES.GENRES,
+            }),
+        }),
+
+        /**
+         * Retrieve all cinemas
+         */
+        cinemas: builder.query<Cinema[], void>({
+            query: () => ({
+                url: API_ROUTES.CINEMAS.LIST,
+            }),
         }),
     }),
 });
@@ -188,4 +239,7 @@ export const {
     useMoviesInfiniteQuery,
     useLatestMoviesInfiniteQuery,
     useUpcomingMoviesInfiniteQuery,
+    useGenresQuery,
+    useLanguagesQuery,
+    useCinemasQuery,
 } = api;

@@ -8,6 +8,9 @@ export {
     useMoviesInfiniteQuery,
     useLatestMoviesInfiniteQuery,
     useUpcomingMoviesInfiniteQuery,
+    useGenresQuery,
+    useLanguagesQuery,
+    useCinemasQuery,
 } from './services';
 
 export type {
