@@ -6,6 +6,7 @@ export {
     useRefreshTokenMutation,
     useUserDetailsQuery,
     useMoviesInfiniteQuery,
+    useMovieQuery,
     useLatestMoviesInfiniteQuery,
     useUpcomingMoviesInfiniteQuery,
     useGenresQuery,

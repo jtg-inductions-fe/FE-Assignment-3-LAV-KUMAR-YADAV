@@ -151,6 +151,15 @@ export const api = createApi({
         }),
 
         /**
+         * Retrieve a particular movie based on th movie slug
+         */
+        movie: builder.query<Movie, { slug: string | undefined }>({
+            query: ({ slug }) => ({
+                url: `${API_ROUTES.MOVIES.MOVIE}${slug}/`,
+            }),
+        }),
+
+        /**
          * Retrieves paginated list of latest movies.
          *
          * Supports infinite scrolling.
@@ -250,6 +259,7 @@ export const {
     useRefreshTokenMutation,
     useUserDetailsQuery,
     useMoviesInfiniteQuery,
+    useMovieQuery,
     useLatestMoviesInfiniteQuery,
     useUpcomingMoviesInfiniteQuery,
     useGenresQuery,

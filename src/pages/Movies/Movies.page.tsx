@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { Filter } from 'lucide-react';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 
 import MovieNotAvailableSVG from '@/assets/images/movie-not-available.svg';
 import { Card, TypographyH4 } from '@/components';
@@ -103,15 +103,19 @@ export const Movies = () => {
                         movies?.pages
                             .flatMap((page) => page.results)
                             .map((movie) => (
-                                <Card
-                                    heading={movie.name}
-                                    imageUrl={movie.movie_poster || ''}
-                                    subheading={movie.genres
-                                        .map((genre) => genre.genre)
-                                        .join('/')}
+                                <Link
                                     key={movie.id}
-                                    className="h-60 sm:h-80 w-75 sm:w-100"
-                                />
+                                    to={`/movie/${movie.slug}`}
+                                >
+                                    <Card
+                                        heading={movie.name}
+                                        imageUrl={movie.movie_poster || ''}
+                                        subheading={movie.genres
+                                            .map((genre) => genre.genre)
+                                            .join('/')}
+                                        className="h-60 sm:h-80 w-75 sm:w-100"
+                                    />
+                                </Link>
                             ))}
 
                     {isLoadingMovies &&

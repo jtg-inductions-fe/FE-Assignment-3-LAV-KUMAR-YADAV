@@ -47,6 +47,13 @@ export const API_ROUTES = {
         LIST: '/movies/',
 
         /**
+         * Endpoint for a particular Movie just give slug at end
+         *
+         * @example {`${API_ROUTES.MOVIES.MOVIE}${slug}/`}
+         */
+        MOVIE: '/movies/',
+
+        /**
          * Endpoint for fetching the latest released movies.
          */
         LATEST: '/movies/latest/',
