@@ -1,5 +1,6 @@
+import { format } from 'date-fns';
 import { LocationEdit } from 'lucide-react';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 
 import CinemasNotAvailable from '@/assets/images/cinemas-not-available.svg';
 import { TypographyH2, TypographyH4, TypographyMuted } from '@/components';
@@ -82,17 +83,19 @@ export const Cinemas = () => {
                 {!isCinemasLoading &&
                     !!cinemas?.length &&
                     cinemas?.map((cinema) => (
-                        <div
+                        <Link
+                            to={`/cinema/${cinema.id}?date=${format(new Date(), 'yyyy-MM-dd')}`}
                             key={cinema.id}
-                            className="border rounded-xl p-6 w-70 h-40 flex flex-col  gap-5"
                         >
-                            <TypographyH4>{cinema.name}</TypographyH4>
-                            <TypographyMuted>
-                                {capitalizeFirstCharacter(
-                                    cinema.location.location,
-                                )}
-                            </TypographyMuted>
-                        </div>
+                            <div className="border rounded-xl p-6 w-70 h-40 flex flex-col  gap-5">
+                                <TypographyH4>{cinema.name}</TypographyH4>
+                                <TypographyMuted>
+                                    {capitalizeFirstCharacter(
+                                        cinema.location.location,
+                                    )}
+                                </TypographyMuted>
+                            </div>
+                        </Link>
                     ))}
 
                 {isCinemasLoading &&

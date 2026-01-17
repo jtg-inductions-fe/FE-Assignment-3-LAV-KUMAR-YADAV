@@ -4,7 +4,6 @@ import { Trash2, User } from 'lucide-react';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
 
-import Logo from '@/assets/images/logo.svg';
 import { ModeToggle, TypographyH2 } from '@/components';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -84,7 +83,7 @@ export const Header = () => {
                 <Link to="/" className="flex justify-center items-center">
                     <div className="size-10 mr-2">
                         <img
-                            src={Logo}
+                            src="/logo.svg"
                             alt="bookmyshow logo"
                             className="size-full  object-contain"
                         />

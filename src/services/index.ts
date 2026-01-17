@@ -13,6 +13,8 @@ export {
     useLanguagesQuery,
     useCinemasQuery,
     useLocationsQuery,
+    useCinemaQuery,
+    useSlotsByCinemaQuery,
 } from './services';
 
 export type {

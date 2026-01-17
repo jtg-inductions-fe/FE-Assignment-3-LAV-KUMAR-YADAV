@@ -15,5 +15,6 @@ export const ROUTES = {
     MOVIES: '/movies',
     MOVIE: '/movie/:slug',
     CINEMAS: '/cinemas',
+    CINEMA: '/cinema/:id',
     PROFILE: '/profile',
 } as const;

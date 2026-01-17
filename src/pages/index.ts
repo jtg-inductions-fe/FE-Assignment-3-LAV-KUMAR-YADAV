@@ -1,4 +1,5 @@
 export { Cinemas } from './Cinemas';
+export { Cinema } from './Cinema';
 export { Home } from './Home';
 export { Login } from './Login';
 export { Movie } from './Movie';

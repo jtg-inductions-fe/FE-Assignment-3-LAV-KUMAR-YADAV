@@ -12,6 +12,7 @@ import type {
     PaginatedQueryResponse,
     SignupRequest,
     SignupResponse,
+    SlotByCinemaResponse,
 } from './services.types';
 
 /**
@@ -242,6 +243,27 @@ export const api = createApi({
         }),
 
         /**
+         * Retrieve A Single Cinema based on id
+         */
+        cinema: builder.query<Cinema, { id: string | undefined }>({
+            query: ({ id }) => ({
+                url: `${API_ROUTES.CINEMAS.CINEMA}${id}/`,
+            }),
+        }),
+
+        slotsByCinema: builder.query<
+            SlotByCinemaResponse[],
+            { cinema_id?: string; date?: string }
+        >({
+            query: ({ cinema_id, date }) => ({
+                url: `/cinemas/${cinema_id}/movie-slots`,
+                params: {
+                    date: date ? date : new Date().toISOString().slice(0, 10),
+                },
+            }),
+        }),
+
+        /**
          * Retrieves all locations
          */
         locations: builder.query<Location[], void>({
@@ -265,5 +287,7 @@ export const {
     useGenresQuery,
     useLanguagesQuery,
     useCinemasQuery,
+    useCinemaQuery,
     useLocationsQuery,
+    useSlotsByCinemaQuery,
 } = api;

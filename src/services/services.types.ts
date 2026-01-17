@@ -207,3 +207,39 @@ export type Cinema = {
      */
     seats_per_row: number;
 };
+
+export type Slot = {
+    /**
+     * unique identifier of slot
+     */
+    id: number;
+
+    /**
+     * date_time of slot
+     */
+    date_time: string;
+
+    /**
+     * price of the slot
+     */
+    price: string;
+
+    /**
+     * cinema id of the slot
+     */
+    cinema: number;
+
+    /**
+     * movie id of the slot
+     */
+    movie: number;
+
+    /**
+     * language id of the slot
+     */
+    language: number;
+};
+
+export type SlotByCinemaResponse = {
+    slots: Slot[];
+} & Movie;
