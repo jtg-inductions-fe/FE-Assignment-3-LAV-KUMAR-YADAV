@@ -3,9 +3,17 @@ import { useEffect, useRef } from 'react';
 import { Filter } from 'lucide-react';
 import { useSearchParams } from 'react-router';
 
-import { Card } from '@/components';
+import { Card, TypographyH4 } from '@/components';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useMoviesInfiniteQuery } from '@/services';
 
 import { Filters } from './Filters';
@@ -27,6 +35,7 @@ export const Movies = () => {
         data: movies,
         fetchNextPage,
         hasNextPage,
+        isLoading: isLoadingMovies,
     } = useMoviesInfiniteQuery({
         languages: searchParams.get('languages') ?? undefined,
         genres: searchParams.get('genres') ?? undefined,
@@ -67,33 +76,56 @@ export const Movies = () => {
 
             <div className="md:hidden md:min-h-[70vh]">
                 <Dialog>
-                    <DialogTrigger className="fixed bottom-20 left-20">
+                    <DialogTrigger className="fixed bottom-30 left-20" asChild>
                         <Button>
                             <Filter />
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-accent md:hidden h-[60%] overflow-y-auto">
-                        <form action="">
-                            <Filters />
-                        </form>
+                    <DialogContent
+                        className="bg-accent md:hidden h-[60%] overflow-y-auto"
+                        aria-description="filter"
+                    >
+                        <DialogHeader>
+                            <DialogTitle>Filters</DialogTitle>
+                            <DialogDescription>
+                                Apply Filters for customize the Results
+                            </DialogDescription>
+                        </DialogHeader>
+
+                        <Filters inModal />
                     </DialogContent>
                 </Dialog>
             </div>
             <div>
                 <div className="flex flex-wrap gap-4 justify-center">
-                    {movies?.pages
-                        .flatMap((page) => page.results)
-                        .map((movie, index) => (
-                            <Card
-                                heading={movie.name}
-                                imageUrl={movie.movie_poster || ''}
-                                subheading={movie.genres
-                                    .map((genre) => genre.genre)
-                                    .join('/')}
+                    {!isLoadingMovies &&
+                        movies?.pages
+                            .flatMap((page) => page.results)
+                            .map((movie, index) => (
+                                <Card
+                                    heading={movie.name}
+                                    imageUrl={movie.movie_poster || ''}
+                                    subheading={movie.genres
+                                        .map((genre) => genre.genre)
+                                        .join('/')}
+                                    key={index}
+                                    className="h-60 sm:h-80 w-75 sm:w-100"
+                                />
+                            ))}
+
+                    {isLoadingMovies &&
+                        Array.from({ length: 6 }).map((_, index) => (
+                            <Skeleton
                                 key={index}
                                 className="h-60 sm:h-80 w-75 sm:w-100"
                             />
                         ))}
+                    {!isLoadingMovies && !movies?.pages[0].results.length && (
+                        <TypographyH4>
+                            No Movies available for the applied Filter. Please
+                            Change the Filter.
+                        </TypographyH4>
+                    )}
                 </div>
                 {/* SENTINEL ELEMENT */}
                 <div ref={sentinelRef} className="h-10 w-full" />

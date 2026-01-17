@@ -1,3 +1,6 @@
+import { useState } from 'react';
+
+import { format } from 'date-fns';
 import { useSearchParams } from 'react-router';
 
 import { DatePicker, SelectFilters } from '@/components';
@@ -13,6 +16,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useCinemasQuery, useGenresQuery, useLanguagesQuery } from '@/services';
+import { DialogClose } from '@radix-ui/react-dialog';
 
 /**
  * Filters Component
@@ -29,11 +33,60 @@ import { useCinemasQuery, useGenresQuery, useLanguagesQuery } from '@/services';
  * This component does not directly fetch movies; instead, it updates
  * the query parameters used by the parent component to trigger filtering.
  */
-export const Filters = () => {
+export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
     const [searchParams, setSearchParams] = useSearchParams();
+    const [filtersToApply, setFiltersToApply] = useState<{
+        languages?: string[];
+        genres?: string[];
+        slot_date?: string;
+        cinema?: string;
+    }>({
+        languages: searchParams.get('languages')?.split(','),
+        genres: searchParams.get('genres')?.split(','),
+        slot_date: searchParams.get('slot_date') ?? undefined,
+        cinema: searchParams.get('cinema') ?? undefined,
+    });
+
     const { data: totalLanguages } = useLanguagesQuery();
     const { data: totalGenres } = useGenresQuery();
     const { data: totalCinemas } = useCinemasQuery();
+
+    const applyBtnDisabled =
+        filtersToApply.cinema == searchParams.get('cinema') &&
+        filtersToApply.slot_date == searchParams.get('slot_date') &&
+        filtersToApply.genres?.sort().join(',') == searchParams.get('genres') &&
+        filtersToApply.languages?.sort().join(',') ==
+            searchParams.get('languages');
+
+    const handleApplyFilter = () => {
+        searchParams.delete('languages');
+        searchParams.delete('genres');
+        searchParams.delete('slot_date');
+        searchParams.delete('cinema');
+
+        if (filtersToApply.cinema) {
+            searchParams.append('cinema', filtersToApply.cinema);
+        }
+
+        if (filtersToApply.slot_date) {
+            searchParams.append('slot_date', filtersToApply.slot_date);
+        }
+
+        if (filtersToApply.languages?.length) {
+            searchParams.append(
+                'languages',
+                filtersToApply.languages.sort().join(','),
+            );
+        }
+
+        if (filtersToApply.genres?.length) {
+            searchParams.append(
+                'genres',
+                filtersToApply.genres.sort().join(','),
+            );
+        }
+        setSearchParams(searchParams);
+    };
 
     return (
         <div className=" flex-col gap-6 bg-accent p-10 rounded-xl  h-full flex ">
@@ -43,10 +96,10 @@ export const Filters = () => {
                     totalLanguages?.map((language) => language.language) || []
                 }
                 onChange={(languages) => {
-                    searchParams.delete('languages');
-                    if (languages.join(',') !== '') {
-                        searchParams.append('languages', languages.join(','));
-                    }
+                    setFiltersToApply((prev) => ({
+                        ...prev,
+                        languages,
+                    }));
                 }}
                 alreadySelected={searchParams.get('languages')?.split(',')}
             />
@@ -54,21 +107,28 @@ export const Filters = () => {
                 heading="Genres"
                 options={totalGenres?.map((gen) => gen.genre) || []}
                 onChange={(genres) => {
-                    searchParams.delete('genres');
-                    if (genres.join(',') !== '') {
-                        searchParams.append('genres', genres.join(','));
-                    }
+                    setFiltersToApply((prev) => ({
+                        ...prev,
+                        genres,
+                    }));
                 }}
                 alreadySelected={searchParams.get('genres')?.split(',')}
             />
 
             <div>
-                <Label>Cinema</Label>
+                <Label className="mb-3">Cinema</Label>
                 <Select
                     onValueChange={(cinema_id) => {
-                        searchParams.delete('cinema');
                         if (cinema_id !== '-1') {
-                            searchParams.append('cinema', cinema_id);
+                            setFiltersToApply((prev) => ({
+                                ...prev,
+                                cinema: cinema_id,
+                            }));
+                        } else {
+                            setFiltersToApply((prev) => ({
+                                ...prev,
+                                cinema: undefined,
+                            }));
                         }
                     }}
                     defaultValue={searchParams.get('cinema') || undefined}
@@ -95,19 +155,33 @@ export const Filters = () => {
             <DatePicker
                 label="Date"
                 onChange={(date) => {
-                    searchParams.delete('slot_date');
                     if (date) {
-                        searchParams.append(
-                            'slot_date',
-                            date.toISOString().slice(0, 10),
-                        );
+                        setFiltersToApply((prev) => ({
+                            ...prev,
+                            slot_date: format(date, 'yyyy-MM-dd'),
+                        }));
+                    } else {
+                        setFiltersToApply((prev) => ({
+                            ...prev,
+                            slot_date: undefined,
+                        }));
                     }
                 }}
             />
-
-            <Button onClick={() => setSearchParams(searchParams)}>
-                Apply Filters
-            </Button>
+            {inModal ? (
+                <DialogClose disabled={applyBtnDisabled} asChild>
+                    <Button
+                        onClick={handleApplyFilter}
+                        disabled={applyBtnDisabled}
+                    >
+                        Apply Filters
+                    </Button>
+                </DialogClose>
+            ) : (
+                <Button onClick={handleApplyFilter} disabled={applyBtnDisabled}>
+                    Apply Filters
+                </Button>
+            )}
         </div>
     );
 };

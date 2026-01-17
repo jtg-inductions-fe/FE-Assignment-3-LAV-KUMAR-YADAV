@@ -11,7 +11,7 @@ export const Card = ({
     className,
     ...props
 }: CardProps) => (
-    <ShadCNCard {...props} className={cn('max-w-100', className)}>
+    <ShadCNCard {...props} className={cn('max-w-100 select-none', className)}>
         <CardContent>
             <div>
                 <img

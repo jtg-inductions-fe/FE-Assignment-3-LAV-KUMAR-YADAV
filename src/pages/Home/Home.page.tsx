@@ -1,4 +1,4 @@
-import { Card, TypographyH3 } from '@/components';
+import { Card, TypographyH3, TypographyH4 } from '@/components';
 import { Button } from '@/components/ui/button';
 import {
     Carousel,
@@ -7,6 +7,7 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/components/ui/carousel';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib';
 import {
     useLatestMoviesInfiniteQuery,
@@ -27,11 +28,13 @@ export const Home = () => {
         data: latestMovies,
         fetchNextPage: SeeMoreLatestMovies,
         hasNextPage: hasNextLatestMovies,
+        isLoading: isLatestMovieLoading,
     } = useLatestMoviesInfiniteQuery();
     const {
         data: upcomingMovies,
         fetchNextPage: SeeMoreUpcomingMovies,
         hasNextPage: hasNextUpcomingMovies,
+        isLoading: isUpcomingMovieLoading,
     } = useUpcomingMoviesInfiniteQuery();
 
     return (
@@ -57,21 +60,39 @@ export const Home = () => {
                 <div className="flex justify-center w-full">
                     <Carousel className="w-full">
                         <CarouselContent>
-                            {upcomingMovies?.pages
-                                .flatMap((page) => page.results)
-                                .map((movie, index) => (
+                            {!isUpcomingMovieLoading &&
+                                upcomingMovies?.pages
+                                    .flatMap((page) => page.results)
+                                    .map((movie) => (
+                                        <CarouselItem key={movie.id}>
+                                            <Card
+                                                heading={movie.name}
+                                                imageUrl={
+                                                    movie.movie_poster || ''
+                                                }
+                                                subheading={movie.genres
+                                                    .map((genre) => genre.genre)
+                                                    .join('/')
+                                                    .slice(0, 60)}
+                                                className="h-60 sm:h-80 w-75 sm:w-100"
+                                            />
+                                        </CarouselItem>
+                                    ))}
+                            {isUpcomingMovieLoading &&
+                                Array.from({ length: 6 }).map((_, index) => (
                                     <CarouselItem key={index}>
-                                        <Card
-                                            heading={movie.name}
-                                            imageUrl={movie.movie_poster || ''}
-                                            subheading={movie.genres
-                                                .map((genre) => genre.genre)
-                                                .join('/')
-                                                .slice(0, 60)}
-                                            className="h-60 sm:h-80 w-75 sm:w-100"
-                                        />
+                                        <Skeleton className="h-60 sm:h-80 w-75 sm:w-100 rounded-xl" />
                                     </CarouselItem>
                                 ))}
+
+                            {!isUpcomingMovieLoading &&
+                                !upcomingMovies?.pages[0].results.length && (
+                                    <CarouselItem>
+                                        <TypographyH4>
+                                            No Upcoming Movies Available
+                                        </TypographyH4>
+                                    </CarouselItem>
+                                )}
                         </CarouselContent>
                         <CarouselPrevious />
                         <CarouselNext />
@@ -100,21 +121,38 @@ export const Home = () => {
                 <div className="flex justify-center w-full">
                     <Carousel className="w-full">
                         <CarouselContent>
-                            {latestMovies?.pages
-                                .flatMap((page) => page.results)
-                                .map((movie, index) => (
+                            {!isLatestMovieLoading &&
+                                latestMovies?.pages
+                                    .flatMap((page) => page.results)
+                                    .map((movie, index) => (
+                                        <CarouselItem key={index}>
+                                            <Card
+                                                heading={movie.name}
+                                                imageUrl={
+                                                    movie.movie_poster || ''
+                                                }
+                                                subheading={movie.genres
+                                                    .map((genre) => genre.genre)
+                                                    .join('/')
+                                                    .slice(0, 60)}
+                                                className="h-60 sm:h-80 w-75 sm:w-100"
+                                            />
+                                        </CarouselItem>
+                                    ))}
+                            {isLatestMovieLoading &&
+                                Array.from({ length: 6 }).map((_, index) => (
                                     <CarouselItem key={index}>
-                                        <Card
-                                            heading={movie.name}
-                                            imageUrl={movie.movie_poster || ''}
-                                            subheading={movie.genres
-                                                .map((genre) => genre.genre)
-                                                .join('/')
-                                                .slice(0, 60)}
-                                            className="h-60 sm:h-80 w-75 sm:w-100"
-                                        />
+                                        <Skeleton className="h-60 sm:h-80 w-75 sm:w-100 rounded-xl" />
                                     </CarouselItem>
                                 ))}
+                            {!isLatestMovieLoading &&
+                                !latestMovies?.pages[0].results.length && (
+                                    <CarouselItem>
+                                        <TypographyH4>
+                                            No Latest Movies Available
+                                        </TypographyH4>
+                                    </CarouselItem>
+                                )}
                         </CarouselContent>
                         <CarouselPrevious />
                         <CarouselNext />
@@ -124,5 +162,3 @@ export const Home = () => {
         </div>
     );
 };
-
-// w-[75%] sm:w-[80%] md:w-[85%] lg:w-[90%] xl:[95%] 2xl:[98%]
