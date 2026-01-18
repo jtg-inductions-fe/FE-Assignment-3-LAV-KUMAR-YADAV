@@ -79,6 +79,6 @@ export const API_ROUTES = {
         /**
          * Locations of cinemas
          */
-        LOCATION: 'cinemas/locations/',
+        LOCATION: '/cinemas/locations/',
     },
 } as const;

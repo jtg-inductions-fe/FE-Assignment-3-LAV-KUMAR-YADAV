@@ -7,7 +7,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { cn } from '@/lib';
+import { capitalizeFirstCharacter, cn } from '@/lib';
 
 import type { SelectFilterProps } from './SelectFilters.types';
 import { TypographyH4 } from '../Typography';
@@ -93,8 +93,7 @@ export const SelectFilters = ({
                                 }
                                 onClick={() => handleOptionsClick(option)}
                             >
-                                {option[0].toLocaleUpperCase() +
-                                    option.slice(1)}
+                                {capitalizeFirstCharacter(option)}
                             </Badge>
                         ))}
                     </div>

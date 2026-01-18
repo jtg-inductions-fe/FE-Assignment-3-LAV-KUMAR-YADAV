@@ -223,7 +223,7 @@ export const api = createApi({
         /**
          * Retrieve all cinemas
          */
-        cinemas: builder.query<Cinema[], { location: string | undefined }>({
+        cinemas: builder.query<Cinema[], { location?: string }>({
             query: ({ location }) => ({
                 url: API_ROUTES.CINEMAS.LIST,
                 params: {

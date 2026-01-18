@@ -1,3 +1,4 @@
+import MovieNotAvailableSVG from '@/assets/images/movie-not-available.svg';
 import { Card, TypographyH3, TypographyH4 } from '@/components';
 import { Button } from '@/components/ui/button';
 import {
@@ -88,6 +89,12 @@ export const Home = () => {
                             {!isUpcomingMovieLoading &&
                                 !upcomingMovies?.pages[0].results.length && (
                                     <CarouselItem>
+                                        <div>
+                                            <img
+                                                src={MovieNotAvailableSVG}
+                                                alt="Upcoming Movies Not Available fallback"
+                                            />
+                                        </div>
                                         <TypographyH4>
                                             No Upcoming Movies Available
                                         </TypographyH4>
@@ -148,6 +155,12 @@ export const Home = () => {
                             {!isLatestMovieLoading &&
                                 !latestMovies?.pages[0].results.length && (
                                     <CarouselItem>
+                                        <div>
+                                            <img
+                                                src={MovieNotAvailableSVG}
+                                                alt="Latest Movies Not Available fallback"
+                                            />
+                                        </div>
                                         <TypographyH4>
                                             No Latest Movies Available
                                         </TypographyH4>

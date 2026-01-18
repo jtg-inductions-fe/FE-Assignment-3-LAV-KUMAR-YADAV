@@ -1,7 +1,8 @@
 import { LocationEdit } from 'lucide-react';
 import { useSearchParams } from 'react-router';
 
-import { TypographyH4, TypographyMuted } from '@/components';
+import CinemasNotAvailable from '@/assets/images/cinemas-not-available.svg';
+import { TypographyH2, TypographyH4, TypographyMuted } from '@/components';
 import { Label } from '@/components/ui/label';
 import {
     Select,
@@ -12,6 +13,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
+import { capitalizeFirstCharacter } from '@/lib';
 import { useCinemasQuery, useLocationsQuery } from '@/services';
 
 /**
@@ -34,13 +37,13 @@ import { useCinemasQuery, useLocationsQuery } from '@/services';
 export const Cinemas = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const { data: cinemas } = useCinemasQuery({
+    const { data: cinemas, isLoading: isCinemasLoading } = useCinemasQuery({
         location: searchParams.get('location') ?? undefined,
     });
     const { data: locations } = useLocationsQuery();
 
     return (
-        <div className="mt-6">
+        <div className="my-6">
             <Label className="mb-2 text-primary">
                 <LocationEdit size={18} />
                 Location
@@ -75,18 +78,44 @@ export const Cinemas = () => {
                     </SelectGroup>
                 </SelectContent>
             </Select>
-            <div className="flex flex-wrap justify-center gap-6 mt-2">
-                {cinemas?.map((cinema) => (
-                    <div
-                        key={cinema.id}
-                        className="border rounded-xl p-2 min-w-50"
-                    >
-                        <TypographyH4>{cinema.name}</TypographyH4>
-                        <TypographyMuted>
-                            {cinema.location.location}
-                        </TypographyMuted>
+            <div className="flex flex-wrap justify-center gap-8 mt-2">
+                {!isCinemasLoading &&
+                    !!cinemas?.length &&
+                    cinemas?.map((cinema) => (
+                        <div
+                            key={cinema.id}
+                            className="border rounded-xl p-6 w-70 h-40 flex flex-col  gap-5"
+                        >
+                            <TypographyH4>{cinema.name}</TypographyH4>
+                            <TypographyMuted>
+                                {capitalizeFirstCharacter(
+                                    cinema.location.location,
+                                )}
+                            </TypographyMuted>
+                        </div>
+                    ))}
+
+                {isCinemasLoading &&
+                    Array.from({ length: 6 }).map((_, index) => (
+                        <Skeleton
+                            key={index}
+                            className="h-40 w-70 rounded-xl"
+                        />
+                    ))}
+
+                {!isCinemasLoading && !cinemas?.length && (
+                    <div className="flex flex-col justify-center items-center">
+                        <div>
+                            <img
+                                src={CinemasNotAvailable}
+                                alt="Cinemas Not Available Fallback"
+                            />
+                        </div>
+                        <TypographyH2 className="text-center">
+                            There is no Cinemas Available
+                        </TypographyH2>
                     </div>
-                ))}
+                )}
             </div>
         </div>
     );
