@@ -1,8 +1,11 @@
+import { API_ROUTES } from '@/constants';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import type {
     LoginRequest,
     LoginResponse,
+    Movie,
+    PaginatedQueryResponse,
     SignupRequest,
     SignupResponse,
 } from './services.types';
@@ -53,7 +56,7 @@ export const api = createApi({
          */
         registerUser: builder.mutation<SignupResponse, SignupRequest>({
             query: (data) => ({
-                url: 'users/register/',
+                url: API_ROUTES.REGISTER_USER,
                 method: 'POST',
                 body: getFormData(data),
                 credentials: 'include',
@@ -67,34 +70,111 @@ export const api = createApi({
          */
         loginUser: builder.mutation<LoginResponse, LoginRequest>({
             query: (data) => ({
-                url: 'users/login/',
+                url: API_ROUTES.LOGIN_USER,
                 method: 'POST',
                 body: data,
                 credentials: 'include',
             }),
         }),
+
+        /**
+         * Logs out the currently authenticated user.
+         */
         logout: builder.mutation<void, void>({
             query: () => ({
-                url: 'users/logout/',
+                url: API_ROUTES.LOGOUT,
                 method: 'POST',
                 credentials: 'include',
             }),
         }),
+
+        /**
+         * Refreshes the access token using stored refresh credentials.
+         */
         refreshToken: builder.mutation<{ access: string }, void>({
             query: () => ({
-                url: 'users/refresh/',
+                url: API_ROUTES.REFRESH_TOKEN,
                 method: 'POST',
                 credentials: 'include',
             }),
         }),
+
+        /**
+         * Fetches the authenticated user's profile information.
+         *
+         * @param token - Current access token.
+         */
         userDetails: builder.query<Omit<SignupResponse, 'access'>, string>({
             query: (token) => ({
-                url: 'users/profile/',
+                url: API_ROUTES.USER_PROFILE,
                 credentials: 'include',
                 headers: {
                     authorization: `Bearer ${token}`,
                 },
             }),
+        }),
+
+        /**
+         * Retrieves paginated list of all movies.
+         *
+         * Supports infinite scrolling.
+         */
+        movies: builder.infiniteQuery<Movie[], void, number>({
+            query: ({ pageParam }) => ({
+                url: `${API_ROUTES.MOVIES}?page=${pageParam}`,
+            }),
+            infiniteQueryOptions: {
+                initialPageParam: 1,
+                getNextPageParam: (_, __, lastPageParam) => lastPageParam + 1,
+            },
+            transformResponse: (response: PaginatedQueryResponse<Movie>) =>
+                response.results,
+        }),
+
+        /**
+         * Retrieves paginated list of latest movies.
+         *
+         * Supports infinite scrolling.
+         */
+        latestMovies: builder.infiniteQuery<
+            PaginatedQueryResponse<Movie>,
+            void,
+            number
+        >({
+            query: ({ pageParam }) => ({
+                url: `${API_ROUTES.LATEST_MOVIES}?page=${pageParam}`,
+            }),
+            infiniteQueryOptions: {
+                initialPageParam: 1,
+                getNextPageParam: (lastPage, __, lastPageParam) => {
+                    if (lastPage.next) {
+                        return lastPageParam + 1;
+                    }
+                },
+            },
+        }),
+
+        /**
+         * Retrieves paginated list of upcoming movies.
+         *
+         * Supports infinite scrolling.
+         */
+        upcomingMovies: builder.infiniteQuery<
+            PaginatedQueryResponse<Movie>,
+            void,
+            number
+        >({
+            query: ({ pageParam }) => ({
+                url: `${API_ROUTES.UPCOMING_MOVIES}?page=${pageParam}`,
+            }),
+            infiniteQueryOptions: {
+                initialPageParam: 1,
+                getNextPageParam: (lastPage, __, lastPageParam) => {
+                    if (lastPage.next) {
+                        return lastPageParam + 1;
+                    }
+                },
+            },
         }),
     }),
 });
@@ -105,4 +185,7 @@ export const {
     useLogoutMutation,
     useRefreshTokenMutation,
     useUserDetailsQuery,
+    useMoviesInfiniteQuery,
+    useLatestMoviesInfiniteQuery,
+    useUpcomingMoviesInfiniteQuery,
 } = api;
