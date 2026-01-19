@@ -1,3 +1,4 @@
+export { Booking } from './Booking';
 export { Cinema } from './Cinema';
 export { Cinemas } from './Cinemas';
 export { Home } from './Home';

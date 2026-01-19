@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { Film, MapPin } from 'lucide-react';
-import { useParams, useSearchParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
 
 import SlotsNotAvailableSvg from '@/assets/images/slots-not-available.svg';
 import {
@@ -11,6 +11,7 @@ import {
     TypographyP,
 } from '@/components';
 import { Skeleton } from '@/components/ui/skeleton';
+import { TIME_FORMAT } from '@/constants';
 import { capitalizeFirstCharacter } from '@/lib';
 import { useCinemaQuery, useSlotsByCinemaQuery } from '@/services';
 
@@ -74,21 +75,25 @@ export const Cinema = () => {
                                     </div>
                                     <div className="flex flex-wrap gap-6">
                                         {movie.slots.map((slot) => (
-                                            <SlotCard
+                                            <Link
+                                                to={`/booking/${slot.id}`}
                                                 key={slot.id}
-                                                price={slot.price}
-                                                time={format(
-                                                    slot.date_time,
-                                                    'hh:mm a',
-                                                )}
-                                                language={
-                                                    movie.languages.find(
-                                                        (language) =>
-                                                            language.id ===
-                                                            slot.language,
-                                                    )?.language || ''
-                                                }
-                                            />
+                                            >
+                                                <SlotCard
+                                                    price={slot.price}
+                                                    time={format(
+                                                        slot.date_time,
+                                                        TIME_FORMAT,
+                                                    )}
+                                                    language={
+                                                        movie.languages.find(
+                                                            (language) =>
+                                                                language.id ===
+                                                                slot.language,
+                                                        )?.language || ''
+                                                    }
+                                                />
+                                            </Link>
                                         ))}
                                     </div>
                                 </div>

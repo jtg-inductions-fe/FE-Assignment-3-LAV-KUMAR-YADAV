@@ -15,3 +15,4 @@ export { Card } from './Card';
 export { SelectFilters } from './SelectFilters';
 export { DatePicker } from './DatePicker';
 export { SlotCard } from './SlotCard';
+export { Seat } from './Seat';

@@ -95,4 +95,21 @@ export const API_ROUTES = {
          */
         LOCATION: '/cinemas/locations/',
     },
+
+    /**
+     * routes related to bookings
+     */
+    BOOKINGS: {
+        /**
+         * Endpoint for a particular slot to which gives all the details related to the that slot just give id at end
+         *
+         * @example `${API_ROUTES.BOOKINGS.SLOT_DETAILS}${id}/`
+         */
+        SLOT_DETAILS: '/bookings/slot-details/',
+
+        /**
+         * Endpoint for booking seats
+         */
+        BOOKING: '/bookings/',
+    },
 } as const;

@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router';
 import { ROUTES } from '@/constants';
 import { RootLayout } from '@/layouts';
 import {
+    Booking,
     Cinema,
     Cinemas,
     Home,
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.CINEMA,
                 element: <Cinema />,
+            },
+            {
+                path: ROUTES.BOOKING,
+                element: <Booking />,
             },
             {
                 path: ROUTES.NOT_FOUND,
