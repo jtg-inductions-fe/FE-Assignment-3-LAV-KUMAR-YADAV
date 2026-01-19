@@ -9,6 +9,7 @@ import {
     Login,
     Movie,
     Movies,
+    MovieSlots,
     NotFound,
     SignUp,
 } from '@/pages';
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.MOVIE,
                 element: <Movie />,
+            },
+            {
+                path: ROUTES.MOVIE_SLOTS,
+                element: <MovieSlots />,
             },
             {
                 path: ROUTES.CINEMAS,

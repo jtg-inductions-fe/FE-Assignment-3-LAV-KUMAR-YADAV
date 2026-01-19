@@ -1,4 +1,6 @@
-import { API_ROUTES } from '@/constants';
+import { format } from 'date-fns';
+
+import { API_ROUTES, DATE_FORMAT } from '@/constants';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import type {
@@ -13,6 +15,7 @@ import type {
     SignupRequest,
     SignupResponse,
     SlotByCinemaResponse,
+    SlotsByMovieSlugResponse,
 } from './services.types';
 
 /**
@@ -251,12 +254,30 @@ export const api = createApi({
             }),
         }),
 
+        /**
+         * Retrieves all the slots of a particular cinema including movie
+         */
         slotsByCinema: builder.query<
             SlotByCinemaResponse[],
             { cinema_id?: string; date?: string }
         >({
             query: ({ cinema_id, date }) => ({
-                url: `/cinemas/${cinema_id}/movie-slots`,
+                url: `/cinemas/${cinema_id}/movie-slots/`,
+                params: {
+                    date: date ? date : format(new Date(), DATE_FORMAT),
+                },
+            }),
+        }),
+
+        /**
+         * Retrieves all the slots of a particular movie along with cinema their cinema Details
+         */
+        slotsByMovieSlug: builder.query<
+            SlotsByMovieSlugResponse[],
+            { slug?: string; date?: string }
+        >({
+            query: ({ slug, date }) => ({
+                url: `/movies/${slug}/movie-slots/`,
                 params: {
                     date: date ? date : new Date().toISOString().slice(0, 10),
                 },
@@ -290,4 +311,5 @@ export const {
     useCinemaQuery,
     useLocationsQuery,
     useSlotsByCinemaQuery,
+    useSlotsByMovieSlugQuery,
 } = api;

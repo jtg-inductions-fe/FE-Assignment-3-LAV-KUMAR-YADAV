@@ -14,6 +14,7 @@ export const ROUTES = {
     NOT_FOUND: '*',
     MOVIES: '/movies',
     MOVIE: '/movie/:slug',
+    MOVIE_SLOTS: '/movie/:slug/slots',
     CINEMAS: '/cinemas',
     CINEMA: '/cinema/:id',
     PROFILE: '/profile',
