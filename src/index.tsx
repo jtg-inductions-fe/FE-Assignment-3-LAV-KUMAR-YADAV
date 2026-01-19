@@ -7,6 +7,7 @@ import { RouterProvider } from 'react-router';
 import { router } from '@/router';
 import { store } from '@/store';
 
+import { ThemeProvider } from './components';
 import { Toaster } from './components/ui/sonner';
 
 import './index.css';
@@ -24,9 +25,10 @@ import './index.css';
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <Provider store={store}>
-            <RouterProvider router={router} />
-            <Toaster />
+            <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+                <RouterProvider router={router} />
+                <Toaster />
+            </ThemeProvider>
         </Provider>
-        ,
     </StrictMode>,
 );

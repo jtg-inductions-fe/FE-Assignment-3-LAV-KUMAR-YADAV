@@ -1,3 +1,5 @@
+import { useDispatch, useSelector } from 'react-redux';
+
 import { authSlice } from '@/features/authSlice';
 import { api } from '@/services';
 import { configureStore } from '@reduxjs/toolkit';
@@ -57,3 +59,6 @@ export type AppDispatch = typeof store.dispatch;
  * Should be called once after store creation.
  */
 setupListeners(store.dispatch);
+
+export const useAppSelector = useSelector.withTypes<RootState>();
+export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
