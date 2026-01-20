@@ -15,6 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { DATE_FORMAT } from '@/constants';
 import { useCinemasQuery, useGenresQuery, useLanguagesQuery } from '@/services';
 import { DialogClose } from '@radix-ui/react-dialog';
 
@@ -88,6 +89,48 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
         setSearchParams(searchParams);
     };
 
+    const handleLanguageChange = (languages: string[]) => {
+        setFiltersToApply((prev) => ({
+            ...prev,
+            languages,
+        }));
+    };
+
+    const handleGenreChange = (genres: string[]) => {
+        setFiltersToApply((prev) => ({
+            ...prev,
+            genres,
+        }));
+    };
+
+    const handleDateChange = (date: Date | undefined) => {
+        if (date) {
+            setFiltersToApply((prev) => ({
+                ...prev,
+                slot_date: format(date, DATE_FORMAT),
+            }));
+        } else {
+            setFiltersToApply((prev) => ({
+                ...prev,
+                slot_date: undefined,
+            }));
+        }
+    };
+
+    const handleCinemaSelection = (cinema_id: string) => {
+        if (cinema_id !== '-1') {
+            setFiltersToApply((prev) => ({
+                ...prev,
+                cinema: cinema_id,
+            }));
+        } else {
+            setFiltersToApply((prev) => ({
+                ...prev,
+                cinema: undefined,
+            }));
+        }
+    };
+
     return (
         <div className=" flex-col gap-6 bg-accent p-10 rounded-xl  h-full flex ">
             <SelectFilters
@@ -95,42 +138,20 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
                 options={
                     totalLanguages?.map((language) => language.language) || []
                 }
-                onChange={(languages) => {
-                    setFiltersToApply((prev) => ({
-                        ...prev,
-                        languages,
-                    }));
-                }}
+                onValueChange={handleLanguageChange}
                 alreadySelected={searchParams.get('languages')?.split(',')}
             />
             <SelectFilters
                 heading="Genres"
                 options={totalGenres?.map((gen) => gen.genre) || []}
-                onChange={(genres) => {
-                    setFiltersToApply((prev) => ({
-                        ...prev,
-                        genres,
-                    }));
-                }}
+                onValueChange={handleGenreChange}
                 alreadySelected={searchParams.get('genres')?.split(',')}
             />
 
             <div>
                 <Label className="mb-3">Cinema</Label>
                 <Select
-                    onValueChange={(cinema_id) => {
-                        if (cinema_id !== '-1') {
-                            setFiltersToApply((prev) => ({
-                                ...prev,
-                                cinema: cinema_id,
-                            }));
-                        } else {
-                            setFiltersToApply((prev) => ({
-                                ...prev,
-                                cinema: undefined,
-                            }));
-                        }
-                    }}
+                    onValueChange={handleCinemaSelection}
                     defaultValue={searchParams.get('cinema') || undefined}
                 >
                     <SelectTrigger className="w-full">
@@ -152,22 +173,7 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
                     </SelectContent>
                 </Select>
             </div>
-            <DatePicker
-                label="Date"
-                onChange={(date) => {
-                    if (date) {
-                        setFiltersToApply((prev) => ({
-                            ...prev,
-                            slot_date: format(date, 'yyyy-MM-dd'),
-                        }));
-                    } else {
-                        setFiltersToApply((prev) => ({
-                            ...prev,
-                            slot_date: undefined,
-                        }));
-                    }
-                }}
-            />
+            <DatePicker label="Date" onDateChange={handleDateChange} />
             {inModal ? (
                 <DialogClose disabled={applyBtnDisabled} asChild>
                     <Button

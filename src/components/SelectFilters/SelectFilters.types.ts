@@ -1,9 +1,11 @@
+import type { ComponentProps } from 'react';
+
 /**
  * Props for the SelectFilters component.
  *
  * Defines the configuration and behavior of a multi-select filter group.
  */
-export type SelectFilterProps = {
+export type SelectFilterProps = ComponentProps<'div'> & {
     /**
      * Title displayed at the top of the filter section.
      */
@@ -24,7 +26,7 @@ export type SelectFilterProps = {
      *
      * @param props - Updated array of selected option values
      */
-    onChange?: (props: string[]) => void;
+    onValueChange?: (props: string[]) => void;
 
     /**
      * Optional additional CSS class names to apply to the root container.

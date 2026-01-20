@@ -125,10 +125,10 @@ export const api = createApi({
         movies: builder.infiniteQuery<
             PaginatedQueryResponse<Movie>,
             {
-                languages?: string | undefined;
-                genres?: string | undefined;
-                cinema?: string | undefined;
-                slot_date?: string | undefined;
+                languages?: string;
+                genres?: string;
+                cinema?: string;
+                slot_date?: string;
             },
             number
         >({

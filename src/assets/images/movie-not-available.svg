@@ -1,0 +1,45 @@
+<svg
+    width="320"
+    height="200"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 320 200"
+>
+    <!-- Film screen placeholder -->
+
+    <rect
+        x="60"
+        y="40"
+        width="200"
+        height="100"
+        rx="12"
+        ry="12"
+        fill="#e0e0e0"
+        stroke="#b0b0b0"
+        stroke-width="2"
+    />
+
+    <!-- Broken image / unavailable icon -->
+
+    <line x1="80" y1="120" x2="120" y2="80" stroke="#999" stroke-width="4" />
+
+    <line x1="120" y1="80" x2="160" y2="120" stroke="#999" stroke-width="4" />
+
+    <line x1="160" y1="120" x2="200" y2="80" stroke="#999" stroke-width="4" />
+
+    <line x1="200" y1="80" x2="240" y2="120" stroke="#999" stroke-width="4" />
+
+    <!-- Sad face icon -->
+
+    <circle cx="160" cy="90" r="18" fill="#cccccc" />
+
+    <circle cx="153" cy="86" r="2" fill="#666" />
+
+    <circle cx="167" cy="86" r="2" fill="#666" />
+
+    <path
+        d="M150 98 Q160 104 170 98"
+        stroke="#666"
+        fill="none"
+        stroke-width="2"
+    />
+</svg>

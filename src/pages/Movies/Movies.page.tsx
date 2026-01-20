@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Filter } from 'lucide-react';
 import { useSearchParams } from 'react-router';
 
+import MovieNotAvailableSVG from '@/assets/images/movie-not-available.svg';
 import { Card, TypographyH4 } from '@/components';
 import { Button } from '@/components/ui/button';
 import {
@@ -101,14 +102,14 @@ export const Movies = () => {
                     {!isLoadingMovies &&
                         movies?.pages
                             .flatMap((page) => page.results)
-                            .map((movie, index) => (
+                            .map((movie) => (
                                 <Card
                                     heading={movie.name}
                                     imageUrl={movie.movie_poster || ''}
                                     subheading={movie.genres
                                         .map((genre) => genre.genre)
                                         .join('/')}
-                                    key={index}
+                                    key={movie.id}
                                     className="h-60 sm:h-80 w-75 sm:w-100"
                                 />
                             ))}
@@ -121,10 +122,19 @@ export const Movies = () => {
                             />
                         ))}
                     {!isLoadingMovies && !movies?.pages[0].results.length && (
-                        <TypographyH4>
-                            No Movies available for the applied Filter. Please
-                            Change the Filter.
-                        </TypographyH4>
+                        <>
+                            <div className="h-50 w-80">
+                                <img
+                                    src={MovieNotAvailableSVG}
+                                    className="h-full w-full object-contain"
+                                    alt="movie not available fallback"
+                                />
+                            </div>
+                            <TypographyH4 className="text-center w-[70%]">
+                                No Movies available for the applied Filter.
+                                Please Change the Filter.
+                            </TypographyH4>
+                        </>
                     )}
                 </div>
                 {/* SENTINEL ELEMENT */}

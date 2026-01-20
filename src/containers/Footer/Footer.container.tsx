@@ -26,7 +26,7 @@ export const Footer = () => (
             ))}
         </ul>
         <TypographyMuted className="text-center p-4 select-none">
-            CopyRight 2026 © Josh Entertainment Pvt. Ltd. All rights reserved.
+            Copyright 2026 © Josh Entertainment Pvt. Ltd. All rights reserved.
         </TypographyMuted>
     </footer>
 );

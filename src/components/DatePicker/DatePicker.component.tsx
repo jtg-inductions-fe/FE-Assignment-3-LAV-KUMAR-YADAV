@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 
 import { ChevronDownIcon } from 'lucide-react';
@@ -12,6 +10,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
+import { cn } from '@/lib';
 
 import type { DatePickerProps } from './DatePicker.types';
 
@@ -27,14 +26,28 @@ import type { DatePickerProps } from './DatePicker.types';
  * - Restricts selection to today and future dates
  * - Returns selected date via `onChange` callback
  */
-export const DatePicker = ({ label, onChange }: DatePickerProps) => {
+export const DatePicker = ({
+    label,
+    onDateChange,
+    id,
+    className,
+    ...props
+}: DatePickerProps) => {
     const [open, setOpen] = React.useState(false);
     const [date, setDate] = React.useState<Date | undefined>(undefined);
+    const generatedId = React.useId();
+    const inputId = id ?? generatedId;
+
+    const handleDateSelect = (date: Date | undefined) => {
+        setDate(date);
+        setOpen(false);
+        onDateChange?.(date);
+    };
 
     return (
-        <div className="flex flex-col gap-3">
+        <div className={cn('flex flex-col gap-3', className)} {...props}>
             {label && (
-                <Label htmlFor="date" className="px-1">
+                <Label htmlFor={inputId} className="px-1">
                     {label}
                 </Label>
             )}
@@ -42,7 +55,7 @@ export const DatePicker = ({ label, onChange }: DatePickerProps) => {
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
-                        id="date"
+                        id={inputId}
                         className="w-48 justify-between font-normal"
                     >
                         {date ? date.toLocaleDateString() : 'Select date'}
@@ -57,11 +70,7 @@ export const DatePicker = ({ label, onChange }: DatePickerProps) => {
                         mode="single"
                         selected={date}
                         captionLayout="dropdown"
-                        onSelect={(date) => {
-                            setDate(date);
-                            setOpen(false);
-                            onChange?.(date);
-                        }}
+                        onSelect={handleDateSelect}
                         disabled={{
                             before: new Date(),
                         }}

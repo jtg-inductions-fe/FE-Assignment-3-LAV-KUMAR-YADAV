@@ -31,31 +31,52 @@ import { Button } from '../ui/button';
 export const SelectFilters = ({
     heading,
     options,
-    onChange,
+    onValueChange,
     alreadySelected,
     className,
+    ...props
 }: SelectFilterProps) => {
     const [selected, setSelected] = useState<string[]>(alreadySelected || []);
-    const [open, setOpen] = useState<boolean>();
+    const [open, setOpen] = useState<boolean>(
+        (alreadySelected?.length ?? 0) > 0,
+    );
+
+    const handleClear = () => {
+        setSelected([]);
+        onValueChange?.([]);
+    };
+
+    const handleOptionsClick = (option: string) => {
+        const optionIndex = selected.indexOf(option);
+        if (optionIndex > -1) {
+            setSelected((prev) => {
+                const modified = [
+                    ...prev.slice(0, optionIndex),
+                    ...prev.slice(optionIndex + 1),
+                ];
+                onValueChange?.(modified);
+
+                return modified;
+            });
+        } else {
+            setSelected((prev) => {
+                const modified = [...prev, option];
+                onValueChange?.(modified);
+
+                return modified;
+            });
+        }
+    };
 
     return (
-        <div className={cn('w-full', className)}>
-            <Collapsible
-                onOpenChange={setOpen}
-                defaultOpen={selected.length > 0}
-            >
+        <div className={cn('w-full', className)} {...props}>
+            <Collapsible onOpenChange={setOpen} open={open}>
                 <div className="flex justify-between">
                     <CollapsibleTrigger className="cursor-pointer flex justify-center items-center gap-2">
                         {open ? <ChevronUp /> : <ChevronDown />}
                         <TypographyH4>{heading}</TypographyH4>
                     </CollapsibleTrigger>
-                    <Button
-                        onClick={() => {
-                            setSelected([]);
-                            onChange?.([]);
-                        }}
-                        variant="link"
-                    >
+                    <Button onClick={handleClear} variant="link">
                         Clear
                     </Button>
                 </div>
@@ -70,28 +91,7 @@ export const SelectFilters = ({
                                         ? 'default'
                                         : 'outline'
                                 }
-                                onClick={() => {
-                                    const optionIndex =
-                                        selected.indexOf(option);
-                                    if (optionIndex > -1) {
-                                        setSelected((prev) => {
-                                            const modified = [
-                                                ...prev.slice(0, optionIndex),
-                                                ...prev.slice(optionIndex + 1),
-                                            ];
-                                            onChange?.(modified);
-
-                                            return modified;
-                                        });
-                                    } else {
-                                        setSelected((prev) => {
-                                            const modified = [...prev, option];
-                                            onChange?.(modified);
-
-                                            return modified;
-                                        });
-                                    }
-                                }}
+                                onClick={() => handleOptionsClick(option)}
                             >
                                 {option[0].toLocaleUpperCase() +
                                     option.slice(1)}

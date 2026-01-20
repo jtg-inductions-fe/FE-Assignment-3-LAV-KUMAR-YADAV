@@ -1,4 +1,6 @@
-export type CardProps = {
+import type { ComponentProps } from 'react';
+
+export type CardProps = ComponentProps<'div'> & {
     /**
      * To Show the Image in the card
      */
@@ -13,9 +15,4 @@ export type CardProps = {
      * Subheading of the card
      */
     subheading: string;
-
-    /**
-     * for the extra style on the container
-     */
-    className?: string;
 };

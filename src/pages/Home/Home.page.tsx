@@ -124,8 +124,8 @@ export const Home = () => {
                             {!isLatestMovieLoading &&
                                 latestMovies?.pages
                                     .flatMap((page) => page.results)
-                                    .map((movie, index) => (
-                                        <CarouselItem key={index}>
+                                    .map((movie) => (
+                                        <CarouselItem key={movie.id}>
                                             <Card
                                                 heading={movie.name}
                                                 imageUrl={
