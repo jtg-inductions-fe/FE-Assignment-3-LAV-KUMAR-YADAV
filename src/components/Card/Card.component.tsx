@@ -4,6 +4,9 @@ import type { CardProps } from './Card.types';
 import { TypographyH3, TypographyMuted } from '../Typography';
 import { Card as ShadCNCard, CardContent } from '../ui/card';
 
+/**
+ * Returns a card with Image, Heading and Subheading
+ */
 export const Card = ({
     heading,
     imageUrl,

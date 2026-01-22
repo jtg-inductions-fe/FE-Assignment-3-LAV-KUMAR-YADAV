@@ -11,6 +11,7 @@ export {
     useGenresQuery,
     useLanguagesQuery,
     useCinemasQuery,
+    useLocationsQuery,
 } from './services';
 
 export type {

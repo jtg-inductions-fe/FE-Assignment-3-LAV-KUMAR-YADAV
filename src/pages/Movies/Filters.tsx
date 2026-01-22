@@ -50,7 +50,9 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
 
     const { data: totalLanguages } = useLanguagesQuery();
     const { data: totalGenres } = useGenresQuery();
-    const { data: totalCinemas } = useCinemasQuery();
+    const { data: totalCinemas } = useCinemasQuery({
+        location: undefined,
+    });
 
     const applyBtnDisabled =
         filtersToApply.cinema == searchParams.get('cinema') &&

@@ -1,0 +1,41 @@
+<svg width="320" height="220" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Background card -->
+
+  <rect x="10" y="10" width="300" height="200" rx="20" fill="#f6f7fb"/>
+
+  <!-- Cinema screen -->
+
+  <rect x="60" y="50" width="200" height="100" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+
+  <!-- Film reel left -->
+
+  <circle cx="95" cy="100" r="18" fill="#e5e7eb"/>
+
+  <circle cx="95" cy="100" r="6" fill="#9ca3af"/>
+
+  <!-- Film reel right -->
+
+  <circle cx="225" cy="100" r="18" fill="#e5e7eb"/>
+
+  <circle cx="225" cy="100" r="6" fill="#9ca3af"/>
+
+  <!-- Film strip holes -->
+
+  <rect x="130" y="88" width="60" height="6" rx="3" fill="#e5e7eb"/>
+
+  <rect x="130" y="106" width="60" height="6" rx="3" fill="#e5e7eb"/>
+
+  <!-- Not available cross overlay -->
+
+  <circle cx="160" cy="100" r="36" fill="#fee2e2"/>
+
+  <line x1="142" y1="82" x2="178" y2="118" stroke="#ef4444" stroke-width="6" stroke-linecap="round"/>
+
+  <line x1="178" y1="82" x2="142" y2="118" stroke="#ef4444" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Subtle floor shadow -->
+
+  <ellipse cx="160" cy="175" rx="90" ry="8" fill="#e5e7eb"/>
+
+</svg>

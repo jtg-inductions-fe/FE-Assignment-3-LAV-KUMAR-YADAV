@@ -75,5 +75,10 @@ export const API_ROUTES = {
          * Endpoint for retrieving a list of cinemas.
          */
         LIST: '/cinemas/',
+
+        /**
+         * Locations of cinemas
+         */
+        LOCATION: '/cinemas/locations/',
     },
 } as const;
