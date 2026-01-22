@@ -274,7 +274,7 @@ export const api = createApi({
          */
         slotsByMovieSlug: builder.query<
             SlotsByMovieSlugResponse[],
-            { slug?: string; date?: string }
+            { slug: string; date?: string }
         >({
             query: ({ slug, date }) => ({
                 url: `/movies/${slug}/movie-slots/`,

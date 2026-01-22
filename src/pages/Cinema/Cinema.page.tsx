@@ -18,7 +18,10 @@ import { useCinemaQuery, useSlotsByCinemaQuery } from '@/services';
  */
 export const Cinema = () => {
     const { id } = useParams();
-    const { data: cinema, isLoading: isCinemaLoading } = useCinemaQuery({ id });
+    const { data: cinema, isLoading: isCinemaLoading } = useCinemaQuery(
+        { id: id! },
+        { skip: !id },
+    );
     const [searchParams, setSearchParams] = useSearchParams();
     const { data: movieSlots, isLoading: isMovieSlotsLoading } =
         useSlotsByCinemaQuery({
@@ -96,7 +99,7 @@ export const Cinema = () => {
                 {isMovieSlotsLoading && (
                     <>
                         {Array.from({ length: 6 }).map((_, index) => (
-                            <div key={index}>
+                            <div key={`row${index}`}>
                                 <div className="h-px bg-border"></div>
                                 <div className="flex flex-col  gap-6 py-4">
                                     <Skeleton className="w-100 h-8" />
@@ -104,8 +107,8 @@ export const Cinema = () => {
                                         {Array.from({ length: 6 }).map(
                                             (__, slotIndex) => (
                                                 <Skeleton
-                                                    key={slotIndex}
-                                                    className="w-40 h-18"
+                                                    key={`row${index}col${slotIndex}`}
+                                                    className="w-40 h-18 rounded-xl"
                                                 />
                                             ),
                                         )}

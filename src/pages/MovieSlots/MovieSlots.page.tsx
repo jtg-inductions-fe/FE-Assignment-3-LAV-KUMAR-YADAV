@@ -20,26 +20,38 @@ import { useSlotsByMovieSlugQuery } from '@/services/services';
  */
 export const MovieSlots = () => {
     const { slug } = useParams();
-    const { data: movie, isLoading: isMovieLoading } = useMovieQuery({ slug });
+    const { data: movie, isLoading: isMovieLoading } = useMovieQuery(
+        {
+            slug: slug || '',
+        },
+        {
+            skip: !slug,
+        },
+    );
     const [searchParams, setSearchParams] = useSearchParams();
     const { data: movieSlots, isLoading: isSlotsLoading } =
-        useSlotsByMovieSlugQuery({
-            slug,
-            date: searchParams.get('date') ?? undefined,
-        });
+        useSlotsByMovieSlugQuery(
+            {
+                slug: slug || '',
+                date: searchParams.get('date') ?? undefined,
+            },
+            {
+                skip: !slug,
+            },
+        );
 
     return (
         <div className="my-6 flex flex-col gap-4">
             {!isMovieLoading && movie && (
-                <div className="flex flex-col md:flex-row gap-6">
-                    <div className="h-50 w-90">
+                <div className="flex flex-col items-center md:flex-row gap-6">
+                    <div className="h-40 w-80 sm:h-50 sm:w-100">
                         <img
                             src={movie?.movie_poster ?? ''}
                             alt={`${movie?.name} Poster`}
                             className="h-full w-full object-cover rounded-xl"
                         />
                     </div>
-                    <div className="md:w-2/3">
+                    <div className="md:w-2/3 self-start">
                         <TypographyH1>{movie?.name}</TypographyH1>
                         <Badge variant="secondary" className="text-sm ">
                             Movie Runtime: {movie?.duration}
@@ -129,7 +141,7 @@ export const MovieSlots = () => {
             {isSlotsLoading && (
                 <>
                     {Array.from({ length: 6 }).map((_, index) => (
-                        <div key={index}>
+                        <div key={`row${index}`}>
                             <div className="h-px bg-border"></div>
                             <div className="flex flex-col  gap-6 py-4">
                                 <div className="flex gap-4">
@@ -138,9 +150,9 @@ export const MovieSlots = () => {
                                 </div>
                                 <div className="flex flex-wrap gap-6">
                                     {Array.from({ length: 6 }).map(
-                                        (_, index) => (
+                                        (__, idx) => (
                                             <Skeleton
-                                                key={index}
+                                                key={`row${index}col${idx}`}
                                                 className="w-40 h-18 rounded-xl"
                                             />
                                         ),
