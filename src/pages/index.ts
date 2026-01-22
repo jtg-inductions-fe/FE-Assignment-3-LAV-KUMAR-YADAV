@@ -8,3 +8,4 @@ export { Movies } from './Movies';
 export { MovieSlots } from './MovieSlots';
 export { NotFound } from './NotFound';
 export { SignUp } from './SignUp';
+export { Profile } from './Profile';

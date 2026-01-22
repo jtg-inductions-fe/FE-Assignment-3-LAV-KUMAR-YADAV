@@ -18,6 +18,8 @@ import type {
     SlotByCinemaResponse,
     SlotDetails,
     SlotsByMovieSlugResponse,
+    Ticket,
+    UpdateProfileRequest,
 } from './services.types';
 
 /**
@@ -58,7 +60,7 @@ export const api = createApi({
     /**
      * Tags which can be used for invalidating the data
      */
-    tagTypes: ['slotDetails'],
+    tagTypes: ['slotDetails', 'userDetails', 'tickets'],
 
     /**
      * API endpoint definitions.
@@ -127,6 +129,26 @@ export const api = createApi({
                     authorization: `Bearer ${token}`,
                 },
             }),
+            providesTags: ['userDetails'],
+        }),
+
+        /**
+         * Updates the user details
+         */
+        updateUserDetails: builder.mutation<
+            Omit<SignupRequest, 'password'>,
+            { token?: string; data: UpdateProfileRequest }
+        >({
+            query: ({ token, data }) => ({
+                url: API_ROUTES.USERS.UPDATE_PROFILE,
+                body: getFormData(data),
+                credentials: 'include',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+                method: 'PATCH',
+            }),
+            invalidatesTags: ['userDetails'],
         }),
 
         /**
@@ -326,7 +348,82 @@ export const api = createApi({
                     authorization: `Bearer ${token}`,
                 },
             }),
-            invalidatesTags: ['slotDetails'],
+            invalidatesTags: ['slotDetails', 'tickets'],
+        }),
+
+        /**
+         * To Cancel a ticket
+         */
+        cancelTicket: builder.mutation<
+            { message: string },
+            { token: string; id: number | string }
+        >({
+            query: ({ token, id }) => ({
+                url: `${API_ROUTES.BOOKINGS.CANCEL}${id}/`,
+                method: 'PATCH',
+                credentials: 'include',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+            }),
+            invalidatesTags: ['slotDetails', 'tickets'],
+        }),
+
+        /**
+         * TO retrieve all tickets
+         */
+        tickets: builder.infiniteQuery<
+            PaginatedQueryResponse<Ticket>,
+            { token: string },
+            number
+        >({
+            query: ({ pageParam, queryArg }) => ({
+                url: API_ROUTES.BOOKINGS.TICKETS,
+                params: {
+                    page: pageParam,
+                },
+                credentials: 'include',
+                headers: {
+                    authorization: `Bearer ${queryArg.token}`,
+                },
+            }),
+            infiniteQueryOptions: {
+                initialPageParam: 1,
+                getNextPageParam: (lastPage, __, lastPageParam) => {
+                    if (lastPage.next) {
+                        return lastPageParam + 1;
+                    }
+                },
+            },
+            providesTags: ['tickets'],
+        }),
+
+        /**
+         * TO retrieve all past bookings
+         */
+        pastBookings: builder.infiniteQuery<
+            PaginatedQueryResponse<Ticket>,
+            { token: string },
+            number
+        >({
+            query: ({ pageParam, queryArg }) => ({
+                url: API_ROUTES.BOOKINGS.HISTORY,
+                params: {
+                    page: pageParam,
+                },
+                credentials: 'include',
+                headers: {
+                    authorization: `Bearer ${queryArg.token}`,
+                },
+            }),
+            infiniteQueryOptions: {
+                initialPageParam: 1,
+                getNextPageParam: (lastPage, __, lastPageParam) => {
+                    if (lastPage.next) {
+                        return lastPageParam + 1;
+                    }
+                },
+            },
         }),
     }),
 });
@@ -350,4 +447,8 @@ export const {
     useSlotsByMovieSlugQuery,
     useSlotDetailsQuery,
     useBookingMutation,
+    useUpdateUserDetailsMutation,
+    useTicketsInfiniteQuery,
+    usePastBookingsInfiniteQuery,
+    useCancelTicketMutation,
 } = api;

@@ -9,4 +9,5 @@ export { Movie } from './Movie';
 export { MovieSlots } from './MovieSlots';
 export { Movies } from './Movies';
 export { NotFound } from './NotFound';
+export { Profile } from './Profile';
 export { SignUp } from './SignUp';

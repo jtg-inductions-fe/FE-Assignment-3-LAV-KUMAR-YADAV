@@ -1,3 +1,5 @@
+import type { ComponentProps } from 'react';
+
 export type SlotCardProps = {
     /**
      * to show the slot time
@@ -13,4 +15,4 @@ export type SlotCardProps = {
      * The language of the movie for this slot
      */
     language: string;
-};
+} & ComponentProps<'div'>;

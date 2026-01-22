@@ -18,6 +18,10 @@ export {
     useSlotsByMovieSlugQuery,
     useSlotDetailsQuery,
     useBookingMutation,
+    useUpdateUserDetailsMutation,
+    useTicketsInfiniteQuery,
+    usePastBookingsInfiniteQuery,
+    useCancelTicketMutation,
 } from './services';
 
 export type {

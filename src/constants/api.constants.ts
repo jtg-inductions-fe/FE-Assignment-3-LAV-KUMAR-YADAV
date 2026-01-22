@@ -35,6 +35,11 @@ export const API_ROUTES = {
          * Endpoint for retrieving  the current user's profile information.
          */
         PROFILE: '/users/profile/',
+
+        /**
+         * Endpoint to update the profile
+         */
+        UPDATE_PROFILE: '/users/update-profile/',
     },
 
     /**
@@ -111,6 +116,23 @@ export const API_ROUTES = {
          * Endpoint for booking seats
          */
         BOOKING: '/bookings/',
+
+        /**
+         * To see All the tickets
+         */
+        TICKETS: '/bookings/tickets/',
+
+        /**
+         * To See the All booking history (current tickets + past bookings)
+         */
+        HISTORY: '/bookings/history/',
+
+        /**
+         * To Cancel a Ticket
+         *
+         * @example `${API_ROUTES.BOOKINGS.CANCEL}${id}/`
+         */
+        CANCEL: '/bookings/cancel/',
     },
 };
 
