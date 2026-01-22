@@ -68,7 +68,7 @@ export const Home = () => {
                                     .flatMap((page) => page.results)
                                     .map((movie) => (
                                         <CarouselItem key={movie.id}>
-                                            <Link to={`movie/${movie.slug}`}>
+                                            <Link to={`/movie/${movie.slug}`}>
                                                 <Card
                                                     heading={movie.name}
                                                     imageUrl={
@@ -140,7 +140,7 @@ export const Home = () => {
                                     .flatMap((page) => page.results)
                                     .map((movie) => (
                                         <CarouselItem key={movie.id}>
-                                            <Link to={`movie/${movie.slug}`}>
+                                            <Link to={`/movie/${movie.slug}`}>
                                                 <Card
                                                     heading={movie.name}
                                                     imageUrl={

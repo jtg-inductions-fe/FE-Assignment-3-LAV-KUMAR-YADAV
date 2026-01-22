@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import { TypographyH1, TypographyH3, TypographyP } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { capitalizeFirstCharacter, cn } from '@/lib';
 import { useMovieQuery } from '@/services';
 
 /**
@@ -26,9 +27,14 @@ import { useMovieQuery } from '@/services';
  */
 export const Movie = () => {
     const { slug } = useParams();
-    const { data: movie, isLoading: isMovieLoading } = useMovieQuery({
-        slug: slug,
-    });
+    const { data: movie, isLoading: isMovieLoading } = useMovieQuery(
+        {
+            slug: slug || '',
+        },
+        {
+            skip: !slug,
+        },
+    );
 
     return (
         <div className="my-4">
@@ -42,12 +48,25 @@ export const Movie = () => {
                             : undefined,
                     }}
                 >
-                    <div className="h-60 sm:h-80 w-80 sm:w-120">
-                        <img
-                            src={movie?.movie_poster || ''}
-                            alt={`${movie?.name} poster`}
-                            className="h-full w-full rounded-2xl object-cover"
-                        />
+                    <div className="flex justify-center">
+                        <div className="h-40 w-80 md:h-50 md:w-100 lg:h-60 lg:w-120">
+                            {movie?.movie_poster && (
+                                <img
+                                    src={movie.movie_poster || ''}
+                                    alt={`${movie?.name} poster`}
+                                    className={cn(
+                                        'h-full w-full rounded-2xl object-cover',
+                                    )}
+                                />
+                            )}
+                            {!movie.movie_poster && (
+                                <div className="bg-muted-foreground h-full w-full rounded-xl p-4">
+                                    <TypographyH3 className="text-center text-primary-foreground">
+                                        Poster Not Available
+                                    </TypographyH3>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div>
                         <TypographyH1
@@ -56,14 +75,12 @@ export const Movie = () => {
                         >
                             {movie?.name}
                         </TypographyH1>
-                        <TypographyP className="text-primary-foreground">
+                        <TypographyP className="text-primary-foreground mt-6">
                             {movie?.duration}
                             <Dot className="inline" />
                             {movie?.genres
-                                .map(
-                                    (genre) =>
-                                        genre.genre[0].toUpperCase() +
-                                        genre.genre.slice(1),
+                                .map((genre) =>
+                                    capitalizeFirstCharacter(genre.genre),
                                 )
                                 .join(', ')}
                             <Dot className="inline" />
@@ -71,7 +88,7 @@ export const Movie = () => {
                                 ? new Date(movie?.release_date).toDateString()
                                 : ''}
                         </TypographyP>
-                        <Button>Book Tickets</Button>
+                        <Button className="mt-6">Book Tickets</Button>
                     </div>
                 </section>
             )}
@@ -84,7 +101,7 @@ export const Movie = () => {
             )}
             {isMovieLoading && (
                 <section>
-                    <TypographyH1 id="about">About The Movie</TypographyH1>
+                    <TypographyH1>About The Movie</TypographyH1>
                     {Array.from({ length: 6 }).map((_, index) => (
                         <Skeleton key={index} className="h-4 w-full mt-2" />
                     ))}

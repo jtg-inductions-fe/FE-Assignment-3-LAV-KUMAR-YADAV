@@ -15,4 +15,9 @@ export type TypographyProps = {
      * id for unique- identification
      */
     id?: string;
+
+    /**
+     *To show the extra info
+     */
+    title?: string;
 };

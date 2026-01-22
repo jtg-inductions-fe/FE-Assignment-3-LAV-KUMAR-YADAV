@@ -151,9 +151,9 @@ export const api = createApi({
         }),
 
         /**
-         * Retrieve a particular movie based on th movie slug
+         * Retrieve a particular movie based on the movie slug
          */
-        movie: builder.query<Movie, { slug: string | undefined }>({
+        movie: builder.query<Movie, { slug: string }>({
             query: ({ slug }) => ({
                 url: `${API_ROUTES.MOVIES.MOVIE}${slug}/`,
             }),

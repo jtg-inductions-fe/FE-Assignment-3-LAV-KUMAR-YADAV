@@ -70,8 +70,9 @@ export const Movies = () => {
     }, [fetchNextPage, hasNextPage]);
 
     return (
-        <div className="flex gap-6 my-5 ">
-            <aside className="hidden md:block min-h-[70vh] w-80">
+        <div className="h-180 overflow-y-auto [&::-webkit-scrollbar]:hidden flex flex-col md:flex-row gap-6 my-5 ">
+            <div className="min-w-80 hidden md:block"></div>
+            <aside className="hidden absolute  h-180 md:block min-h-[70vh] w-80">
                 <Filters />
             </aside>
 
