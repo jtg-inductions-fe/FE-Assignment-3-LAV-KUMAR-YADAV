@@ -13,3 +13,6 @@ export { ModeToggle } from './ModeToggle';
 export { ThemeProvider } from './ThemeProvider';
 
 export { Card } from './Card';
+export { SelectFilters } from './SelectFilters';
+
+export { DatePicker } from './DatePicker';

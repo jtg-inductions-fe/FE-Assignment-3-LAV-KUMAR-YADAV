@@ -25,13 +25,8 @@ export const Footer = () => (
                 </li>
             ))}
         </ul>
-        <TypographyMuted className="text-center p-4">
-            CopyRight 2026 © Josh Entertainment Pvt. Ltd. All rights reserved.
-            The content and Images used on this site are copyright protected
-            vests with the respective owners. The usage of the content and
-            images on this website is intended to promote the works and no
-            endorsement of the artist shall be implied. Unauthorised use is
-            prohibited and punishable by law.
+        <TypographyMuted className="text-center p-4 select-none">
+            Copyright 2026 © Josh Entertainment Pvt. Ltd. All rights reserved.
         </TypographyMuted>
     </footer>
 );
