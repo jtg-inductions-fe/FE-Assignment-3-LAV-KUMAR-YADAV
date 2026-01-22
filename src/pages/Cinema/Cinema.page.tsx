@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { Film, MapPin } from 'lucide-react';
 import { useParams, useSearchParams } from 'react-router';
 
+import SlotsNotAvailableSvg from '@/assets/images/slots-not-available.svg';
 import {
     DatePicker,
     SlotCard,
@@ -114,10 +115,18 @@ export const Cinema = () => {
                     </>
                 )}
                 {!isMovieSlotsLoading && !movieSlots?.length && (
-                    <TypographyH4 className="text-center">
-                        No Slots Available for the selected Date. Please Change
-                        the Date.
-                    </TypographyH4>
+                    <div className="flex flex-col justify-center items-center">
+                        <div>
+                            <img
+                                src={SlotsNotAvailableSvg}
+                                alt="Slots not available fallback"
+                            />
+                        </div>
+                        <TypographyH4 className="text-center">
+                            No Slots Available for the selected Date. Please
+                            Change the Date.
+                        </TypographyH4>
+                    </div>
                 )}
             </div>
         </div>
