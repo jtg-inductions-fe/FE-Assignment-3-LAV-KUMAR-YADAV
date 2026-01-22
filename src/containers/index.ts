@@ -1,1 +1,12 @@
+export { Booking } from './Booking';
+export { Cinema } from './Cinema';
+export { Cinemas } from './Cinemas';
+export { Footer } from './Footer';
 export { Header } from './Header';
+export { Home } from './Home';
+export { Login } from './Login';
+export { Movie } from './Movie';
+export { MovieSlots } from './MovieSlots';
+export { Movies } from './Movies';
+export { NotFound } from './NotFound';
+export { SignUp } from './SignUp';

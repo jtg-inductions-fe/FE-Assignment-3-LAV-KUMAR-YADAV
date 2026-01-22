@@ -6,5 +6,5 @@ export { Login } from './Login';
 export { Movie } from './Movie';
 export { Movies } from './Movies';
 export { MovieSlots } from './MovieSlots';
-export { SignUp } from './SignUp';
 export { NotFound } from './NotFound';
+export { SignUp } from './SignUp';

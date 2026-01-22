@@ -1,1 +1,3 @@
-export const NotFound = () => <div>NotFound</div>;
+import { NotFound as NotFoundContainer } from '@/containers';
+
+export const NotFound = () => <NotFoundContainer />;

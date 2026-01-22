@@ -19,4 +19,4 @@ export const ROUTES = {
     CINEMAS: '/cinemas',
     CINEMA: '/cinema/:id',
     PROFILE: '/profile',
-} as const;
+};

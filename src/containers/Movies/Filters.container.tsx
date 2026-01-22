@@ -20,7 +20,7 @@ import { useCinemasQuery, useGenresQuery, useLanguagesQuery } from '@/services';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 /**
- * Filters Component
+ * Filters Container
  *
  * Provides a user interface for filtering movies based on:
  * - Languages (multi-select)

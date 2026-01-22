@@ -112,4 +112,9 @@ export const API_ROUTES = {
          */
         BOOKING: '/bookings/',
     },
-} as const;
+};
+
+/**
+ * To fetch the slots details on booking page at the interval of 30 seconds
+ */
+export const SLOT_DETAILS_POLLING_INTERVAL_TIME = 300000;
