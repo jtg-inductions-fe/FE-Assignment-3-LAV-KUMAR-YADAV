@@ -154,7 +154,7 @@ export const Login = () => {
                             )}
                         </Button>
                         Don&apos;t have an Account ?{' '}
-                        <Link to={ROUTES.SIGNUP} className="underline">
+                        <Link to={ROUTES.PUBLIC.SIGNUP} className="underline">
                             Click Here.
                         </Link>
                     </form>

@@ -134,23 +134,38 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
     };
 
     return (
-        <div className=" flex-col gap-6 bg-accent p-10 rounded-xl  h-full flex ">
-            <SelectFilters
-                heading="Languages"
-                options={
-                    totalLanguages?.map((language) => language.language) || []
-                }
-                onValueChange={handleLanguageChange}
-                alreadySelected={searchParams.get('languages')?.split(',')}
-            />
-            <SelectFilters
-                heading="Genres"
-                options={totalGenres?.map((gen) => gen.genre) || []}
-                onValueChange={handleGenreChange}
-                alreadySelected={searchParams.get('genres')?.split(',')}
-            />
+        <form
+            className=" flex-col gap-6 bg-accent p-10 rounded-xl  h-full flex "
+            aria-labelledby="filters-heading"
+            onSubmit={(e) => e.preventDefault()}
+        >
+            <h2 id="filters-heading" className="sr-only">
+                Movie filters
+            </h2>
+            <fieldset>
+                <legend className="sr-only">Language filters</legend>
+                <SelectFilters
+                    heading="Languages"
+                    options={
+                        totalLanguages?.map((language) => language.language) ||
+                        []
+                    }
+                    onValueChange={handleLanguageChange}
+                    alreadySelected={searchParams.get('languages')?.split(',')}
+                />
+            </fieldset>
+            <fieldset>
+                <legend className="sr-only">Genre filters</legend>
+                <SelectFilters
+                    heading="Genres"
+                    options={totalGenres?.map((genre) => genre.genre) || []}
+                    onValueChange={handleGenreChange}
+                    alreadySelected={searchParams.get('genres')?.split(',')}
+                />
+            </fieldset>
 
-            <div>
+            <fieldset>
+                <legend className="sr-only">Cinema filters</legend>
                 <Label className="mb-3">Cinema</Label>
                 <Select
                     onValueChange={handleCinemaSelection}
@@ -174,8 +189,11 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-            </div>
-            <DatePicker label="Date" onDateChange={handleDateChange} />
+            </fieldset>
+            <fieldset>
+                <legend className="sr-only">Date filter</legend>
+                <DatePicker label="Date" onDateChange={handleDateChange} />
+            </fieldset>
             {inModal ? (
                 <DialogClose disabled={applyBtnDisabled} asChild>
                     <Button
@@ -190,6 +208,6 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
                     Apply Filters
                 </Button>
             )}
-        </div>
+        </form>
     );
 };

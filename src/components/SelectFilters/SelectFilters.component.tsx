@@ -49,22 +49,16 @@ export const SelectFilters = ({
     const handleOptionsClick = (option: string) => {
         const optionIndex = selected.indexOf(option);
         if (optionIndex > -1) {
-            setSelected((prev) => {
-                const modified = [
-                    ...prev.slice(0, optionIndex),
-                    ...prev.slice(optionIndex + 1),
-                ];
-                onValueChange?.(modified);
-
-                return modified;
-            });
+            const modified = [
+                ...selected.slice(0, optionIndex),
+                ...selected.slice(optionIndex + 1),
+            ];
+            setSelected(modified);
+            onValueChange?.(modified);
         } else {
-            setSelected((prev) => {
-                const modified = [...prev, option];
-                onValueChange?.(modified);
-
-                return modified;
-            });
+            const modified = [...selected, option];
+            setSelected(modified);
+            onValueChange?.(modified);
         }
     };
 
@@ -82,19 +76,22 @@ export const SelectFilters = ({
                 </div>
                 <CollapsibleContent>
                     <div className="flex flex-wrap gap-2 mt-4">
-                        {options.map((option, index) => (
-                            <Badge
-                                key={index}
-                                className="cursor-pointer rounded-lg p-2"
-                                variant={
-                                    selected.includes(option)
-                                        ? 'default'
-                                        : 'outline'
-                                }
+                        {options.map((option) => (
+                            <button
+                                key={option}
                                 onClick={() => handleOptionsClick(option)}
                             >
-                                {capitalizeFirstCharacter(option)}
-                            </Badge>
+                                <Badge
+                                    className="cursor-pointer rounded-lg p-2"
+                                    variant={
+                                        selected.includes(option)
+                                            ? 'default'
+                                            : 'outline'
+                                    }
+                                >
+                                    {capitalizeFirstCharacter(option)}
+                                </Badge>
+                            </button>
                         ))}
                     </div>
                 </CollapsibleContent>

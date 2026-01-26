@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/constants';
-import { login, setUser } from '@/features';
+import { login } from '@/features';
 import { signupSchema } from '@/schemas';
 import { useRegisterUserMutation } from '@/services';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -72,9 +72,8 @@ export const SignUp = () => {
     ) => {
         try {
             const response = await registerUser(values).unwrap();
-            const { access, ...user } = response;
+            const { access } = response;
             dispatch(login(access));
-            dispatch(setUser(user));
             await navigate('/');
         } catch {
             toast.error('SignUp Failed. Please Try Again.', {
@@ -246,7 +245,7 @@ export const SignUp = () => {
                             )}
                         </Button>
                         Already have an Account ?{' '}
-                        <Link to={ROUTES.LOGIN} className="underline">
+                        <Link to={ROUTES.PUBLIC.LOGIN} className="underline">
                             Click Here.
                         </Link>
                     </form>

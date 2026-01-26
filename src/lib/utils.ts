@@ -24,8 +24,8 @@ export const capitalizeFirstCharacter = (text: string) => {
 };
 
 /**
- * Return a utility function which convert a number into Alphabets
- * @example A -> 1, AA -> 27, AC-> 29, AAC
+ * A utility function which converts a number into Alphabets
+ * @example 1 -> A, 27 -> AA, 29 -> AC, 731 -> AAC
  */
 export const numberToAlphabet = (num: number): string => {
     if (!Number.isInteger(num) || num <= 0) return '';

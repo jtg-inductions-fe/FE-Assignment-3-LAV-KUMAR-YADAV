@@ -27,14 +27,20 @@ import { useAppSelector } from '@/store';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 /**
- * A container where all the tickets will be shown
- * There is a Cancel option
- * When Click On Cancel, An Dialogue will open If You are sure to Cancel
+ * Tickets container
+ *
+ * Displays all active and cancelled tickets for the authenticated user.
+ *
+ * @example
+ * ```tsx
+ * <Tickets />
+ * ```
  */
+
 export const Tickets = () => {
     const token = useAppSelector((state) => state.authReducer.token);
     const { data, fetchNextPage, hasNextPage } = useTicketsInfiniteQuery(
-        { token },
+        undefined,
         { skip: !token },
     );
     const [cancelTicket, { isLoading: isCancelling }] =
@@ -47,7 +53,7 @@ export const Tickets = () => {
     const handleCancelTicket = async () => {
         if (!ticketToBeCancel || !token || isCancelling) return;
         try {
-            await cancelTicket({ id: ticketToBeCancel.id, token }).unwrap();
+            await cancelTicket(ticketToBeCancel.id).unwrap();
             toast.success('Ticket Cancelled Successfully', {
                 style: {
                     color: 'green',
@@ -107,6 +113,7 @@ export const Tickets = () => {
                                 showTime={format(ticket.show_time, TIME_FORMAT)}
                                 status={ticket.status}
                                 ticketId={ticket.id}
+                                aria-label={`Ticket for ${ticket.movie}`}
                             />
                         </div>
                     ))}
@@ -133,15 +140,15 @@ export const Tickets = () => {
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle className="text-destructive">
-                                Cancel Ticket
+                                Confirm Ticket Cancellation
                             </DialogTitle>
                             <DialogDescription>
-                                This action can not be reverse. Are You Sure
-                                Want to Cancel ??
+                                This action cannot be undone. Once cancelled,
+                                this ticket cannot be recovered.
                             </DialogDescription>
                         </DialogHeader>
                         <TypographyP className="text-destructive">
-                            Ticket To Be Cancel
+                            Ticket being cancelled
                         </TypographyP>
                         <Ticket
                             cinemaLocation={ticketToBeCancel.cinema_location}
@@ -163,14 +170,15 @@ export const Tickets = () => {
                             status={ticketToBeCancel.status}
                             ticketId={ticketToBeCancel.id}
                             className="w-auto"
+                            aria-label={`Ticket for ${ticketToBeCancel.movie} to be cancelled`}
                         />
 
                         <TypographyP>
-                            Are You Sure Want to Cancel the Ticket ?
+                            Are you sure you want to cancel this ticket?
                         </TypographyP>
-                        <DialogClose>
+                        <DialogClose asChild>
                             <Button variant="outline" className="w-full">
-                                No, Abort The Mission
+                                Keep Ticket
                             </Button>
                         </DialogClose>
                         <Button
@@ -185,7 +193,7 @@ export const Tickets = () => {
                                     Cancelling...
                                 </>
                             ) : (
-                                "Yes, I'm Sure"
+                                'Yes, cancel ticket'
                             )}
                         </Button>
                     </DialogContent>

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Edit, User } from 'lucide-react';
 
 import UserNotFound from '@/assets/images/user-not-found.svg';
-import { TypographyH1, TypographyP } from '@/components';
+import { ErrorBoundary, TypographyH1, TypographyP } from '@/components';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -22,6 +22,7 @@ import { useAppSelector } from '@/store';
 import { PastBookings } from './PastBookings.container';
 import { ProfileUpdateForm } from './ProfileUpdateForm.container';
 import { Tickets } from './Tickets.container';
+import { ErrorFallback } from '../ErrorFallback';
 
 /**
  * - This is the container which contains
@@ -33,8 +34,10 @@ import { Tickets } from './Tickets.container';
  */
 export const Profile = () => {
     const token = useAppSelector((state) => state.authReducer.token);
-    const { data: user, isLoading: isUserDetailsLoading } =
-        useUserDetailsQuery(token);
+    const { data: user, isLoading: isUserDetailsLoading } = useUserDetailsQuery(
+        undefined,
+        { skip: !token },
+    );
     const [isProfileUpdateModalOpen, setIsProfileUpdateModalOpen] =
         useState<boolean>(false);
 
@@ -120,10 +123,14 @@ export const Profile = () => {
                             </TabsTrigger>
                         </TabsList>
                         <TabsContent value="tickets">
-                            <Tickets />
+                            <ErrorBoundary fallback={<ErrorFallback />}>
+                                <Tickets />
+                            </ErrorBoundary>
                         </TabsContent>
                         <TabsContent value="past-bookings">
-                            <PastBookings />
+                            <ErrorBoundary fallback={<ErrorFallback />}>
+                                <PastBookings />
+                            </ErrorBoundary>
                         </TabsContent>
                     </Tabs>
                 </div>

@@ -17,12 +17,12 @@ export const Seat = ({
             {
                 'text-accent  cursor-not-allowed': disabled,
                 'text-primary-foreground bg-green-600': selected,
-                'hover:bg-green-100 ': !selected && !disabled,
+                'hover:bg-green-50 ': !selected && !disabled,
             },
         )}
         {...props}
         disabled={disabled}
     >
-        {seatNumber}
+        {seatNumber.toString().padStart(2, '0')}
     </button>
 );

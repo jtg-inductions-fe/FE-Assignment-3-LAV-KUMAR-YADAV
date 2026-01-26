@@ -1,12 +1,9 @@
-import { useEffect } from 'react';
-
 import { Trash2, User } from 'lucide-react';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
 
-import { ModeToggle, TypographyH2 } from '@/components';
+import { ModeToggle, TypographyH1 } from '@/components';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -20,78 +17,69 @@ import {
     NavigationMenuList,
 } from '@/components/ui/navigation-menu';
 import { ROUTES } from '@/constants';
-import { login, logout, setUser } from '@/features';
-import {
-    useLogoutMutation,
-    useRefreshTokenMutation,
-    useUserDetailsQuery,
-} from '@/services';
+import { logout } from '@/features';
+import { useLogoutMutation, useUserDetailsQuery } from '@/services';
 import { useAppDispatch, useAppSelector } from '@/store';
 
 /**
- * Application header component.
+ * Header component
  *
- * Displays the main navigation bar, authentication controls,
- * theme toggle, and user profile menu.
+ * Renders the application’s primary navigation bar.
  *
- * Handles:
- * - Token refresh on application load
- * - User data synchronization
- * - Login / logout UI state
+ * @example
+ * ```tsx
+ * <Header />
+ * ```
  */
+
 export const Header = () => {
-    const { token, user, isAuthenticated } = useAppSelector(
-        (state) => state.authReducer,
-    );
+    const { token } = useAppSelector((state) => state.authReducer);
     const dispatch = useAppDispatch();
-    const [refreshTokenMutate] = useRefreshTokenMutation();
     const [logoutUser] = useLogoutMutation();
-    const { data: userData } = useUserDetailsQuery(token, {
-        skip: !!user || !token,
+    const { data: user } = useUserDetailsQuery(undefined, {
+        skip: !token,
     });
-
-    const refreshToken = async () => {
-        const response = await refreshTokenMutate().unwrap();
-        const { access } = response;
-        dispatch(login(access));
-    };
-
-    useEffect(() => {
-        if (!token) {
-            void refreshToken();
-        }
-    }, [token]);
-
-    useEffect(() => {
-        if (userData && !user) {
-            dispatch(setUser(userData));
-        }
-    }, [userData]);
 
     const handleLogout = async () => {
         try {
             await logoutUser();
             dispatch(logout());
-        } catch (error) {
-            toast.error(JSON.stringify(error));
+            toast.success('You are Logged out Successfully', {
+                style: {
+                    color: 'green',
+                },
+            });
+        } catch {
+            toast.error('Failed to logout. Please try again', {
+                style: {
+                    color: 'red',
+                },
+            });
         }
     };
 
     return (
-        <div>
-            <NavigationMenu className="max-w-full flex justify-between p-2">
-                <Link to="/" className="flex justify-center items-center">
-                    <div className="size-10 mr-2">
+        <header className="bg-card">
+            <NavigationMenu
+                className="max-w-full flex justify-between p-2"
+                aria-label="Primary navigation"
+            >
+                <TypographyH1>
+                    <Link
+                        to="/"
+                        className="flex items-center"
+                        aria-label="BookMyShow home"
+                    >
                         <img
                             src="/logo.svg"
-                            alt="bookmyshow logo"
-                            className="size-full  object-contain"
+                            alt=""
+                            className="size-10 mr-2 object-contain"
                         />
-                    </div>
-                    <TypographyH2 className="hidden sm:block text-primary">
-                        BookMyShow
-                    </TypographyH2>
-                </Link>
+                        <span className="hidden sm:block text-primary">
+                            BookMyShow
+                        </span>
+                    </Link>
+                </TypographyH1>
                 <NavigationMenuList aria-label="navigation links">
                     <li>
                         <ModeToggle />
@@ -116,11 +104,11 @@ export const Header = () => {
                             </Link>
                         </li>
                     </NavigationMenuLink>
-                    {!isAuthenticated && (
+                    {!token && (
                         <NavigationMenuLink asChild>
                             <li>
                                 <Link
-                                    to={ROUTES.LOGIN}
+                                    to={ROUTES.PUBLIC.LOGIN}
                                     className="text-lg font-semibold"
                                 >
                                     Login
@@ -128,16 +116,21 @@ export const Header = () => {
                             </li>
                         </NavigationMenuLink>
                     )}
-                    {isAuthenticated && (
+                    {token && (
                         <DropdownMenu>
                             <li>
                                 <DropdownMenuTrigger className="cursor-pointer">
-                                    <Avatar>
+                                    <Avatar aria-label="Open user menu">
                                         <AvatarImage
                                             src={user?.profile_pic || ''}
+                                            alt={
+                                                user?.name
+                                                    ? `Profile picture of ${user.name}`
+                                                    : 'User profile picture'
+                                            }
                                         />
                                         <AvatarFallback>
-                                            <User />
+                                            <User aria-hidden />
                                         </AvatarFallback>
                                     </Avatar>
                                 </DropdownMenuTrigger>
@@ -148,10 +141,10 @@ export const Header = () => {
                             >
                                 <DropdownMenuItem asChild>
                                     <Link
-                                        to={ROUTES.PROFILE}
+                                        to={ROUTES.PROTECTED.PROFILE}
                                         className="flex gap-2 cursor-pointer"
                                     >
-                                        <User /> Profile
+                                        <User aria-hidden /> Profile
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator aria-hidden />
@@ -159,12 +152,12 @@ export const Header = () => {
                                     className="flex gap-2 text-destructive cursor-pointer"
                                     asChild
                                 >
-                                    <Button
-                                        variant="ghost"
+                                    <button
                                         onClick={() => void handleLogout()}
+                                        className="w-full"
                                     >
-                                        <Trash2 /> Logout
-                                    </Button>
+                                        <Trash2 aria-hidden /> Logout
+                                    </button>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -172,6 +165,6 @@ export const Header = () => {
                 </NavigationMenuList>
             </NavigationMenu>
             <div className="h-0.5 w-full bg-accent"></div>
-        </div>
+        </header>
     );
 };

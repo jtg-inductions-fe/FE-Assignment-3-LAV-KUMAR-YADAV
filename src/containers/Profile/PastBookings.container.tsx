@@ -8,14 +8,21 @@ import { usePastBookingsInfiniteQuery } from '@/services';
 import { useAppSelector } from '@/store';
 
 /**
- * This is the container which shows
- * - All Past Tickets
- * - All Past Tickets marked Expired
+ * PastBookings container
+ *
+ * Displays a list of the user’s past movie bookings.
+ *
+ *
+ * @example
+ * ```tsx
+ * <PastBookings />
+ * ```
  */
+
 export const PastBookings = () => {
     const token = useAppSelector((state) => state.authReducer.token);
     const { data, fetchNextPage, hasNextPage } = usePastBookingsInfiniteQuery(
-        { token },
+        undefined,
         { skip: !token },
     );
 
@@ -25,7 +32,12 @@ export const PastBookings = () => {
                 {data?.pages
                     .flatMap((page) => page.results)
                     .map((ticket) => (
-                        <div key={ticket.id} className="relative">
+                        <div
+                            key={ticket.id}
+                            className="relative"
+                            role="group"
+                            aria-label="expired ticket"
+                        >
                             <TypographyH1 className="absolute  top-20 left-10 rotate-45">
                                 EXPIRED
                             </TypographyH1>
