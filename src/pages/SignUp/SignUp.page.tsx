@@ -1,7 +1,11 @@
-import { SignUp as SignUpContainer } from '@/containers';
+import { ErrorBoundary } from '@/components';
+import { ErrorFallback, SignUp as SignUpContainer } from '@/containers';
 
 /**
  * Allows new users to register by submitting their details,
- * handles form validation, performs registration API request, stores authentication data, and redirects on success.
  */
-export const SignUp = () => <SignUpContainer />;
+export const SignUp = () => (
+    <ErrorBoundary fallback={<ErrorFallback />}>
+        <SignUpContainer />
+    </ErrorBoundary>
+);

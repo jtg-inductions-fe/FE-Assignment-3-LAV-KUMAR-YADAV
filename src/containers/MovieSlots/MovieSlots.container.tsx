@@ -17,8 +17,16 @@ import { capitalizeFirstCharacter } from '@/lib';
 import { useMovieQuery, useSlotsByMovieSlugQuery } from '@/services';
 
 /**
- * A container which shows all the cinemas with their slots of a particular movie with movie details
+ * MovieSlots container
+ *
+ * Displays all available cinema slots for a specific movie.
+ *
+ * @example
+ * ```tsx
+ * <MovieSlots />
+ * ```
  */
+
 export const MovieSlots = () => {
     const { slug } = useParams();
     const { data: movie, isLoading: isMovieLoading } = useMovieQuery(

@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 
 import { API_ROUTES, DATE_FORMAT_ISO } from '@/constants';
+import type { RootState } from '@/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import type {
@@ -55,7 +56,27 @@ export const api = createApi({
     /**
      * Base query configuration for all API requests.
      */
-    baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_BASE_URL}` }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: `${import.meta.env.VITE_BASE_URL}`,
+        prepareHeaders(headers, { getState, endpoint }) {
+            const state = getState() as RootState;
+            const token = state.authReducer.token;
+            const authEndpoints = [
+                'userDetails',
+                'updateUserDetails',
+                'booking',
+                'cancelTicket',
+                'tickets',
+                'pastBookings',
+            ];
+
+            if (authEndpoints.includes(endpoint) && token) {
+                headers.set('authorization', `Bearer ${token}`);
+            }
+
+            return headers;
+        },
+    }),
 
     /**
      * Tags which can be used for invalidating the data
@@ -121,13 +142,10 @@ export const api = createApi({
          *
          * @param token - Current access token.
          */
-        userDetails: builder.query<Omit<SignupResponse, 'access'>, string>({
-            query: (token) => ({
+        userDetails: builder.query<Omit<SignupResponse, 'access'>, void>({
+            query: () => ({
                 url: API_ROUTES.USERS.PROFILE,
                 credentials: 'include',
-                headers: {
-                    authorization: `Bearer ${token}`,
-                },
             }),
             providesTags: ['userDetails'],
         }),
@@ -137,15 +155,12 @@ export const api = createApi({
          */
         updateUserDetails: builder.mutation<
             Omit<SignupRequest, 'password'>,
-            { token: string; data: UpdateProfileRequest }
+            UpdateProfileRequest
         >({
-            query: ({ token, data }) => ({
+            query: (data) => ({
                 url: API_ROUTES.USERS.UPDATE_PROFILE,
                 body: getFormData(data),
                 credentials: 'include',
-                headers: {
-                    authorization: `Bearer ${token}`,
-                },
                 method: 'PATCH',
             }),
             invalidatesTags: ['userDetails'],
@@ -335,18 +350,12 @@ export const api = createApi({
         /**
          * To book the seats
          */
-        booking: builder.mutation<
-            { message: string },
-            { data: SeatBookingRequest; token: string }
-        >({
-            query: ({ data, token }) => ({
+        booking: builder.mutation<{ message: string }, SeatBookingRequest>({
+            query: (data) => ({
                 url: API_ROUTES.BOOKINGS.BOOKING,
                 body: data,
                 method: 'POST',
                 credentials: 'include',
-                headers: {
-                    authorization: `Bearer ${token}`,
-                },
             }),
             invalidatesTags: ['slotDetails', 'tickets'],
         }),
@@ -354,17 +363,11 @@ export const api = createApi({
         /**
          * To Cancel a ticket
          */
-        cancelTicket: builder.mutation<
-            { message: string },
-            { token: string; id: number | string }
-        >({
-            query: ({ token, id }) => ({
+        cancelTicket: builder.mutation<{ message: string }, number | string>({
+            query: (id) => ({
                 url: `${API_ROUTES.BOOKINGS.CANCEL}${id}/`,
                 method: 'PATCH',
                 credentials: 'include',
-                headers: {
-                    authorization: `Bearer ${token}`,
-                },
             }),
             invalidatesTags: ['slotDetails', 'tickets'],
         }),
@@ -374,18 +377,15 @@ export const api = createApi({
          */
         tickets: builder.infiniteQuery<
             PaginatedQueryResponse<Ticket>,
-            { token: string },
+            void,
             number
         >({
-            query: ({ pageParam, queryArg }) => ({
+            query: ({ pageParam }) => ({
                 url: API_ROUTES.BOOKINGS.TICKETS,
                 params: {
                     page: pageParam,
                 },
                 credentials: 'include',
-                headers: {
-                    authorization: `Bearer ${queryArg.token}`,
-                },
             }),
             infiniteQueryOptions: {
                 initialPageParam: 1,
@@ -403,18 +403,15 @@ export const api = createApi({
          */
         pastBookings: builder.infiniteQuery<
             PaginatedQueryResponse<Ticket>,
-            { token: string },
+            void,
             number
         >({
-            query: ({ pageParam, queryArg }) => ({
+            query: ({ pageParam }) => ({
                 url: API_ROUTES.BOOKINGS.HISTORY,
                 params: {
                     page: pageParam,
                 },
                 credentials: 'include',
-                headers: {
-                    authorization: `Bearer ${queryArg.token}`,
-                },
             }),
             infiniteQueryOptions: {
                 initialPageParam: 1,

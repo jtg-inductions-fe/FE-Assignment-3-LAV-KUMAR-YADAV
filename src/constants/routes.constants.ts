@@ -8,15 +8,19 @@
  *
  */
 export const ROUTES = {
+    PUBLIC: {
+        LOGIN: '/login',
+        SIGNUP: '/signup',
+    },
+    PROTECTED: {
+        PROFILE: '/profile',
+        BOOKING: '/booking/:slotId',
+    },
     HOME: '/',
-    LOGIN: '/login',
-    SIGNUP: '/signup',
     NOT_FOUND: '*',
     MOVIES: '/movies',
     MOVIE: '/movie/:slug',
     MOVIE_SLOTS: '/movie/:slug/slots',
-    BOOKING: '/booking/:slotId',
     CINEMAS: '/cinemas',
     CINEMA: '/cinema/:id',
-    PROFILE: '/profile',
 };
