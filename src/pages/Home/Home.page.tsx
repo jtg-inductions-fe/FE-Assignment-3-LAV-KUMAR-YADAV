@@ -1,3 +1,5 @@
+import { Link } from 'react-router';
+
 import MovieNotAvailableSVG from '@/assets/images/movie-not-available.svg';
 import { Card, TypographyH3, TypographyH4 } from '@/components';
 import { Button } from '@/components/ui/button';
@@ -66,17 +68,22 @@ export const Home = () => {
                                     .flatMap((page) => page.results)
                                     .map((movie) => (
                                         <CarouselItem key={movie.id}>
-                                            <Card
-                                                heading={movie.name}
-                                                imageUrl={
-                                                    movie.movie_poster || ''
-                                                }
-                                                subheading={movie.genres
-                                                    .map((genre) => genre.genre)
-                                                    .join('/')
-                                                    .slice(0, 60)}
-                                                className="h-60 sm:h-80 w-75 sm:w-100"
-                                            />
+                                            <Link to={`/movie/${movie.slug}`}>
+                                                <Card
+                                                    heading={movie.name}
+                                                    imageUrl={
+                                                        movie.movie_poster || ''
+                                                    }
+                                                    subheading={movie.genres
+                                                        .map(
+                                                            (genre) =>
+                                                                genre.genre,
+                                                        )
+                                                        .join('/')
+                                                        .slice(0, 60)}
+                                                    className="h-60 sm:h-80 w-75 sm:w-100"
+                                                />
+                                            </Link>
                                         </CarouselItem>
                                     ))}
                             {isUpcomingMovieLoading &&
@@ -133,17 +140,22 @@ export const Home = () => {
                                     .flatMap((page) => page.results)
                                     .map((movie) => (
                                         <CarouselItem key={movie.id}>
-                                            <Card
-                                                heading={movie.name}
-                                                imageUrl={
-                                                    movie.movie_poster || ''
-                                                }
-                                                subheading={movie.genres
-                                                    .map((genre) => genre.genre)
-                                                    .join('/')
-                                                    .slice(0, 60)}
-                                                className="h-60 sm:h-80 w-75 sm:w-100"
-                                            />
+                                            <Link to={`/movie/${movie.slug}`}>
+                                                <Card
+                                                    heading={movie.name}
+                                                    imageUrl={
+                                                        movie.movie_poster || ''
+                                                    }
+                                                    subheading={movie.genres
+                                                        .map(
+                                                            (genre) =>
+                                                                genre.genre,
+                                                        )
+                                                        .join('/')
+                                                        .slice(0, 60)}
+                                                    className="h-60 sm:h-80 w-75 sm:w-100"
+                                                />
+                                            </Link>
                                         </CarouselItem>
                                     ))}
                             {isLatestMovieLoading &&

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { Filter } from 'lucide-react';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 
 import MovieNotAvailableSVG from '@/assets/images/movie-not-available.svg';
 import { Card, TypographyH4 } from '@/components';
@@ -70,8 +70,9 @@ export const Movies = () => {
     }, [fetchNextPage, hasNextPage]);
 
     return (
-        <div className="flex gap-6 my-5 ">
-            <aside className="hidden md:block min-h-[70vh] w-80">
+        <div className="h-180 overflow-y-auto [&::-webkit-scrollbar]:hidden flex flex-col md:flex-row gap-6 my-5 ">
+            <div className="min-w-80 hidden md:block"></div>
+            <aside className="hidden absolute  h-180 md:block min-h-[70vh] w-80">
                 <Filters />
             </aside>
 
@@ -103,15 +104,19 @@ export const Movies = () => {
                         movies?.pages
                             .flatMap((page) => page.results)
                             .map((movie) => (
-                                <Card
-                                    heading={movie.name}
-                                    imageUrl={movie.movie_poster || ''}
-                                    subheading={movie.genres
-                                        .map((genre) => genre.genre)
-                                        .join('/')}
+                                <Link
                                     key={movie.id}
-                                    className="h-60 sm:h-80 w-75 sm:w-100"
-                                />
+                                    to={`/movie/${movie.slug}`}
+                                >
+                                    <Card
+                                        heading={movie.name}
+                                        imageUrl={movie.movie_poster || ''}
+                                        subheading={movie.genres
+                                            .map((genre) => genre.genre)
+                                            .join('/')}
+                                        className="h-60 sm:h-80 w-75 sm:w-100"
+                                    />
+                                </Link>
                             ))}
 
                     {isLoadingMovies &&

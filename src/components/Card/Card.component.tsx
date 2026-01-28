@@ -14,7 +14,10 @@ export const Card = ({
     className,
     ...props
 }: CardProps) => (
-    <ShadCNCard {...props} className={cn('max-w-100 select-none', className)}>
+    <ShadCNCard
+        {...props}
+        className={cn('max-w-100 select-none hover:bg-muted', className)}
+    >
         <CardContent>
             <div>
                 <img
@@ -23,8 +26,18 @@ export const Card = ({
                     className={cn('rounded-xl')}
                 />
             </div>
-            <TypographyH3>{heading}</TypographyH3>
-            <TypographyMuted>{subheading}</TypographyMuted>
+            <TypographyH3
+                className="whitespace-nowrap text-ellipsis overflow-hidden"
+                title={heading}
+            >
+                {heading}
+            </TypographyH3>
+            <TypographyMuted
+                title={subheading}
+                className="whitespace-nowrap text-ellipsis overflow-hidden"
+            >
+                {subheading}
+            </TypographyMuted>
         </CardContent>
     </ShadCNCard>
 );

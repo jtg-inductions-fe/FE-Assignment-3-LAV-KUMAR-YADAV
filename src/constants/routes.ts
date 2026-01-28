@@ -13,6 +13,7 @@ export const ROUTES = {
     SIGNUP: '/signup',
     NOT_FOUND: '*',
     MOVIES: '/movies',
+    MOVIE: '/movie/:slug',
     CINEMAS: '/cinemas',
     PROFILE: '/profile',
 } as const;
