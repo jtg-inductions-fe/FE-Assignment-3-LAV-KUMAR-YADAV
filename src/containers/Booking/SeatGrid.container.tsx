@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -24,22 +25,27 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { SLOT_DETAILS_POLLING_INTERVAL_TIME } from '@/constants';
 import { numberToAlphabet } from '@/lib';
 import { useBookingMutation, useSlotDetailsQuery } from '@/services';
-import { useAppSelector } from '@/store';
-import { DialogClose } from '@radix-ui/react-dialog';
 
 import type { SeatType } from './Booking.types';
 
 /**
- * To Show the Seat Arrangements Seats Can be
- *  - select and Book
+ * SeatGrid component
+ *
+ * Renders an interactive cinema seat layout for a given show slot,
+ * allowing users to select available seats and complete a booking.
+ *
+ * @example
+ * ```tsx
+ * <SeatGrid />
+ * ```
  */
+
 export const SeatGrid = () => {
     const { slotId } = useParams();
 
     const [selectedSeats, setSelectedSeats] = useState<SeatType[]>([]);
     const [isSuccessModalOpen, setIsSuccessModalOpen] =
         useState<boolean>(false);
-    const token = useAppSelector((state) => state.authReducer.token);
     const {
         data: slotDetails,
         isLoading: isSlotDetailsLoading,
@@ -98,8 +104,8 @@ export const SeatGrid = () => {
         }
         try {
             await bookTickets({
-                token,
-                data: { slot_id: Number(slotId), seats: selectedSeats },
+                slot_id: Number(slotId),
+                seats: selectedSeats,
             }).unwrap();
             setIsSuccessModalOpen(true);
         } catch {
@@ -114,7 +120,7 @@ export const SeatGrid = () => {
             {!isSlotDetailsLoading && slotDetails && (
                 <div>
                     <div className="flex justify-center">
-                        <div className="w-full max-w-200 overflow-auto max-h-[60vh] rounded-md shadow-inner">
+                        <div className="w-full bg-card max-w-200 overflow-auto max-h-[60vh] rounded-md shadow-inner">
                             <div className="inline-block min-w-max mx-auto p-3">
                                 {Array.from({
                                     length: slotDetails.cinema.rows,

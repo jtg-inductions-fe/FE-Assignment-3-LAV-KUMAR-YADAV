@@ -9,10 +9,19 @@ import { capitalizeFirstCharacter } from '@/lib';
 import { useSlotDetailsQuery } from '@/services';
 
 import { SeatGrid } from './SeatGrid.container';
+
 /**
- * - Container which shows the Slot Details and Seat Grid
- * - With Book Tickets option
+ * Booking container
+ *
+ * Displays booking details for a selected movie slot and renders
+ * the seat selection interface.
+ *
+ * @example
+ * ```tsx
+ * <Booking />
+ * ```
  */
+
 export const Booking = () => {
     const { slotId } = useParams();
 

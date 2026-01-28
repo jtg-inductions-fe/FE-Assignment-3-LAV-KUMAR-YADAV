@@ -1,7 +1,12 @@
-import { Profile as ProfileContainer } from '@/containers';
+import { ErrorBoundary } from '@/components';
+import { ErrorFallback, Profile as ProfileContainer } from '@/containers';
 
 /**
  *
- * @returns A page where profile details, user tickets, and past bookings are shown.
+ *  A page where profile details, user tickets, and past bookings are shown.
  */
-export const Profile = () => <ProfileContainer />;
+export const Profile = () => (
+    <ErrorBoundary fallback={<ErrorFallback />}>
+        <ProfileContainer />
+    </ErrorBoundary>
+);
