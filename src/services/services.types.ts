@@ -7,7 +7,7 @@ export type SignupRequest = {
     /**
      * Optional phone number of the user.
      */
-    phone_number?: string | undefined;
+    phone_number?: string;
 
     /**
      * Email address of the user.
@@ -17,7 +17,7 @@ export type SignupRequest = {
     /**
      * Optional profile picture file uploaded by the user.
      */
-    profile_pic?: File | undefined;
+    profile_pic?: File;
 
     /**
      * Password chosen by the user.
@@ -278,4 +278,88 @@ type Seat = {
 export type SeatBookingRequest = {
     slot_id: number;
     seats: Seat[];
+};
+
+export type UpdateProfileRequest = {
+    /**
+     * Full name of the user.
+     */
+    name?: string;
+
+    /**
+     * Optional phone number of the user.
+     */
+    phone_number?: string;
+
+    /**
+     * Email address of the user.
+     */
+    email?: string;
+
+    /**
+     * Optional profile picture file uploaded by the user.
+     */
+    profile_pic?: File;
+};
+
+export type Ticket = {
+    /**
+     * id of the slot in which ticket is booked
+     */
+    slot: number;
+
+    /**
+     * row_number of the Seat
+     */
+    row_number: number;
+
+    /**
+     * Seat Number in a particular row
+     */
+    seat_number: number;
+
+    /**
+     * id of the user
+     */
+    user: number;
+
+    /**
+     * status of ticket
+     */
+    status: 'BOOKED' | 'PENDING' | 'CANCELLED';
+
+    /**
+     * id of ticket
+     */
+    id: number;
+
+    /**
+     * Time on which ticket is booked
+     */
+    created_at: string;
+
+    /**
+     * language of the movie
+     */
+    language: string;
+
+    /**
+     * name of the movie
+     */
+    movie: string;
+
+    /**
+     * Name of the cinema in which ticket is booked
+     */
+    cinema_name: string;
+
+    /**
+     * location of the cinema
+     */
+    cinema_location: string;
+
+    /**
+     * Will be the date and time of the Show
+     */
+    show_time: string;
 };

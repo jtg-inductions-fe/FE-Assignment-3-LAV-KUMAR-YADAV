@@ -16,3 +16,4 @@ export { SelectFilters } from './SelectFilters';
 export { DatePicker } from './DatePicker';
 export { SlotCard } from './SlotCard';
 export { Seat } from './Seat';
+export { Ticket } from './Ticket';
