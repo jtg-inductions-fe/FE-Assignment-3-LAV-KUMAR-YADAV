@@ -11,6 +11,7 @@ import {
     TypographyP,
 } from '@/components';
 import { Skeleton } from '@/components/ui/skeleton';
+import { capitalizeFirstCharacter } from '@/lib';
 import { useCinemaQuery, useSlotsByCinemaQuery } from '@/services';
 
 /**
@@ -36,7 +37,7 @@ export const Cinema = () => {
                     <TypographyH1>{cinema.name}</TypographyH1>
                     <TypographyP>
                         <MapPin className="inline mr-2" />
-                        {cinema.location.location}
+                        {capitalizeFirstCharacter(cinema.location.location)}
                     </TypographyP>
                 </>
             )}

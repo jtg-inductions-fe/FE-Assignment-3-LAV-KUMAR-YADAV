@@ -248,7 +248,7 @@ export type SlotByCinemaResponse = {
 } & Movie;
 
 /**
- * this is the response structure of slots by movie slug api which is movie details along with slots field
+ * this is the response structure of slots by movie slug api which is cinema details along with slots field
  */
 export type SlotsByMovieSlugResponse = {
     slots: Slot[];

@@ -12,8 +12,8 @@ import {
 } from '@/components';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useMovieQuery } from '@/services';
-import { useSlotsByMovieSlugQuery } from '@/services/services';
+import { capitalizeFirstCharacter } from '@/lib';
+import { useMovieQuery, useSlotsByMovieSlugQuery } from '@/services';
 
 /**
  * A page which shows all the cinemas with their slots of a particular movie with movie details
@@ -63,8 +63,7 @@ export const MovieSlots = () => {
                                     variant="secondary"
                                     className="text-sm "
                                 >
-                                    {genre.genre[0].toUpperCase() +
-                                        genre.genre.slice(1)}
+                                    {capitalizeFirstCharacter(genre.genre)}
                                 </Badge>
                             ))}
                         </div>
@@ -86,7 +85,11 @@ export const MovieSlots = () => {
                 </div>
             )}
             <DatePicker
-                selected={new Date(searchParams.get('date') || new Date())}
+                selected={
+                    searchParams.get('date')
+                        ? new Date(searchParams.get('date')!)
+                        : new Date()
+                }
                 onDateChange={(date) => {
                     searchParams.delete('date');
                     if (date) {
@@ -122,11 +125,11 @@ export const MovieSlots = () => {
                                                 'hh:mm a',
                                             )}
                                             language={
-                                                movie?.languages.filter(
+                                                movie?.languages.find(
                                                     (language) =>
                                                         language.id ===
                                                         slot.language,
-                                                )[0]?.language || ''
+                                                )?.language || ''
                                             }
                                         />
                                     ))}
