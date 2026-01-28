@@ -10,7 +10,7 @@ export type SlotCardProps = {
     price: string;
 
     /**
-     * To show the language is in which slot
+     * The language of the movie for this slot
      */
     language: string;
 };

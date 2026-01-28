@@ -245,7 +245,7 @@ export const api = createApi({
         /**
          * Retrieve A Single Cinema based on id
          */
-        cinema: builder.query<Cinema, { id: string | undefined }>({
+        cinema: builder.query<Cinema, { id: string }>({
             query: ({ id }) => ({
                 url: `${API_ROUTES.CINEMAS.CINEMA}${id}/`,
             }),

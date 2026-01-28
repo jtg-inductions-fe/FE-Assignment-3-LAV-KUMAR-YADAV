@@ -30,10 +30,10 @@ export const Cinema = () => {
         <div className="my-6 flex flex-col gap-4">
             {!isCinemaLoading && cinema && (
                 <>
-                    <TypographyH1>{cinema?.name}</TypographyH1>
+                    <TypographyH1>{cinema.name}</TypographyH1>
                     <TypographyP>
                         <MapPin className="inline mr-2" />
-                        {cinema?.location.location}
+                        {cinema.location.location}
                     </TypographyP>
                 </>
             )}
@@ -44,7 +44,9 @@ export const Cinema = () => {
                 </>
             )}
             <DatePicker
-                selected={new Date(searchParams.get('date') || new Date())}
+                selected={
+                    new Date(searchParams.get('date') || '' || new Date())
+                }
                 onDateChange={(date) => {
                     searchParams.delete('date');
                     if (date) {
@@ -76,11 +78,11 @@ export const Cinema = () => {
                                                     'hh:mm a',
                                                 )}
                                                 language={
-                                                    movie.languages.filter(
+                                                    movie.languages.find(
                                                         (language) =>
                                                             language.id ===
                                                             slot.language,
-                                                    )[0]?.language || ''
+                                                    )?.language || ''
                                                 }
                                             />
                                         ))}
@@ -100,9 +102,9 @@ export const Cinema = () => {
                                     <Skeleton className="w-100 h-8" />
                                     <div className="flex flex-wrap gap-6">
                                         {Array.from({ length: 6 }).map(
-                                            (_, index) => (
+                                            (__, slotIndex) => (
                                                 <Skeleton
-                                                    key={index}
+                                                    key={slotIndex}
                                                     className="w-40 h-18"
                                                 />
                                             ),

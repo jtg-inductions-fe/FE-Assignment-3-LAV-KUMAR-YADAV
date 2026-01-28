@@ -12,7 +12,7 @@ export type DatePickerProps = ComponentProps<'div'> & {
     onDateChange?: (date: Date | undefined) => void;
 
     /**
-     * An optional props to show already selected date
+     * An optional prop to show already selected date
      */
     selected?: Date;
 };
