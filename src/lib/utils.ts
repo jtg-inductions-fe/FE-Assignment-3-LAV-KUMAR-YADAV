@@ -22,3 +22,22 @@ export const capitalizeFirstCharacter = (text: string) => {
 
     return trimmedText[0].toUpperCase() + trimmedText.slice(1);
 };
+
+/**
+ * Return a utility function which convert a number into Alphabets
+ * @example A -> 1, AA -> 27, AC-> 29, AAC
+ */
+export const numberToAlphabet = (num: number): string => {
+    if (!Number.isInteger(num) || num <= 0) return '';
+    let result = '';
+
+    while (num > 0) {
+        num--;
+
+        const remainder = num % 26;
+        result = String.fromCharCode(65 + remainder) + result;
+        num = Math.floor(num / 26);
+    }
+
+    return result;
+};

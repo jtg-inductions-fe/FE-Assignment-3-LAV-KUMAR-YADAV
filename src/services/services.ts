@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 
-import { API_ROUTES, DATE_FORMAT } from '@/constants';
+import { API_ROUTES, DATE_FORMAT_ISO } from '@/constants';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import type {
@@ -12,9 +12,11 @@ import type {
     LoginResponse,
     Movie,
     PaginatedQueryResponse,
+    SeatBookingRequest,
     SignupRequest,
     SignupResponse,
     SlotByCinemaResponse,
+    SlotDetails,
     SlotsByMovieSlugResponse,
 } from './services.types';
 
@@ -52,6 +54,11 @@ export const api = createApi({
      * Base query configuration for all API requests.
      */
     baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_BASE_URL}` }),
+
+    /**
+     * Tags which can be used for invalidating the data
+     */
+    tagTypes: ['slotDetails'],
 
     /**
      * API endpoint definitions.
@@ -264,7 +271,7 @@ export const api = createApi({
             query: ({ cinema_id, date }) => ({
                 url: `/cinemas/${cinema_id}/movie-slots/`,
                 params: {
-                    date: date ? date : format(new Date(), DATE_FORMAT),
+                    date: date ? date : format(new Date(), DATE_FORMAT_ISO),
                 },
             }),
         }),
@@ -285,12 +292,41 @@ export const api = createApi({
         }),
 
         /**
+         * Retrieves all the details of a particular slot by it's id
+         */
+        slotDetails: builder.query<SlotDetails, { id: string }>({
+            query: ({ id }) => ({
+                url: `${API_ROUTES.BOOKINGS.SLOT_DETAILS}${id}/`,
+            }),
+            providesTags: ['slotDetails'],
+        }),
+
+        /**
          * Retrieves all locations
          */
         locations: builder.query<Location[], void>({
             query: () => ({
                 url: API_ROUTES.CINEMAS.LOCATION,
             }),
+        }),
+
+        /**
+         * To book the seats
+         */
+        booking: builder.mutation<
+            { message: string },
+            { data: SeatBookingRequest; token: string }
+        >({
+            query: ({ data, token }) => ({
+                url: API_ROUTES.BOOKINGS.BOOKING,
+                body: data,
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+            }),
+            invalidatesTags: ['slotDetails'],
         }),
     }),
 });
@@ -312,4 +348,6 @@ export const {
     useLocationsQuery,
     useSlotsByCinemaQuery,
     useSlotsByMovieSlugQuery,
+    useSlotDetailsQuery,
+    useBookingMutation,
 } = api;

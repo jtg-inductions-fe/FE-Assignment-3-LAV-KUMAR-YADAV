@@ -95,4 +95,26 @@ export const API_ROUTES = {
          */
         LOCATION: '/cinemas/locations/',
     },
-} as const;
+
+    /**
+     * routes related to bookings
+     */
+    BOOKINGS: {
+        /**
+         *  Endpoint for retrieving slot details. Append the slot id and a trailing slash.
+         *
+         * @example `${API_ROUTES.BOOKINGS.SLOT_DETAILS}${id}/`
+         */
+        SLOT_DETAILS: '/bookings/slot-details/',
+
+        /**
+         * Endpoint for booking seats
+         */
+        BOOKING: '/bookings/',
+    },
+};
+
+/**
+ * To fetch the slots details on booking page at the interval of 30 seconds
+ */
+export const SLOT_DETAILS_POLLING_INTERVAL_TIME = 30000;

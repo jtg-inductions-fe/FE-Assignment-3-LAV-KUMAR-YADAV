@@ -16,6 +16,8 @@ export {
     useCinemaQuery,
     useSlotsByCinemaQuery,
     useSlotsByMovieSlugQuery,
+    useSlotDetailsQuery,
+    useBookingMutation,
 } from './services';
 
 export type {

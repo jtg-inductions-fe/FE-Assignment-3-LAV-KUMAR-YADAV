@@ -253,3 +253,29 @@ export type SlotByCinemaResponse = {
 export type SlotsByMovieSlugResponse = {
     slots: Slot[];
 } & Cinema;
+
+/**
+ * All the details related to a Slot
+ */
+export type SlotDetails = {
+    slot: Slot;
+    cinema: Cinema;
+    movie: Movie;
+    booked_seats: {
+        slot: number;
+        row_number: number;
+        seat_number: number;
+        status: 'BOOKED' | 'PENDING';
+        id: number;
+    }[];
+};
+
+type Seat = {
+    row_number: number;
+    seat_number: number;
+};
+
+export type SeatBookingRequest = {
+    slot_id: number;
+    seats: Seat[];
+};

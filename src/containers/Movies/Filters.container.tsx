@@ -15,12 +15,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { DATE_FORMAT } from '@/constants';
+import { DATE_FORMAT_ISO } from '@/constants';
 import { useCinemasQuery, useGenresQuery, useLanguagesQuery } from '@/services';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 /**
- * Filters Component
+ * Filters Container
  *
  * Provides a user interface for filtering movies based on:
  * - Languages (multi-select)
@@ -109,7 +109,7 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
         if (date) {
             setFiltersToApply((prev) => ({
                 ...prev,
-                slot_date: format(date, DATE_FORMAT),
+                slot_date: format(date, DATE_FORMAT_ISO),
             }));
         } else {
             setFiltersToApply((prev) => ({

@@ -15,7 +15,8 @@ export const ROUTES = {
     MOVIES: '/movies',
     MOVIE: '/movie/:slug',
     MOVIE_SLOTS: '/movie/:slug/slots',
+    BOOKING: '/booking/:slotId',
     CINEMAS: '/cinemas',
     CINEMA: '/cinema/:id',
     PROFILE: '/profile',
-} as const;
+};
