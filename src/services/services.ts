@@ -294,7 +294,7 @@ export const api = createApi({
         /**
          * Retrieves all the details of a particular slot by it's id
          */
-        slotDetails: builder.query<SlotDetails, { id?: string }>({
+        slotDetails: builder.query<SlotDetails, { id: string }>({
             query: ({ id }) => ({
                 url: `${API_ROUTES.BOOKINGS.SLOT_DETAILS}${id}/`,
             }),

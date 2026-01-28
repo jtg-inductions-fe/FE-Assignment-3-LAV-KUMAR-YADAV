@@ -13,6 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TIME_FORMAT } from '@/constants';
+import { capitalizeFirstCharacter } from '@/lib';
 import { useMovieQuery, useSlotsByMovieSlugQuery } from '@/services';
 
 /**
@@ -63,8 +64,7 @@ export const MovieSlots = () => {
                                     variant="secondary"
                                     className="text-sm "
                                 >
-                                    {genre.genre[0].toUpperCase() +
-                                        genre.genre.slice(1)}
+                                    {capitalizeFirstCharacter(genre.genre)}
                                 </Badge>
                             ))}
                         </div>
@@ -112,8 +112,9 @@ export const MovieSlots = () => {
                                     </TypographyH4>
                                     <TypographyP>
                                         <MapPin className="inline " />
-                                        {cinema.location.location[0].toUpperCase() +
-                                            cinema.location.location.slice(1)}
+                                        {capitalizeFirstCharacter(
+                                            cinema.location.location,
+                                        )}
                                     </TypographyP>
                                 </div>
                                 <div className="flex flex-wrap gap-6">

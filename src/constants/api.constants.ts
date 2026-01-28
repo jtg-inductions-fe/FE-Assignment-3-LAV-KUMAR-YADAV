@@ -101,7 +101,7 @@ export const API_ROUTES = {
      */
     BOOKINGS: {
         /**
-         * Endpoint for a particular slot to which gives all the details related to the that slot just give id at end
+         *  Endpoint for retrieving slot details. Append the slot id and a trailing slash.
          *
          * @example `${API_ROUTES.BOOKINGS.SLOT_DETAILS}${id}/`
          */
@@ -117,4 +117,4 @@ export const API_ROUTES = {
 /**
  * To fetch the slots details on booking page at the interval of 30 seconds
  */
-export const SLOT_DETAILS_POLLING_INTERVAL_TIME = 300000;
+export const SLOT_DETAILS_POLLING_INTERVAL_TIME = 30000;

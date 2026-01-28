@@ -44,7 +44,7 @@ export const Home = () => {
         <div className="gap-8 flex flex-col items-center">
             <section
                 className={cn(
-                    'my-4 w-[75%] sm:w-[80%] md:w-[85%] lg:w-[90%] xl:[95%] 2xl:w-[98%]',
+                    'my-4 w-[75%] sm:w-[80%] md:w-[85%] lg:w-[90%] xl:w-[95%] 2xl:w-[98%]',
                 )}
                 aria-labelledby="upcoming-movies"
             >

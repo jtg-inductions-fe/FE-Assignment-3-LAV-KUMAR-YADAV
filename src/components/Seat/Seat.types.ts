@@ -10,9 +10,4 @@ export type SeatProps = ComponentProps<'button'> & {
      * Changing and showing the seat state as selected
      */
     selected?: boolean;
-
-    /**
-     * Showing that seat is already booked, can not be selected
-     */
-    disabled?: boolean;
 };

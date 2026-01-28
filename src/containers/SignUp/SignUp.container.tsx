@@ -76,9 +76,8 @@ export const SignUp = () => {
             dispatch(login(access));
             dispatch(setUser(user));
             await navigate('/');
-        } catch (e) {
-            const error = e as Record<'data', Record<string, string>>;
-            toast.error(Object.values(error.data).flat().join('\n'), {
+        } catch {
+            toast.error('SignUp Failed. Please Try Again.', {
                 style: {
                     color: 'var(--primary)',
                 },

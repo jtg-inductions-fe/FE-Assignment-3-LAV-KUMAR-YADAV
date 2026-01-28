@@ -1,4 +1,4 @@
-import { format, formatDate } from 'date-fns';
+import { format } from 'date-fns';
 import { MapPin } from 'lucide-react';
 import { useParams } from 'react-router';
 
@@ -17,9 +17,14 @@ export const Booking = () => {
     const { slotId } = useParams();
 
     const { data: slotDetails, isLoading: isSlotDetailsLoading } =
-        useSlotDetailsQuery({
-            id: slotId,
-        });
+        useSlotDetailsQuery(
+            {
+                id: slotId!,
+            },
+            {
+                skip: !slotId,
+            },
+        );
 
     const movieLanguage = slotDetails?.movie.languages.find(
         (language) => language.id === slotDetails.slot.language,
@@ -46,7 +51,7 @@ export const Booking = () => {
                                 slotDetails.cinema.name}
                         &nbsp; | &nbsp;
                         {slotDetails?.slot.date_time &&
-                            formatDate(
+                            format(
                                 slotDetails.slot.date_time,
                                 DATE_FORMAT_CUSTOM,
                             )}

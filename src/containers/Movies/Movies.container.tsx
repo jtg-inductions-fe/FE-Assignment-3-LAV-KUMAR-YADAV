@@ -126,7 +126,7 @@ export const Movies = () => {
                                 className="h-60 sm:h-80 w-75 sm:w-100"
                             />
                         ))}
-                    {!isLoadingMovies && !movies?.pages[0].results.length && (
+                    {!isLoadingMovies && !movies?.pages[0]?.results.length && (
                         <>
                             <div className="h-50 w-80">
                                 <img

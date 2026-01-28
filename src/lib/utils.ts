@@ -28,6 +28,7 @@ export const capitalizeFirstCharacter = (text: string) => {
  * @example A -> 1, AA -> 27, AC-> 29, AAC
  */
 export const numberToAlphabet = (num: number): string => {
+    if (!Number.isInteger(num) || num <= 0) return '';
     let result = '';
 
     while (num > 0) {

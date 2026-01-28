@@ -80,7 +80,7 @@ export const Movie = () => {
                                 .map((genre) =>
                                     capitalizeFirstCharacter(genre.genre),
                                 )
-                                .join(', ')}
+                                ?.join(', ')}
                             <Dot className="inline" />
                             {movie?.release_date
                                 ? new Date(movie?.release_date).toDateString()

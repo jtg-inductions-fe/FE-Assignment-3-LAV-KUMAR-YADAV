@@ -15,6 +15,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
+import { DATE_FORMAT_ISO } from '@/constants';
 import { capitalizeFirstCharacter } from '@/lib';
 import { useCinemasQuery, useLocationsQuery } from '@/services';
 
@@ -36,6 +37,7 @@ export const Cinemas = () => {
                 Location
             </Label>
             <Select
+                value={searchParams.get('location') ?? '-1'}
                 onValueChange={(value) => {
                     searchParams.delete('location');
                     if (value !== '-1') {
@@ -70,7 +72,7 @@ export const Cinemas = () => {
                     !!cinemas?.length &&
                     cinemas?.map((cinema) => (
                         <Link
-                            to={`/cinema/${cinema.id}?date=${format(new Date(), 'yyyy-MM-dd')}`}
+                            to={`/cinema/${cinema.id}?date=${format(new Date(), DATE_FORMAT_ISO)}`}
                             key={cinema.id}
                         >
                             <div className="border rounded-xl p-6 w-70 h-40 flex flex-col  gap-5">

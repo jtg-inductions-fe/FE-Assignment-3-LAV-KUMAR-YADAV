@@ -3,7 +3,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import type z from 'zod';
+import type { z } from 'zod';
 
 import loginImage from '@/assets/images/login.webp';
 import { TypographyH2, TypographyLead } from '@/components';
@@ -65,11 +65,10 @@ export const Login = () => {
             const { access } = response;
             dispatch(login(access));
             await navigate('/');
-        } catch (e) {
-            const error = e as Record<'data', Record<string, string>>;
-            toast.error(Object.values(error.data).flat().join('\n'), {
+        } catch {
+            toast.error('Failed to Login. Please try again.', {
                 style: {
-                    color: 'var(--primary)',
+                    color: 'red',
                 },
             });
         }
@@ -81,7 +80,7 @@ export const Login = () => {
                 Unlock the Big Screen Experience
             </TypographyH2>
             <TypographyLead className="text-center">
-                Sign in to book your favorite movies in seconds.Your next movie
+                Sign in to book your favorite movies in seconds. Your next movie
                 night starts here.
             </TypographyLead>
 

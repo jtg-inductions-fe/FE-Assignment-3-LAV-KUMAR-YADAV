@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { BadgeCheck } from 'lucide-react';
+import { BadgeCheck, Loader2 } from 'lucide-react';
 import { useParams } from 'react-router';
 import { toast } from 'sonner';
 
@@ -46,15 +46,16 @@ export const SeatGrid = () => {
         error,
     } = useSlotDetailsQuery(
         {
-            id: slotId,
+            id: slotId!,
         },
         {
+            skip: !slotId,
             pollingInterval: SLOT_DETAILS_POLLING_INTERVAL_TIME,
             skipPollingIfUnfocused: true,
         },
     );
 
-    const [bookTickets] = useBookingMutation();
+    const [bookTickets, { isLoading: isBooking }] = useBookingMutation();
 
     const handleToggleSelect = (seat: SeatType) => {
         const isBooked = slotDetails?.booked_seats.some(
@@ -90,6 +91,11 @@ export const SeatGrid = () => {
     const totalAmount = selectedCount * Number(slotDetails?.slot.price);
 
     const handleBooking = async () => {
+        if (!slotId) {
+            toast.error('Invalid slot. Please refresh and try again.');
+
+            return;
+        }
         try {
             await bookTickets({
                 token,
@@ -97,7 +103,7 @@ export const SeatGrid = () => {
             }).unwrap();
             setIsSuccessModalOpen(true);
         } catch {
-            toast.error('Ticket booking failed. Pease try again');
+            toast.error('Ticket booking failed. Please try again');
         } finally {
             setSelectedSeats([]);
         }
@@ -243,7 +249,11 @@ export const SeatGrid = () => {
                             </TypographyH3>
                         </div>
 
-                        <Button onClick={() => void handleBooking()}>
+                        <Button
+                            onClick={() => void handleBooking()}
+                            disabled={isBooking}
+                        >
+                            {isBooking && <Loader2 className="animate-spin" />}
                             Pay &#8377;{totalAmount}
                         </Button>
                     </div>
