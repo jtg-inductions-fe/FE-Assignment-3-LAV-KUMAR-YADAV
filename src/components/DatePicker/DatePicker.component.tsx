@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ChevronDownIcon } from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronDownIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -29,12 +29,13 @@ import type { DatePickerProps } from './DatePicker.types';
 export const DatePicker = ({
     label,
     onDateChange,
+    selected,
     id,
     className,
     ...props
 }: DatePickerProps) => {
     const [open, setOpen] = React.useState(false);
-    const [date, setDate] = React.useState<Date | undefined>(undefined);
+    const [date, setDate] = React.useState<Date | undefined>(selected);
     const generatedId = React.useId();
     const inputId = id ?? generatedId;
 
@@ -58,6 +59,7 @@ export const DatePicker = ({
                         id={inputId}
                         className="w-48 justify-between font-normal"
                     >
+                        <CalendarIcon />
                         {date ? date.toLocaleDateString() : 'Select date'}
                         <ChevronDownIcon />
                     </Button>

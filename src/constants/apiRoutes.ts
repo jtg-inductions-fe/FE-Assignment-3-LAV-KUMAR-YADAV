@@ -84,6 +84,13 @@ export const API_ROUTES = {
         LIST: '/cinemas/',
 
         /**
+         * Endpoint for a specific cinema. Append the id and a trailing slash.
+         *
+         * `@example` `${API_ROUTES.CINEMAS.CINEMA}${id}/`
+         */
+        CINEMA: '/cinemas/',
+
+        /**
          * Locations of cinemas
          */
         LOCATION: '/cinemas/locations/',
