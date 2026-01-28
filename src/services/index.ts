@@ -15,6 +15,7 @@ export {
     useLocationsQuery,
     useCinemaQuery,
     useSlotsByCinemaQuery,
+    useSlotsByMovieSlugQuery,
 } from './services';
 
 export type {

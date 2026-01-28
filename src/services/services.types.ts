@@ -240,6 +240,16 @@ export type Slot = {
     language: number;
 };
 
+/**
+ * this is the response structure of slots by cinema api which is movie details along with slots field
+ */
 export type SlotByCinemaResponse = {
     slots: Slot[];
 } & Movie;
+
+/**
+ * this is the response structure of slots by movie slug api which is cinema details along with slots field
+ */
+export type SlotsByMovieSlugResponse = {
+    slots: Slot[];
+} & Cinema;

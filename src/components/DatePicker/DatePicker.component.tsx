@@ -39,10 +39,10 @@ export const DatePicker = ({
     const generatedId = React.useId();
     const inputId = id ?? generatedId;
 
-    const handleDateSelect = (date: Date | undefined) => {
-        setDate(date);
+    const handleDateSelect = (selectedDate: Date | undefined) => {
+        setDate(selectedDate);
         setOpen(false);
-        onDateChange?.(date);
+        onDateChange?.(selectedDate);
     };
 
     return (

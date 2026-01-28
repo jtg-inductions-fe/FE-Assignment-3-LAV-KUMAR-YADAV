@@ -1,5 +1,6 @@
+import { format } from 'date-fns';
 import { Dot } from 'lucide-react';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 
 import { TypographyH1, TypographyH3, TypographyP } from '@/components';
 import { Button } from '@/components/ui/button';
@@ -88,7 +89,13 @@ export const Movie = () => {
                                 ? new Date(movie?.release_date).toDateString()
                                 : ''}
                         </TypographyP>
-                        <Button className="mt-6">Book Tickets</Button>
+                        <Button className="mt-6" asChild>
+                            <Link
+                                to={`/movie/${slug}/slots?date=${format(new Date(), 'yyyy-MM-dd')}`}
+                            >
+                                Book Tickets
+                            </Link>
+                        </Button>
                     </div>
                 </section>
             )}
