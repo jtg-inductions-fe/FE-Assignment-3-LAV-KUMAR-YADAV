@@ -1,0 +1,35 @@
+<svg
+  width="400"
+  height="300"
+  viewBox="0 0 400 300"
+  xmlns="http://www.w3.org/2000/svg"
+>
+
+  <!-- User Icon -->
+  <circle cx="200" cy="105" r="38" fill="#FBCFE8" />
+  <path
+    d="M120 200c0-44 36-70 80-70s80 26 80 70"
+    fill="#FBCFE8"
+  />
+
+  <!-- Cross Icon -->
+  <circle cx="260" cy="70" r="18" fill="#FCE7F3" />
+  <line
+    x1="252"
+    y1="62"
+    x2="268"
+    y2="78"
+    stroke="#EC4899"
+    stroke-width="3"
+    stroke-linecap="round"
+  />
+  <line
+    x1="268"
+    y1="62"
+    x2="252"
+    y2="78"
+    stroke="#EC4899"
+    stroke-width="3"
+    stroke-linecap="round"
+  />
+</svg>

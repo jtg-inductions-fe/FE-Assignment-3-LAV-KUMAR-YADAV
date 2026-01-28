@@ -2,7 +2,8 @@ import { useState } from 'react';
 
 import { Edit, User } from 'lucide-react';
 
-import { TypographyP } from '@/components';
+import UserNotFound from '@/assets/images/user-not-found.svg';
+import { TypographyH1, TypographyP } from '@/components';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -13,6 +14,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUserDetailsQuery } from '@/services';
 import { useAppSelector } from '@/store';
@@ -31,7 +33,8 @@ import { Tickets } from './Tickets.container';
  */
 export const Profile = () => {
     const token = useAppSelector((state) => state.authReducer.token);
-    const { data: user } = useUserDetailsQuery(token);
+    const { data: user, isLoading: isUserDetailsLoading } =
+        useUserDetailsQuery(token);
     const [isProfileUpdateModalOpen, setIsProfileUpdateModalOpen] =
         useState<boolean>(false);
 
@@ -41,25 +44,42 @@ export const Profile = () => {
                 <div className="my-6">
                     {/* Profile Details */}
                     <Card className="p-5 max-w-200 mx-auto">
-                        <Avatar className="size-40 mx-auto">
-                            <AvatarImage src={user.profile_pic || ''} />
-                            <AvatarFallback>
-                                <User className="size-30" />
-                            </AvatarFallback>
-                        </Avatar>
-                        <TypographyP>Name : {user.name}</TypographyP>
-                        <TypographyP>Email : {user.email}</TypographyP>
-                        <TypographyP>
-                            Phone Number :{' '}
-                            {user.phone_number || 'Not Available'}
-                        </TypographyP>
-                        <Button
-                            className="self-center"
-                            onClick={() => setIsProfileUpdateModalOpen(true)}
-                        >
-                            <Edit />
-                            Update Your Profile
-                        </Button>
+                        {!isUserDetailsLoading && user && (
+                            <>
+                                <Avatar className="size-40 mx-auto">
+                                    <AvatarImage src={user.profile_pic || ''} />
+                                    <AvatarFallback>
+                                        <User className="size-30" />
+                                    </AvatarFallback>
+                                </Avatar>
+                                <TypographyP>Name : {user.name}</TypographyP>
+                                <TypographyP>Email : {user.email}</TypographyP>
+                                <TypographyP>
+                                    Phone Number :{' '}
+                                    {user.phone_number || 'Not Available'}
+                                </TypographyP>
+                                <Button
+                                    className="self-center"
+                                    onClick={() =>
+                                        setIsProfileUpdateModalOpen(true)
+                                    }
+                                >
+                                    <Edit />
+                                    Update Your Profile
+                                </Button>
+                            </>
+                        )}
+                        {isUserDetailsLoading && (
+                            <Skeleton className="h-105 w-full" />
+                        )}
+                        {!isUserDetailsLoading && !user && (
+                            <div className="flex flex-col items-center">
+                                <img src={UserNotFound} alt="" aria-hidden />
+                                <TypographyH1 className="">
+                                    User Not Found
+                                </TypographyH1>
+                            </div>
+                        )}
                     </Card>
 
                     {/* Profile Modal */}
@@ -75,7 +95,11 @@ export const Profile = () => {
                                     and click on Update button.
                                 </DialogDescription>
                             </DialogHeader>
-                            <ProfileUpdateForm />
+                            <ProfileUpdateForm
+                                onSuccess={() =>
+                                    setIsProfileUpdateModalOpen(false)
+                                }
+                            />
                         </DialogContent>
                     </Dialog>
 

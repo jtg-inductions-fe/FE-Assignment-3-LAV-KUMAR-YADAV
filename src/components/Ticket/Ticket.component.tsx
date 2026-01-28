@@ -31,7 +31,7 @@ export const Ticket = ({
     >
         <Card
             className={cn(
-                `w-85  bg-[rgba(255,255,255,0.6)] py-10  px-2`,
+                `w-85 bg-[rgba(255,255,255,0.6)] py-10  px-2`,
                 className,
             )}
             {...props}
@@ -66,6 +66,7 @@ export const Ticket = ({
                             'text-destructive': status === 'CANCELLED',
                             'text-yellow-700': status === 'PENDING',
                         })}
+                        aria-label={`Ticket status: ${status}`}
                     >
                         {status}
                     </TypographyP>

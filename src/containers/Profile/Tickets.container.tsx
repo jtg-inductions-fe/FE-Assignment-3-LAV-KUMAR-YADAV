@@ -1,14 +1,13 @@
 import { useState } from 'react';
 
 import { format } from 'date-fns';
-import { EllipsisVertical, X } from 'lucide-react';
+import { EllipsisVertical, Loader2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Ticket, TypographyP } from '@/components';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -25,6 +24,7 @@ import { numberToAlphabet } from '@/lib';
 import { useCancelTicketMutation, useTicketsInfiniteQuery } from '@/services';
 import type { Ticket as TicketType } from '@/services/services.types';
 import { useAppSelector } from '@/store';
+import { DialogClose } from '@radix-ui/react-dialog';
 
 /**
  * A container where all the tickets will be shown
@@ -37,14 +37,15 @@ export const Tickets = () => {
         { token },
         { skip: !token },
     );
-    const [cancelTicket] = useCancelTicketMutation();
+    const [cancelTicket, { isLoading: isCancelling }] =
+        useCancelTicketMutation();
 
     const [ticketToBeCancel, setTicketToBeCancel] = useState<TicketType | null>(
         null,
     );
 
     const handleCancelTicket = async () => {
-        if (!ticketToBeCancel || !token) return;
+        if (!ticketToBeCancel || !token || isCancelling) return;
         try {
             await cancelTicket({ id: ticketToBeCancel.id, token }).unwrap();
             toast.success('Ticket Cancelled Successfully', {
@@ -58,6 +59,8 @@ export const Tickets = () => {
                     color: 'red',
                 },
             });
+        } finally {
+            setTicketToBeCancel(null);
         }
     };
 
@@ -170,15 +173,21 @@ export const Tickets = () => {
                                 No, Abort The Mission
                             </Button>
                         </DialogClose>
-                        <DialogClose>
-                            <Button
-                                variant="destructive"
-                                className="w-full"
-                                onClick={() => void handleCancelTicket()}
-                            >
-                                Yes, I&#39;m Sure
-                            </Button>
-                        </DialogClose>
+                        <Button
+                            variant="destructive"
+                            className="w-full"
+                            onClick={() => void handleCancelTicket()}
+                            disabled={isCancelling}
+                        >
+                            {isCancelling ? (
+                                <>
+                                    <Loader2 className="animate-spin" />{' '}
+                                    Cancelling...
+                                </>
+                            ) : (
+                                "Yes, I'm Sure"
+                            )}
+                        </Button>
                     </DialogContent>
                 </Dialog>
             )}

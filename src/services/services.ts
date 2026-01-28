@@ -137,7 +137,7 @@ export const api = createApi({
          */
         updateUserDetails: builder.mutation<
             Omit<SignupRequest, 'password'>,
-            { token?: string; data: UpdateProfileRequest }
+            { token: string; data: UpdateProfileRequest }
         >({
             query: ({ token, data }) => ({
                 url: API_ROUTES.USERS.UPDATE_PROFILE,

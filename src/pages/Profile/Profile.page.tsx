@@ -2,6 +2,6 @@ import { Profile as ProfileContainer } from '@/containers';
 
 /**
  *
- * @returns A page Where Profile Details and User TIckets and Past Bookings will be shown
+ * @returns A page where profile details, user tickets, and past bookings are shown.
  */
 export const Profile = () => <ProfileContainer />;

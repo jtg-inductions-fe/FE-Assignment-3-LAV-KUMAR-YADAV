@@ -4,7 +4,6 @@ import { toast } from 'sonner';
 import type z from 'zod';
 
 import { Button } from '@/components/ui/button';
-import { DialogClose } from '@/components/ui/dialog';
 import {
     Form,
     FormControl,
@@ -19,13 +18,15 @@ import { useUpdateUserDetailsMutation, useUserDetailsQuery } from '@/services';
 import { useAppSelector } from '@/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import type { ProfileUpdateFormProps } from './Profile.types';
+
 /**
  * - This is Form which will be render in a Dialogue
  * - From here User Can update his Details
  * - User's Previous Details are already filled in the form
  * - He just needs to change his details and click on update form
  */
-export const ProfileUpdateForm = () => {
+export const ProfileUpdateForm = ({ onSuccess }: ProfileUpdateFormProps) => {
     const token = useAppSelector((state) => state.authReducer.token);
     const { data: user } = useUserDetailsQuery(token);
     const [updateProfile, { isLoading }] = useUpdateUserDetailsMutation();
@@ -45,6 +46,7 @@ export const ProfileUpdateForm = () => {
     ) => {
         try {
             await updateProfile({ token, data: values }).unwrap();
+            onSuccess?.();
             toast.success('Profile Details Updated Successfully', {
                 style: {
                     color: 'green',
@@ -143,25 +145,23 @@ export const ProfileUpdateForm = () => {
                             </FormItem>
                         )}
                     />
-                    <DialogClose asChild>
-                        <Button
-                            type="submit"
-                            disabled={isLoading}
-                            className="w-full"
-                        >
-                            {isLoading ? (
-                                <>
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                    Updating Profile
-                                </>
-                            ) : (
-                                <>
-                                    <Edit className="h-4 w-4" />
-                                    Update Profile
-                                </>
-                            )}
-                        </Button>
-                    </DialogClose>
+                    <Button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full"
+                    >
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                Updating Profile
+                            </>
+                        ) : (
+                            <>
+                                <Edit className="h-4 w-4" />
+                                Update Profile
+                            </>
+                        )}
+                    </Button>
                 </form>
             </Form>
         </>
