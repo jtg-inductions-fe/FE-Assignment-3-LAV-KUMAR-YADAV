@@ -16,7 +16,7 @@ import { socialMediaConfig } from './footer.config';
 
 export const Footer = () => (
     <footer className="bg-card">
-        <div className="h-0.5 w-full bg-accent mb-5"></div>
+        <div className="bg-accent mb-5 h-0.5 w-full"></div>
         <ul
             className="flex items-center justify-center gap-4 p-2"
             aria-label="social media links"
@@ -34,7 +34,7 @@ export const Footer = () => (
                 </li>
             ))}
         </ul>
-        <TypographyMuted className="text-center p-4 select-none">
+        <TypographyMuted className="p-4 text-center select-none">
             Copyright 2026 © Josh Entertainment Pvt. Ltd. All rights reserved.
         </TypographyMuted>
     </footer>

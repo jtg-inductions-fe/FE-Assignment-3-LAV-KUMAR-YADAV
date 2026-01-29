@@ -13,7 +13,7 @@ import { UpcomingMovies } from './UpcomingMovies.container';
  */
 
 export const Home = () => (
-    <div className="flex flex-col gap-8 items-center">
+    <div className="flex flex-col items-center gap-8">
         <UpcomingMovies />
         <LatestMovies />
     </div>

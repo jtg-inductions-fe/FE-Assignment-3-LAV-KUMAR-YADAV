@@ -13,11 +13,11 @@ export const Seat = ({
 }: SeatProps) => (
     <button
         className={cn(
-            'select-none border rounded-sm text-xs flex justify-center items-center  min-h-4 min-w-6 cursor-pointer text-green-600 ',
+            'flex min-h-4 min-w-6 cursor-pointer items-center justify-center rounded-sm border text-xs text-green-600 select-none',
             {
-                'text-accent  cursor-not-allowed': disabled,
+                'text-accent cursor-not-allowed': disabled,
                 'text-primary-foreground bg-green-600': selected,
-                'hover:bg-green-50 ': !selected && !disabled,
+                'hover:bg-green-50': !selected && !disabled,
             },
         )}
         {...props}

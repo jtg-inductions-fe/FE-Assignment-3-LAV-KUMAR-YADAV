@@ -1,7 +1,7 @@
 import { Link, useSearchParams } from 'react-router';
 
-import MovieNotAvailableSVG from '@/assets/images/movie-not-available.svg';
-import { Card, TypographyH4 } from '@/components';
+import MovieNotAvailableSVG from '@/assets/illustrations/movie-not-available.svg';
+import { Card, StatusFallback } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMoviesInfiniteQuery } from '@/services';
@@ -24,6 +24,7 @@ export const MoviesCards = () => {
         fetchNextPage,
         hasNextPage,
         isLoading: isLoadingMovies,
+        isFetchingNextPage: isFetchingMoviesNextPage,
     } = useMoviesInfiniteQuery({
         languages: searchParams.get('languages') ?? undefined,
         genres: searchParams.get('genres') ?? undefined,
@@ -33,7 +34,7 @@ export const MoviesCards = () => {
 
     return (
         <div>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap justify-center gap-4">
                 {!isLoadingMovies &&
                     movies?.pages
                         .flatMap((page) => page.results)
@@ -41,11 +42,14 @@ export const MoviesCards = () => {
                             <Link key={movie.id} to={`/movie/${movie.slug}`}>
                                 <Card
                                     heading={movie.name}
-                                    imageUrl={movie.movie_poster || ''}
+                                    imageUrl={
+                                        movie.movie_poster ||
+                                        MovieNotAvailableSVG
+                                    }
                                     subheading={movie.genres
                                         .map((genre) => genre.genre)
                                         .join('/')}
-                                    className="h-60 sm:h-80 w-75 sm:w-100"
+                                    className="h-60 w-75 sm:h-80 sm:w-100"
                                 />
                             </Link>
                         ))}
@@ -54,29 +58,28 @@ export const MoviesCards = () => {
                     Array.from({ length: 6 }).map((_, index) => (
                         <Skeleton
                             key={index}
-                            className="h-60 sm:h-80 w-75 sm:w-100"
+                            className="h-60 w-75 sm:h-80 sm:w-100"
                         />
                     ))}
                 {!isLoadingMovies && !movies?.pages?.[0]?.results?.length && (
-                    <>
-                        <div className="h-50 w-80">
-                            <img
-                                src={MovieNotAvailableSVG}
-                                className="h-full w-full object-contain"
-                                alt="movie not available fallback"
-                            />
-                        </div>
-                        <TypographyH4 className="text-center w-[70%]">
-                            No Movies available for the applied Filter. Please
-                            Change the Filter.
-                        </TypographyH4>
-                    </>
+                    <div className="flex justify-center">
+                        <StatusFallback
+                            heading="No Results"
+                            content="No Movies available for the applied Filter. Please
+                            Change the Filter."
+                            illustration={MovieNotAvailableSVG}
+                        />
+                    </div>
                 )}
             </div>
             {hasNextPage && (
-                <div className="min-w-fit mx-auto mt-4">
-                    <Button variant="link" onClick={() => void fetchNextPage()}>
-                        See More
+                <div className="mx-auto mt-4 min-w-fit">
+                    <Button
+                        variant="link"
+                        onClick={() => void fetchNextPage()}
+                        disabled={isFetchingMoviesNextPage}
+                    >
+                        {isFetchingMoviesNextPage ? 'Loading...' : 'See More'}
                     </Button>
                 </div>
             )}

@@ -1,4 +1,4 @@
-import OopsIllustration from '@/assets/images/oops.svg';
+import OopsIllustration from '@/assets/illustrations/oops.svg';
 import { StatusFallback } from '@/components';
 
 /**

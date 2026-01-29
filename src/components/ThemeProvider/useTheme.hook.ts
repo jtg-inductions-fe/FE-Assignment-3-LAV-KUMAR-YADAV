@@ -3,21 +3,14 @@ import { createContext, useContext } from 'react';
 import type { ThemeProviderState } from './ThemeProvider.types';
 
 /**
- * Initial context state.
- */
-const initialState: ThemeProviderState = {
-    theme: 'system',
-    setTheme: () => null,
-};
-
-/**
  * React context for theme management.
  */
-export const ThemeProviderContext =
-    createContext<ThemeProviderState>(initialState);
+export const ThemeProviderContext = createContext<
+    ThemeProviderState | undefined
+>(undefined);
 
 /** Hook to access and manage the current theme. */
-export const useTheme = () => {
+export const useTheme = (): ThemeProviderState => {
     const context = useContext(ThemeProviderContext);
 
     if (!context)

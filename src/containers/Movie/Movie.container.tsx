@@ -2,7 +2,13 @@ import { format } from 'date-fns';
 import { Dot } from 'lucide-react';
 import { Link, useParams } from 'react-router';
 
-import { TypographyH1, TypographyH3, TypographyP } from '@/components';
+import MovieNotAvailableSvg from '@/assets/illustrations/movie-not-available.svg';
+import {
+    StatusFallback,
+    TypographyH1,
+    TypographyH3,
+    TypographyP,
+} from '@/components';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { capitalizeFirstCharacter, cn } from '@/lib';
@@ -38,7 +44,7 @@ export const Movie = () => {
         <div className="my-4">
             {!isMovieLoading && movie && (
                 <section
-                    className="bg-cover bg-center h-125 flex flex-col sm:flex-row gap-4 sm:items-center p-6 "
+                    className="flex h-125 flex-col gap-4 bg-cover bg-center p-6 sm:flex-row sm:items-center"
                     aria-labelledby="movie-name"
                     style={{
                         backgroundImage: movie?.movie_poster
@@ -59,7 +65,7 @@ export const Movie = () => {
                             )}
                             {!movie.movie_poster && (
                                 <div className="bg-muted-foreground h-full w-full rounded-xl p-4">
-                                    <TypographyH3 className="text-center text-primary-foreground">
+                                    <TypographyH3 className="text-primary-foreground text-center">
                                         Poster Not Available
                                     </TypographyH3>
                                 </div>
@@ -107,15 +113,17 @@ export const Movie = () => {
                 <section>
                     <TypographyH1>About The Movie</TypographyH1>
                     {Array.from({ length: 6 }).map((_, index) => (
-                        <Skeleton key={index} className="h-4 w-full mt-2" />
+                        <Skeleton key={index} className="mt-2 h-4 w-full" />
                     ))}
                 </section>
             )}
 
             {!isMovieLoading && !movie && (
-                <TypographyH3 className="text-center">
-                    Movie Not Found
-                </TypographyH3>
+                <StatusFallback
+                    heading="404"
+                    content="This movie is not available at the moment"
+                    illustration={MovieNotAvailableSvg}
+                />
             )}
         </div>
     );

@@ -1,28 +1,38 @@
+export { api } from './api';
+
 export {
     useLoginUserMutation,
-    useRegisterUserMutation,
-    api,
     useLogoutMutation,
     useRefreshTokenMutation,
+    useRegisterUserMutation,
+    useUpdateUserDetailsMutation,
     useUserDetailsQuery,
-    useMoviesInfiniteQuery,
-    useMovieQuery,
-    useLatestMoviesInfiniteQuery,
-    useUpcomingMoviesInfiniteQuery,
+} from './userApi';
+
+export {
     useGenresQuery,
     useLanguagesQuery,
-    useCinemasQuery,
-    useLocationsQuery,
-    useCinemaQuery,
-    useSlotsByCinemaQuery,
+    useLatestMoviesInfiniteQuery,
+    useMovieQuery,
+    useMoviesInfiniteQuery,
+    useUpcomingMoviesInfiniteQuery,
     useSlotsByMovieSlugQuery,
+} from './movieApi';
+
+export {
+    useCinemaQuery,
+    useCinemasQuery,
+    useSlotsByCinemaQuery,
+    useLocationsQuery,
+} from './cinemaApi';
+
+export {
     useSlotDetailsQuery,
     useBookingMutation,
-    useUpdateUserDetailsMutation,
     useTicketsInfiniteQuery,
     usePastBookingsInfiniteQuery,
     useCancelTicketMutation,
-} from './services';
+} from './bookingApi';
 
 export type {
     LoginRequest,

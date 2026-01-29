@@ -25,7 +25,7 @@ export const capitalizeFirstCharacter = (text: string) => {
 
 /**
  * A utility function which converts a number into Alphabets
- * @example 1 -> A, 27 -> AA, 29 -> AC, 731 -> AAC
+ * @example 1 -> A, 27 -> AA, 29 -> AC, 731 -> ABC
  */
 export const numberToAlphabet = (num: number): string => {
     if (!Number.isInteger(num) || num <= 0) return '';
@@ -41,3 +41,20 @@ export const numberToAlphabet = (num: number): string => {
 
     return result;
 };
+
+/**
+ * Converts a plain object into FormData.
+ *
+ * Used primarily for multipart/form-data requests such as
+ * user registration with file uploads.
+ */
+export const getFormData = (
+    object: Record<string, string | File | undefined>,
+) =>
+    Object.keys(object).reduce((formData, key) => {
+        if (object[key]) {
+            formData.append(key, object[key]);
+        }
+
+        return formData;
+    }, new FormData());

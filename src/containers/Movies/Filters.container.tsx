@@ -135,9 +135,8 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
 
     return (
         <form
-            className=" flex-col gap-6 bg-accent p-10 rounded-xl  h-full flex "
+            className="bg-accent flex h-full flex-col gap-6 rounded-xl p-10"
             aria-labelledby="filters-heading"
-            onSubmit={(e) => e.preventDefault()}
         >
             <h2 id="filters-heading" className="sr-only">
                 Movie filters
@@ -199,12 +198,17 @@ export const Filters = ({ inModal = false }: { inModal?: boolean }) => {
                     <Button
                         onClick={handleApplyFilter}
                         disabled={applyBtnDisabled}
+                        type="button"
                     >
                         Apply Filters
                     </Button>
                 </DialogClose>
             ) : (
-                <Button onClick={handleApplyFilter} disabled={applyBtnDisabled}>
+                <Button
+                    onClick={handleApplyFilter}
+                    disabled={applyBtnDisabled}
+                    type="button"
+                >
                     Apply Filters
                 </Button>
             )}

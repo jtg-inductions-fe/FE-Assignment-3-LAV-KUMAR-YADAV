@@ -54,15 +54,22 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
         }
     }, [dispatch, refreshTokenMutate, token]);
 
-    if (
-        !isLoading &&
+    const isProtected = Object.values(ROUTES.PROTECTED).includes(
+        currentRouteId,
+    );
+    const isPublic = Object.values(ROUTES.PUBLIC).includes(currentRouteId);
+
+    if (!isProtected && !isPublic) {
+        return children;
+    } else if (
         !token &&
+        !isLoading &&
         Object.values(ROUTES.PROTECTED).includes(currentRouteId)
     ) {
         return <Navigate to={ROUTES.PUBLIC.LOGIN} replace />;
     } else if (
-        !isLoading &&
         token &&
+        !isLoading &&
         Object.values(ROUTES.PUBLIC).includes(currentRouteId)
     ) {
         return <Navigate to={ROUTES.HOME} replace />;

@@ -33,7 +33,7 @@ export const Cinema = () => {
                 <>
                     <TypographyH1>{cinema?.name}</TypographyH1>
                     <TypographyP>
-                        <MapPin className="inline mr-2" />
+                        <MapPin className="mr-2 inline" />
                         {cinema?.location.location}
                     </TypographyP>
                 </>
@@ -41,7 +41,7 @@ export const Cinema = () => {
             {isCinemaLoading && (
                 <>
                     <Skeleton className="h-10 w-70" />
-                    <Skeleton className="h-7 w-70 mt-4" />
+                    <Skeleton className="mt-4 h-7 w-70" />
                 </>
             )}
             <DatePicker
