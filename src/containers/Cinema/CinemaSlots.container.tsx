@@ -2,8 +2,8 @@ import { format } from 'date-fns';
 import { Film } from 'lucide-react';
 import { Link, useParams, useSearchParams } from 'react-router';
 
-import SlotsNotAvailableSvg from '@/assets/images/slots-not-available.svg';
-import { SlotCard, TypographyH4 } from '@/components';
+import SlotsNotAvailableSvg from '@/assets/illustrations/slots-not-available.svg';
+import { SlotCard, StatusFallback, TypographyH4 } from '@/components';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TIME_FORMAT } from '@/constants';
 import { useSlotsByCinemaQuery } from '@/services';
@@ -23,10 +23,15 @@ export const CinemaSlots = () => {
     const { id } = useParams();
     const [searchParams] = useSearchParams();
     const { data: movieSlots, isLoading: isMovieSlotsLoading } =
-        useSlotsByCinemaQuery({
-            cinema_id: id,
-            date: searchParams.get('date') ?? undefined,
-        });
+        useSlotsByCinemaQuery(
+            {
+                cinema_id: id!,
+                date: searchParams.get('date') ?? undefined,
+            },
+            {
+                skip: !id,
+            },
+        );
 
     return (
         <div>
@@ -34,11 +39,11 @@ export const CinemaSlots = () => {
                 <>
                     {movieSlots?.map((movie) => (
                         <div key={movie.id}>
-                            <div className="h-px bg-border"></div>
-                            <div className="flex flex-col  gap-6 py-4">
+                            <div className="bg-border h-px"></div>
+                            <div className="flex flex-col gap-6 py-4">
                                 <div>
                                     <TypographyH4>
-                                        <Film className="inline mr-2" />
+                                        <Film className="mr-2 inline" />
                                         {movie.name}
                                     </TypographyH4>
                                 </div>
@@ -68,22 +73,22 @@ export const CinemaSlots = () => {
                             </div>
                         </div>
                     ))}
-                    <div className="h-px bg-border"></div>
+                    <div className="bg-border h-px"></div>
                 </>
             )}
             {isMovieSlotsLoading && (
                 <>
                     {Array.from({ length: 6 }).map((_, index) => (
                         <div key={`row${index}`}>
-                            <div className="h-px bg-border"></div>
-                            <div className="flex flex-col  gap-6 py-4">
-                                <Skeleton className="w-100 h-8" />
+                            <div className="bg-border h-px"></div>
+                            <div className="flex flex-col gap-6 py-4">
+                                <Skeleton className="h-8 w-100" />
                                 <div className="flex flex-wrap gap-6">
                                     {Array.from({ length: 6 }).map(
                                         (__, idx) => (
                                             <Skeleton
                                                 key={`row${index}col${idx}`}
-                                                className="w-40 h-18 rounded-xl"
+                                                className="h-18 w-40 rounded-xl"
                                             />
                                         ),
                                     )}
@@ -91,22 +96,16 @@ export const CinemaSlots = () => {
                             </div>
                         </div>
                     ))}
-                    <div className="h-px bg-border"></div>
+                    <div className="bg-border h-px"></div>
                 </>
             )}
             {!isMovieSlotsLoading && !movieSlots?.length && (
-                <div className="flex flex-col justify-center items-center">
-                    <div>
-                        <img
-                            src={SlotsNotAvailableSvg}
-                            alt="Slots not available fallback"
-                        />
-                    </div>
-                    <TypographyH4 className="text-center">
-                        No Slots Available for the selected Date. Please Change
-                        the Date.
-                    </TypographyH4>
-                </div>
+                <StatusFallback
+                    illustration={SlotsNotAvailableSvg}
+                    content="No Slots Available for the selected date. Please Change
+                        the date."
+                    heading="No Slots"
+                />
             )}
         </div>
     );

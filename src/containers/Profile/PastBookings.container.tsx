@@ -1,7 +1,9 @@
 import { format } from 'date-fns';
 
-import { Ticket, TypographyH1 } from '@/components';
+import TicketsNotAvailableIllustration from '@/assets/illustrations/tickets-not-available.svg';
+import { StatusFallback, Ticket, TypographyH1 } from '@/components';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { DATE_FORMAT_CUSTOM, TIME_FORMAT } from '@/constants';
 import { numberToAlphabet } from '@/lib';
 import { usePastBookingsInfiniteQuery } from '@/services';
@@ -21,24 +23,28 @@ import { useAppSelector } from '@/store';
 
 export const PastBookings = () => {
     const token = useAppSelector((state) => state.authReducer.token);
-    const { data, fetchNextPage, hasNextPage } = usePastBookingsInfiniteQuery(
-        undefined,
-        { skip: !token },
-    );
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isLoading: isTicketsLoading,
+    } = usePastBookingsInfiniteQuery(undefined, { skip: !token });
+
+    const pastBookings = data?.pages.flatMap((page) => page.results);
 
     return (
         <div>
             <div className="flex flex-wrap justify-center gap-5">
-                {data?.pages
-                    .flatMap((page) => page.results)
-                    .map((ticket) => (
+                {!isTicketsLoading &&
+                    pastBookings &&
+                    pastBookings?.map((ticket) => (
                         <div
                             key={ticket.id}
                             className="relative"
                             role="group"
-                            aria-label="expired ticket"
+                            aria-label={`Expired ticket for ${ticket.movie}`}
                         >
-                            <TypographyH1 className="absolute  top-20 left-10 rotate-45">
+                            <TypographyH1 className="absolute top-20 left-10 rotate-45">
                                 EXPIRED
                             </TypographyH1>
                             <div className="opacity-40">
@@ -65,6 +71,19 @@ export const PastBookings = () => {
                             </div>
                         </div>
                     ))}
+
+                {isTicketsLoading &&
+                    Array.from({ length: 6 }).map((_, index) => (
+                        <Skeleton key={index} className="h-77 w-85" />
+                    ))}
+
+                {!isTicketsLoading && !pastBookings?.length && (
+                    <StatusFallback
+                        heading="No Past Bookings Found"
+                        content="There are no Past Bookings available to display at the moment."
+                        illustration={TicketsNotAvailableIllustration}
+                    />
+                )}
             </div>
             {hasNextPage && (
                 <div className="mx-auto w-20">

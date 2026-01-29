@@ -32,7 +32,7 @@ export const LocationFilter = () => {
 
     return (
         <>
-            <Label className="mb-2 text-primary" id="location-label">
+            <Label className="text-primary mb-2" id="location-label">
                 <LocationEdit size={18} aria-hidden />
                 Location
             </Label>
@@ -58,7 +58,7 @@ export const LocationFilter = () => {
                         </SelectItem>
                         {!isLocationLoading &&
                             locations &&
-                            locations?.map((location) => (
+                            locations.map((location) => (
                                 <SelectItem
                                     key={location.id}
                                     value={location.location}

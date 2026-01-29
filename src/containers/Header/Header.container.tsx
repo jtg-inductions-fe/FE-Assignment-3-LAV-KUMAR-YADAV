@@ -42,7 +42,7 @@ export const Header = () => {
 
     const handleLogout = async () => {
         try {
-            await logoutUser();
+            await logoutUser().unwrap();
             dispatch(logout());
             toast.success('You are Logged out Successfully', {
                 style: {
@@ -61,7 +61,7 @@ export const Header = () => {
     return (
         <header className="bg-card">
             <NavigationMenu
-                className="max-w-full flex justify-between p-2"
+                className="flex max-w-full justify-between p-2"
                 aria-label="Primary navigation"
             >
                 <TypographyH1>
@@ -73,9 +73,9 @@ export const Header = () => {
                         <img
                             src="/logo.svg"
                             alt=""
-                            className="size-10 mr-2 object-contain"
+                            className="mr-2 size-10 object-contain"
                         />
-                        <span className="hidden sm:block text-primary">
+                        <span className="text-primary hidden sm:block">
                             BookMyShow
                         </span>
                     </Link>
@@ -128,6 +128,7 @@ export const Header = () => {
                                                     ? `Profile picture of ${user.name}`
                                                     : 'User profile picture'
                                             }
+                                            className="object-cover"
                                         />
                                         <AvatarFallback>
                                             <User aria-hidden />
@@ -136,25 +137,26 @@ export const Header = () => {
                                 </DropdownMenuTrigger>
                             </li>
                             <DropdownMenuContent
-                                className="border p-5 rounded-xl w-56 "
+                                className="w-56 rounded-xl border p-5"
                                 align="start"
                             >
                                 <DropdownMenuItem asChild>
                                     <Link
                                         to={ROUTES.PROTECTED.PROFILE}
-                                        className="flex gap-2 cursor-pointer"
+                                        className="flex cursor-pointer gap-2"
                                     >
                                         <User aria-hidden /> Profile
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator aria-hidden />
                                 <DropdownMenuItem
-                                    className="flex gap-2 text-destructive cursor-pointer"
+                                    className="text-destructive flex cursor-pointer gap-2"
                                     asChild
                                 >
                                     <button
                                         onClick={() => void handleLogout()}
                                         className="w-full"
+                                        type="button"
                                     >
                                         <Trash2 aria-hidden /> Logout
                                     </button>
@@ -164,7 +166,7 @@ export const Header = () => {
                     )}
                 </NavigationMenuList>
             </NavigationMenu>
-            <div className="h-0.5 w-full bg-accent"></div>
+            <div className="bg-accent h-0.5 w-full"></div>
         </header>
     );
 };

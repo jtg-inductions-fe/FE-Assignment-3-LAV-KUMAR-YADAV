@@ -25,10 +25,10 @@ import { MoviesCards } from './MovieCards.container';
  */
 
 export const Movies = () => (
-    <div className="h-180 overflow-y-auto [&::-webkit-scrollbar]:hidden flex flex-col md:flex-row gap-6 my-5">
-        <div className="min-w-80 hidden md:block"></div>
+    <div className="my-5 flex h-180 flex-col gap-6 overflow-y-auto md:flex-row [&::-webkit-scrollbar]:hidden">
+        <div className="hidden min-w-80 md:block"></div>
         <aside
-            className="hidden absolute h-180 md:block min-h-[70vh] w-80"
+            className="absolute hidden h-180 min-h-[70vh] w-80 md:block"
             aria-label="Movie filters"
         >
             <Filters />
@@ -45,12 +45,12 @@ export const Movies = () => (
                     </Button>
                 </DialogTrigger>
                 <DialogContent
-                    className="bg-accent md:hidden h-[60%] overflow-y-auto"
-                    aria-description="filter"
+                    className="bg-accent h-[60%] overflow-y-auto md:hidden"
+                    aria-describedby="filter-dialog-description"
                 >
                     <DialogHeader>
                         <DialogTitle>Filters</DialogTitle>
-                        <DialogDescription>
+                        <DialogDescription id="filter-dialog-description">
                             Apply filters to customize the results
                         </DialogDescription>
                     </DialogHeader>

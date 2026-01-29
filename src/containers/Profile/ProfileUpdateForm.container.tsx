@@ -68,7 +68,7 @@ export const ProfileUpdateForm = ({ onSuccess }: ProfileUpdateFormProps) => {
                     onSubmit={(...args) =>
                         void form.handleSubmit(onSubmit)(...args)
                     }
-                    className="space-y-8 w-full"
+                    className="w-full space-y-8"
                 >
                     <FormField
                         control={form.control}

@@ -26,30 +26,23 @@ export const StatusFallback = ({
     ...props
 }: StatusFallbackProps) => (
     <div className={cn('flex justify-center', className)} {...props}>
-        <div className="max-w-120 flex flex-col items-center">
+        <div className="flex max-w-120 flex-col items-center">
             {illustration && (
-                <div className="w-80 sm:w-150 md:w-180">
+                <div className="w-80">
                     <img
                         src={illustration}
-                        alt={
-                            heading
-                                ? `illustration for ${heading}`
-                                : 'Status illustration'
-                        }
+                        alt=""
+                        role="presentation"
                         className="h-full w-full object-cover"
                     />
                 </div>
             )}
             {heading && (
-                <TypographyH1 className="text-center mt-5">
+                <TypographyH1 className="mt-5 text-center">
                     {heading}
                 </TypographyH1>
             )}
-            {content && (
-                <TypographyP className="text-center my-5">
-                    {content}
-                </TypographyP>
-            )}
+            <TypographyP className="my-5 text-center">{content}</TypographyP>
             {to && (
                 <Button asChild>
                     <Link to={to.link}>{to.title}</Link>

@@ -14,7 +14,6 @@ export const ThemeProvider = ({
     children,
     defaultTheme = 'system',
     storageKey = 'vite-ui-theme',
-    ...props
 }: ThemeProviderProps) => {
     const [theme, setTheme] = useState<Theme>(
         () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
@@ -49,8 +48,6 @@ export const ThemeProvider = ({
     };
 
     return (
-        <ThemeProviderContext {...props} value={value}>
-            {children}
-        </ThemeProviderContext>
+        <ThemeProviderContext value={value}>{children}</ThemeProviderContext>
     );
 };

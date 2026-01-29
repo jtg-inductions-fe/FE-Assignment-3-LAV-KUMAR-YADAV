@@ -51,7 +51,7 @@ export const Booking = () => {
                     </TypographyH2>
 
                     <TypographyP className="mb-4 text-gray-600">
-                        <MapPin className="inline mr-1" />
+                        <MapPin className="mr-1 inline" />
                         {slotDetails?.cinema.location.location &&
                             capitalizeFirstCharacter(
                                 slotDetails.cinema.location.location,
@@ -72,8 +72,8 @@ export const Booking = () => {
             )}
             {isSlotDetailsLoading && (
                 <>
-                    <Skeleton className="h-9 mb-2 w-100" />
-                    <Skeleton className="h-7 mb-4 w-150" />
+                    <Skeleton className="mb-2 h-9 w-100" />
+                    <Skeleton className="mb-4 h-7 w-150" />
                 </>
             )}
             <SeatGrid />

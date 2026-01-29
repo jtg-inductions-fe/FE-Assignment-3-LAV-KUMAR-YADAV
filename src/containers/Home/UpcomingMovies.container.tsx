@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 
-import MovieNotAvailableSVG from '@/assets/images/movie-not-available.svg';
-import { Card, TypographyH2, TypographyH4 } from '@/components';
+import MovieNotAvailableSVG from '@/assets/illustrations/movie-not-available.svg';
+import { Card, StatusFallback, TypographyH2 } from '@/components';
 import { Button } from '@/components/ui/button';
 import {
     Carousel,
@@ -40,7 +40,7 @@ export const UpcomingMovies = () => {
             )}
             aria-labelledby="upcoming-movies"
         >
-            <div className="flex justify-between ">
+            <div className="mb-5 flex justify-between">
                 <TypographyH2 id="upcoming-movies">
                     Upcoming Movies
                 </TypographyH2>
@@ -52,7 +52,7 @@ export const UpcomingMovies = () => {
                     See More Movies
                 </Button>
             </div>
-            <div className="flex justify-center w-full">
+            <div className="flex w-full justify-center">
                 <Carousel
                     className="w-full"
                     aria-label="Upcoming movies carousel"
@@ -73,13 +73,13 @@ export const UpcomingMovies = () => {
                                             <Card
                                                 heading={movie.name}
                                                 imageUrl={
-                                                    movie.movie_poster || ''
+                                                    movie.movie_poster ||
+                                                    MovieNotAvailableSVG
                                                 }
                                                 subheading={movie.genres
                                                     .map((genre) => genre.genre)
-                                                    .join('/')
-                                                    .slice(0, 60)}
-                                                className="h-60 sm:h-80 w-75 sm:w-100"
+                                                    .join('/')}
+                                                className="h-60 w-75 sm:h-80 sm:w-100"
                                             />
                                         </Link>
                                     </CarouselItem>
@@ -87,22 +87,18 @@ export const UpcomingMovies = () => {
                         {isUpcomingMovieLoading &&
                             Array.from({ length: 6 }).map((_, index) => (
                                 <CarouselItem key={index} aria-hidden="true">
-                                    <Skeleton className="h-60 sm:h-80 w-75 sm:w-100 rounded-xl" />
+                                    <Skeleton className="h-60 w-75 rounded-xl sm:h-80 sm:w-100" />
                                 </CarouselItem>
                             ))}
 
                         {!isUpcomingMovieLoading &&
                             !upcomingMovies?.pages[0]?.results?.length && (
                                 <CarouselItem>
-                                    <div>
-                                        <img
-                                            src={MovieNotAvailableSVG}
-                                            alt="Upcoming Movies Not Available fallback"
-                                        />
-                                    </div>
-                                    <TypographyH4>
-                                        No Upcoming Movies Available
-                                    </TypographyH4>
+                                    <StatusFallback
+                                        content="No Upcoming Movies Available"
+                                        heading="No Results"
+                                        illustration={MovieNotAvailableSVG}
+                                    />
                                 </CarouselItem>
                             )}
                     </CarouselContent>

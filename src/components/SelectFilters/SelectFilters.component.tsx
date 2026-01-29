@@ -66,7 +66,7 @@ export const SelectFilters = ({
         <div className={cn('w-full', className)} {...props}>
             <Collapsible onOpenChange={setOpen} open={open}>
                 <div className="flex justify-between">
-                    <CollapsibleTrigger className="cursor-pointer flex justify-center items-center gap-2">
+                    <CollapsibleTrigger className="flex cursor-pointer items-center justify-center gap-2">
                         {open ? <ChevronUp /> : <ChevronDown />}
                         <TypographyH4>{heading}</TypographyH4>
                     </CollapsibleTrigger>
@@ -75,10 +75,11 @@ export const SelectFilters = ({
                     </Button>
                 </div>
                 <CollapsibleContent>
-                    <div className="flex flex-wrap gap-2 mt-4">
+                    <div className="mt-4 flex flex-wrap gap-2">
                         {options.map((option) => (
                             <button
                                 key={option}
+                                type="button"
                                 onClick={() => handleOptionsClick(option)}
                             >
                                 <Badge

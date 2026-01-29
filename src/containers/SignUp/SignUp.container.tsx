@@ -85,7 +85,7 @@ export const SignUp = () => {
     };
 
     return (
-        <div className="max-w-240 mx-auto my-10 px-4 md:px-10">
+        <div className="mx-auto my-10 max-w-240 px-4 md:px-10">
             <TypographyH2 className="text-center">
                 Your Seat Awaits - SignUp Now{' '}
             </TypographyH2>
@@ -94,12 +94,12 @@ export const SignUp = () => {
                 just one click away.
             </TypographyLead>
 
-            <div className="flex mt-10 gap-4">
-                <div className="h-144 w-full hidden md:block">
+            <div className="mt-10 flex gap-4">
+                <div className="hidden h-144 w-full md:block">
                     <img
                         src={signupImage}
                         alt=""
-                        className="w-full h-full object-fit rounded-4xl"
+                        className="object-fit h-full w-full rounded-4xl"
                     />
                 </div>
                 <Form {...form}>
@@ -107,7 +107,7 @@ export const SignUp = () => {
                         onSubmit={(...args) =>
                             void form.handleSubmit(onSubmit)(...args)
                         }
-                        className="space-y-8 w-full"
+                        className="w-full space-y-8"
                     >
                         <FormField
                             control={form.control}

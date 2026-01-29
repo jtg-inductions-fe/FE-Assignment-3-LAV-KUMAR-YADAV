@@ -4,7 +4,8 @@ import { format } from 'date-fns';
 import { EllipsisVertical, Loader2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Ticket, TypographyP } from '@/components';
+import TicketsNotAvailableIllustration from '@/assets/illustrations/tickets-not-available.svg';
+import { StatusFallback, Ticket, TypographyP } from '@/components';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -19,6 +20,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
 import { DATE_FORMAT_CUSTOM, TIME_FORMAT } from '@/constants';
 import { numberToAlphabet } from '@/lib';
 import { useCancelTicketMutation, useTicketsInfiniteQuery } from '@/services';
@@ -39,10 +41,14 @@ import { DialogClose } from '@radix-ui/react-dialog';
 
 export const Tickets = () => {
     const token = useAppSelector((state) => state.authReducer.token);
-    const { data, fetchNextPage, hasNextPage } = useTicketsInfiniteQuery(
-        undefined,
-        { skip: !token },
-    );
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isLoading: isTicketsLoading,
+    } = useTicketsInfiniteQuery(undefined, { skip: !token });
+    const tickets = data?.pages.flatMap((page) => page.results);
+
     const [cancelTicket, { isLoading: isCancelling }] =
         useCancelTicketMutation();
 
@@ -73,17 +79,16 @@ export const Tickets = () => {
     return (
         <div>
             <div className="flex flex-wrap justify-center gap-5">
-                {data?.pages
-                    .flatMap((page) => page.results)
-                    .map((ticket) => (
+                {!isTicketsLoading &&
+                    tickets?.map((ticket) => (
                         <div key={ticket.id} className="relative">
                             {ticket.status != 'CANCELLED' && (
                                 <DropdownMenu>
-                                    <DropdownMenuTrigger className="cursor-pointer absolute right-3 top-3">
+                                    <DropdownMenuTrigger className="absolute top-3 right-3 cursor-pointer">
                                         <EllipsisVertical />
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent
-                                        className="border rounded-xl w-56 "
+                                        className="w-56 rounded-xl border"
                                         align="start"
                                     >
                                         <DropdownMenuItem
@@ -117,6 +122,19 @@ export const Tickets = () => {
                             />
                         </div>
                     ))}
+
+                {isTicketsLoading &&
+                    Array.from({ length: 6 }).map((_, index) => (
+                        <Skeleton key={index} className="h-77 w-85" />
+                    ))}
+
+                {!isTicketsLoading && !tickets?.length && (
+                    <StatusFallback
+                        heading="No Tickets Found"
+                        content="There are no tickets available to display at the moment."
+                        illustration={TicketsNotAvailableIllustration}
+                    />
+                )}
             </div>
             {hasNextPage && (
                 <div className="mx-auto w-20">

@@ -4,10 +4,11 @@ import { BadgeCheck, Loader2 } from 'lucide-react';
 import { useParams } from 'react-router';
 import { toast } from 'sonner';
 
+import slotNotAvailableSvg from '@/assets/illustrations/slots-not-available.svg';
 import ScreenImage from '@/assets/images/screen-img.png';
 import {
     Seat,
-    TypographyH2,
+    StatusFallback,
     TypographyH3,
     TypographyMuted,
     TypographyP,
@@ -120,8 +121,8 @@ export const SeatGrid = () => {
             {!isSlotDetailsLoading && slotDetails && (
                 <div>
                     <div className="flex justify-center">
-                        <div className="w-full bg-card max-w-200 overflow-auto max-h-[60vh] rounded-md shadow-inner">
-                            <div className="inline-block min-w-max mx-auto p-3">
+                        <div className="bg-card max-h-[60vh] w-full max-w-200 overflow-auto rounded-md shadow-inner">
+                            <div className="mx-auto inline-block min-w-max p-3">
                                 {Array.from({
                                     length: slotDetails.cinema.rows,
                                 }).map((_, index) => {
@@ -200,7 +201,7 @@ export const SeatGrid = () => {
                                     );
                                 })}
 
-                                <div className="flex flex-col  items-center mt-20">
+                                <div className="mt-20 flex flex-col items-center">
                                     <TypographyMuted>
                                         Screen This way
                                     </TypographyMuted>
@@ -214,7 +215,7 @@ export const SeatGrid = () => {
                         </div>
                     </div>
 
-                    <div className="flex gap-6 mt-4 justify-center text-sm">
+                    <div className="mt-4 flex justify-center gap-6 text-sm">
                         <div className="flex items-center gap-2">
                             <Seat seatNumber={1} />
                             <span>Available</span>
@@ -234,16 +235,20 @@ export const SeatGrid = () => {
             )}
 
             {isSlotDetailsLoading && (
-                <Skeleton className="h-[60vh] max-w-200 mx-auto" />
+                <Skeleton className="mx-auto h-[60vh] max-w-200" />
             )}
 
             {!isSlotDetailsLoading && error && !slotDetails && (
-                <TypographyH2>This slot has been expired</TypographyH2>
+                <StatusFallback
+                    content="This slot has been expired"
+                    heading="Unavailable"
+                    illustration={slotNotAvailableSvg}
+                />
             )}
 
             {selectedCount > 0 && (
-                <div className="w-full mt-30">
-                    <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="mt-30 w-full">
+                    <div className="mx-auto flex max-w-5xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <TypographyMuted>
                                 You have selected {selectedCount}{' '}
@@ -275,7 +280,7 @@ export const SeatGrid = () => {
                         <DialogTitle className="text-center">
                             Congratulations!!
                         </DialogTitle>
-                        <BadgeCheck className="size-30 text-green-600 self-center" />
+                        <BadgeCheck className="size-30 self-center text-green-600" />
                         <DialogDescription className="text-center">
                             Your Tickets have been booked Successfully.Please
                             Visit Your Profile for the tickets.
@@ -283,7 +288,7 @@ export const SeatGrid = () => {
                         <DialogClose asChild>
                             <Button
                                 onClick={() => setIsSuccessModalOpen(false)}
-                                className="self-center min-w-40"
+                                className="min-w-40 self-center"
                             >
                                 OK
                             </Button>

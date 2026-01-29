@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 
-import MovieNotAvailableSVG from '@/assets/images/movie-not-available.svg';
-import { Card, TypographyH2, TypographyH4 } from '@/components';
+import MovieNotAvailableSVG from '@/assets/illustrations/movie-not-available.svg';
+import { Card, StatusFallback, TypographyH2 } from '@/components';
 import { Button } from '@/components/ui/button';
 import {
     Carousel,
@@ -40,18 +40,17 @@ export const LatestMovies = () => {
             )}
             aria-labelledby="latest-movies"
         >
-            <div className="flex justify-between">
+            <div className="mb-5 flex justify-between">
                 <TypographyH2 id="latest-movies">Latest Movies</TypographyH2>
                 <Button
                     variant="ghost"
                     onClick={() => void seeMoreLatestMovies()}
                     disabled={!hasNextLatestMovies}
-                    aria-disabled={!hasNextLatestMovies}
                 >
                     See More Movies
                 </Button>
             </div>
-            <div className="flex justify-center w-full">
+            <div className="flex w-full justify-center">
                 <Carousel
                     className="w-full"
                     aria-label="Latest movies carousel"
@@ -77,9 +76,8 @@ export const LatestMovies = () => {
                                                 }
                                                 subheading={movie.genres
                                                     .map((genre) => genre.genre)
-                                                    .join('/')
-                                                    .slice(0, 60)}
-                                                className="h-60 sm:h-80 w-75 sm:w-100"
+                                                    .join('/')}
+                                                className="h-60 w-75 sm:h-80 sm:w-100"
                                             />
                                         </Link>
                                     </CarouselItem>
@@ -87,21 +85,17 @@ export const LatestMovies = () => {
                         {isLatestMovieLoading &&
                             Array.from({ length: 6 }).map((_, index) => (
                                 <CarouselItem key={index} aria-hidden>
-                                    <Skeleton className="h-60 sm:h-80 w-75 sm:w-100 rounded-xl" />
+                                    <Skeleton className="h-60 w-75 rounded-xl sm:h-80 sm:w-100" />
                                 </CarouselItem>
                             ))}
                         {!isLatestMovieLoading &&
                             !latestMovies?.pages[0]?.results?.length && (
                                 <CarouselItem>
-                                    <div>
-                                        <img
-                                            src={MovieNotAvailableSVG}
-                                            alt="Latest Movies Not Available fallback"
-                                        />
-                                    </div>
-                                    <TypographyH4>
-                                        No Latest Movies Available
-                                    </TypographyH4>
+                                    <StatusFallback
+                                        content="No Latest Movies Available"
+                                        illustration={MovieNotAvailableSVG}
+                                        heading="No Worries"
+                                    />
                                 </CarouselItem>
                             )}
                     </CarouselContent>
