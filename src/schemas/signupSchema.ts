@@ -19,7 +19,8 @@ export const signupSchema = z
         phone_number: z
             .string()
             .length(10, 'Phone number should be exactly 10 digits')
-            .optional(),
+            .optional()
+            .or(z.string().length(0)),
         profile_pic: imageSchema.optional(),
         password: passwordSchema,
         confirm_password: z.string(),
