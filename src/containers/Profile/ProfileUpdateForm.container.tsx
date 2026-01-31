@@ -28,7 +28,7 @@ import type { ProfileUpdateFormProps } from './Profile.types';
  */
 export const ProfileUpdateForm = ({ onSuccess }: ProfileUpdateFormProps) => {
     const token = useAppSelector((state) => state.authReducer.token);
-    const { data: user } = useUserDetailsQuery(token);
+    const { data: user } = useUserDetailsQuery(undefined, { skip: !token });
     const [updateProfile, { isLoading }] = useUpdateUserDetailsMutation();
     const form = useForm<z.infer<typeof updateProfileSchema>>({
         resolver: zodResolver(updateProfileSchema),
@@ -45,7 +45,7 @@ export const ProfileUpdateForm = ({ onSuccess }: ProfileUpdateFormProps) => {
         values,
     ) => {
         try {
-            await updateProfile({ token, data: values }).unwrap();
+            await updateProfile(values).unwrap();
             onSuccess?.();
             toast.success('Profile Details Updated Successfully', {
                 style: {
@@ -68,7 +68,7 @@ export const ProfileUpdateForm = ({ onSuccess }: ProfileUpdateFormProps) => {
                     onSubmit={(...args) =>
                         void form.handleSubmit(onSubmit)(...args)
                     }
-                    className="space-y-8 w-full"
+                    className="w-full space-y-8"
                 >
                     <FormField
                         control={form.control}

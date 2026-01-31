@@ -7,9 +7,9 @@ import { Footer } from '@/containers/Footer';
  * @returns A Layout for whole application
  */
 export const RootLayout = () => (
-    <div className="min-h-screen flex flex-col min-w-75 max-w-480 mx-auto">
+    <div className="mx-auto flex min-h-screen max-w-480 min-w-75 flex-col">
         <Header />
-        <main className="flex-1 px-4 md:px-10 ">
+        <main className="flex-1 px-4 md:px-10">
             <Outlet />
         </main>
         <Footer />

@@ -4,7 +4,8 @@ import { format } from 'date-fns';
 import { EllipsisVertical, Loader2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Ticket, TypographyP } from '@/components';
+import TicketsNotAvailableIllustration from '@/assets/illustrations/tickets-not-available.svg';
+import { StatusFallback, Ticket, TypographyP } from '@/components';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -19,6 +20,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
 import { DATE_FORMAT_CUSTOM, TIME_FORMAT } from '@/constants';
 import { numberToAlphabet } from '@/lib';
 import { useCancelTicketMutation, useTicketsInfiniteQuery } from '@/services';
@@ -27,16 +29,26 @@ import { useAppSelector } from '@/store';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 /**
- * A container where all the tickets will be shown
- * There is a Cancel option
- * When Click On Cancel, An Dialogue will open If You are sure to Cancel
+ * Tickets container
+ *
+ * Displays all active and cancelled tickets for the authenticated user.
+ *
+ * @example
+ * ```tsx
+ * <Tickets />
+ * ```
  */
+
 export const Tickets = () => {
     const token = useAppSelector((state) => state.authReducer.token);
-    const { data, fetchNextPage, hasNextPage } = useTicketsInfiniteQuery(
-        { token },
-        { skip: !token },
-    );
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isLoading: isTicketsLoading,
+    } = useTicketsInfiniteQuery(undefined, { skip: !token });
+    const tickets = data?.pages.flatMap((page) => page.results);
+
     const [cancelTicket, { isLoading: isCancelling }] =
         useCancelTicketMutation();
 
@@ -47,7 +59,7 @@ export const Tickets = () => {
     const handleCancelTicket = async () => {
         if (!ticketToBeCancel || !token || isCancelling) return;
         try {
-            await cancelTicket({ id: ticketToBeCancel.id, token }).unwrap();
+            await cancelTicket(ticketToBeCancel.id).unwrap();
             toast.success('Ticket Cancelled Successfully', {
                 style: {
                     color: 'green',
@@ -67,17 +79,16 @@ export const Tickets = () => {
     return (
         <div>
             <div className="flex flex-wrap justify-center gap-5">
-                {data?.pages
-                    .flatMap((page) => page.results)
-                    .map((ticket) => (
+                {!isTicketsLoading &&
+                    tickets?.map((ticket) => (
                         <div key={ticket.id} className="relative">
                             {ticket.status != 'CANCELLED' && (
                                 <DropdownMenu>
-                                    <DropdownMenuTrigger className="cursor-pointer absolute right-3 top-3">
+                                    <DropdownMenuTrigger className="absolute top-3 right-3 cursor-pointer">
                                         <EllipsisVertical />
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent
-                                        className="border rounded-xl w-56 "
+                                        className="w-56 rounded-xl border"
                                         align="start"
                                     >
                                         <DropdownMenuItem
@@ -107,9 +118,23 @@ export const Tickets = () => {
                                 showTime={format(ticket.show_time, TIME_FORMAT)}
                                 status={ticket.status}
                                 ticketId={ticket.id}
+                                aria-label={`Ticket for ${ticket.movie}`}
                             />
                         </div>
                     ))}
+
+                {isTicketsLoading &&
+                    Array.from({ length: 6 }).map((_, index) => (
+                        <Skeleton key={index} className="h-77 w-85" />
+                    ))}
+
+                {!isTicketsLoading && !tickets?.length && (
+                    <StatusFallback
+                        heading="No Tickets Found"
+                        content="There are no tickets available to display at the moment."
+                        illustration={TicketsNotAvailableIllustration}
+                    />
+                )}
             </div>
             {hasNextPage && (
                 <div className="mx-auto w-20">
@@ -133,15 +158,15 @@ export const Tickets = () => {
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle className="text-destructive">
-                                Cancel Ticket
+                                Confirm Ticket Cancellation
                             </DialogTitle>
                             <DialogDescription>
-                                This action can not be reverse. Are You Sure
-                                Want to Cancel ??
+                                This action cannot be undone. Once cancelled,
+                                this ticket cannot be recovered.
                             </DialogDescription>
                         </DialogHeader>
                         <TypographyP className="text-destructive">
-                            Ticket To Be Cancel
+                            Ticket being cancelled
                         </TypographyP>
                         <Ticket
                             cinemaLocation={ticketToBeCancel.cinema_location}
@@ -163,14 +188,15 @@ export const Tickets = () => {
                             status={ticketToBeCancel.status}
                             ticketId={ticketToBeCancel.id}
                             className="w-auto"
+                            aria-label={`Ticket for ${ticketToBeCancel.movie} to be cancelled`}
                         />
 
                         <TypographyP>
-                            Are You Sure Want to Cancel the Ticket ?
+                            Are you sure you want to cancel this ticket?
                         </TypographyP>
-                        <DialogClose>
+                        <DialogClose asChild>
                             <Button variant="outline" className="w-full">
-                                No, Abort The Mission
+                                Keep Ticket
                             </Button>
                         </DialogClose>
                         <Button
@@ -185,7 +211,7 @@ export const Tickets = () => {
                                     Cancelling...
                                 </>
                             ) : (
-                                "Yes, I'm Sure"
+                                'Yes, cancel ticket'
                             )}
                         </Button>
                     </DialogContent>

@@ -1,7 +1,8 @@
 import { SunMoon } from 'lucide-react';
 
-import { useTheme } from '@/components/ThemeProvider';
 import { Button } from '@/components/ui/button';
+
+import { useTheme } from '../ThemeProvider';
 
 /**
  * Theme mode toggle button.
@@ -22,7 +23,7 @@ export const ModeToggle = () => {
             variant="ghost"
             size="icon"
             onClick={toggleTheme}
-            aria-label="Theme"
+            aria-label="Toggle color theme"
         >
             <SunMoon className="h-[1.2rem] w-[1.2rem]" />
         </Button>

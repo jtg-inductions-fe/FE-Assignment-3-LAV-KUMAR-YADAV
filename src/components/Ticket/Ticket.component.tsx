@@ -27,20 +27,20 @@ export const Ticket = ({
         style={{
             backgroundImage: `url(${TicketBg})`,
         }}
-        className="bg-cover bg-center rounded-xl"
+        className="rounded-xl bg-cover bg-center"
     >
         <Card
             className={cn(
-                `w-85 bg-[rgba(255,255,255,0.6)] py-10  px-2`,
+                `w-85 bg-[rgba(255,255,255,0.6)] px-2 py-10`,
                 className,
             )}
             {...props}
         >
-            <div className=" h-full w-full text-black text-sm">
-                <div className="flex justify-between mb-10">
+            <div className="h-full w-full text-sm text-black">
+                <div className="mb-10 flex justify-between">
                     <TypographyP className="text-sm">
                         Ticket Id :
-                        <span className="font-bold text-xl">{ticketId}</span>
+                        <span className="text-xl font-bold">{ticketId}</span>
                     </TypographyP>
                     <div>
                         <TypographyP>{date}</TypographyP>
@@ -55,13 +55,13 @@ export const Ticket = ({
                 <TypographyP className="text-center text-lg">
                     {cinemaName} {capitalizeFirstCharacter(cinemaLocation)}
                 </TypographyP>
-                <div className="flex justify-between mt-10">
+                <div className="mt-10 flex justify-between">
                     <TypographyP>
                         Seat No:
-                        <span className="font-bold text-xl"> {seatNumber}</span>
+                        <span className="text-xl font-bold"> {seatNumber}</span>
                     </TypographyP>
                     <TypographyP
-                        className={cn('text-xl font-bold ', {
+                        className={cn('text-xl font-bold', {
                             'text-green-700': status === 'BOOKED',
                             'text-destructive': status === 'CANCELLED',
                             'text-yellow-700': status === 'PENDING',

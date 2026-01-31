@@ -1,4 +1,5 @@
-import { Home as HomeContainer } from '@/containers';
+import { ErrorBoundary } from '@/components';
+import { ErrorFallback, Home as HomeContainer } from '@/containers';
 
 /**
  * Home page.
@@ -8,4 +9,8 @@ import { Home as HomeContainer } from '@/containers';
  * Upcoming movies carousel
  * Latest movies carousel
  */
-export const Home = () => <HomeContainer />;
+export const Home = () => (
+    <ErrorBoundary fallback={<ErrorFallback />}>
+        <HomeContainer />
+    </ErrorBoundary>
+);
