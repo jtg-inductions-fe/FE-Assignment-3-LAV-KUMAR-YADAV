@@ -32,6 +32,7 @@ const authEndpoints = [
  */
 const baseQuery = fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_BASE_URL}`,
+
     prepareHeaders(headers, { getState, endpoint }) {
         const state = getState() as RootState;
         const token = state.authReducer.token;
@@ -87,6 +88,7 @@ const baseQueryWithReauth: BaseQueryFn<
             api.dispatch(authSlice.actions.logout());
         }
     };
+
     const token = (api.getState() as RootState).authReducer.token;
     if (!token) {
         await refresh();

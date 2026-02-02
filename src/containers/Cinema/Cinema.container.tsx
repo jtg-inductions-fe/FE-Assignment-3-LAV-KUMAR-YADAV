@@ -28,7 +28,10 @@ export const Cinema = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     return (
-        <div className="my-6 flex flex-col gap-4">
+        <section
+            className="my-6 flex flex-col gap-4"
+            aria-label={`${cinema?.name} Cinema`}
+        >
             {!isCinemaLoading && cinema && (
                 <>
                     <TypographyH1>{cinema?.name}</TypographyH1>
@@ -59,6 +62,6 @@ export const Cinema = () => {
                 }}
             />
             <CinemaSlots />
-        </div>
+        </section>
     );
 };
