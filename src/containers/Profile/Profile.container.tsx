@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { Edit, User } from 'lucide-react';
 
-import UserNotFound from '@/assets/images/user-not-found.svg';
-import { TypographyH1, TypographyP } from '@/components';
+import UserNotFound from '@/assets/illustrations/user-not-found.svg';
+import { ErrorBoundary, StatusFallback, TypographyP } from '@/components';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -22,6 +22,7 @@ import { useAppSelector } from '@/store';
 import { PastBookings } from './PastBookings.container';
 import { ProfileUpdateForm } from './ProfileUpdateForm.container';
 import { Tickets } from './Tickets.container';
+import { ErrorFallback } from '../ErrorFallback';
 
 /**
  * - This is the container which contains
@@ -33,8 +34,10 @@ import { Tickets } from './Tickets.container';
  */
 export const Profile = () => {
     const token = useAppSelector((state) => state.authReducer.token);
-    const { data: user, isLoading: isUserDetailsLoading } =
-        useUserDetailsQuery(token);
+    const { data: user, isLoading: isUserDetailsLoading } = useUserDetailsQuery(
+        undefined,
+        { skip: !token },
+    );
     const [isProfileUpdateModalOpen, setIsProfileUpdateModalOpen] =
         useState<boolean>(false);
 
@@ -43,11 +46,14 @@ export const Profile = () => {
             {user && (
                 <div className="my-6">
                     {/* Profile Details */}
-                    <Card className="p-5 max-w-200 mx-auto">
+                    <Card className="mx-auto max-w-200 p-5">
                         {!isUserDetailsLoading && user && (
                             <>
-                                <Avatar className="size-40 mx-auto">
-                                    <AvatarImage src={user.profile_pic || ''} />
+                                <Avatar className="mx-auto size-40">
+                                    <AvatarImage
+                                        src={user.profile_pic || ''}
+                                        className="object-cover"
+                                    />
                                     <AvatarFallback>
                                         <User className="size-30" />
                                     </AvatarFallback>
@@ -73,12 +79,11 @@ export const Profile = () => {
                             <Skeleton className="h-105 w-full" />
                         )}
                         {!isUserDetailsLoading && !user && (
-                            <div className="flex flex-col items-center">
-                                <img src={UserNotFound} alt="" aria-hidden />
-                                <TypographyH1 className="">
-                                    User Not Found
-                                </TypographyH1>
-                            </div>
+                            <StatusFallback
+                                content="User Not Found"
+                                heading="404"
+                                illustration={UserNotFound}
+                            />
                         )}
                     </Card>
 
@@ -120,10 +125,14 @@ export const Profile = () => {
                             </TabsTrigger>
                         </TabsList>
                         <TabsContent value="tickets">
-                            <Tickets />
+                            <ErrorBoundary fallback={<ErrorFallback />}>
+                                <Tickets />
+                            </ErrorBoundary>
                         </TabsContent>
                         <TabsContent value="past-bookings">
-                            <PastBookings />
+                            <ErrorBoundary fallback={<ErrorFallback />}>
+                                <PastBookings />
+                            </ErrorBoundary>
                         </TabsContent>
                     </Tabs>
                 </div>

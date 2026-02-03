@@ -1,1 +1,1 @@
-export { authSlice, login, logout, setUser } from './authSlice';
+export { authSlice, login, logout } from './authSlice';

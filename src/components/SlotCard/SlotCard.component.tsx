@@ -16,13 +16,13 @@ export const SlotCard = ({
 }: SlotCardProps) => (
     <div
         className={cn(
-            'border cursor-pointer rounded-xl p-3 w-40 h-18 text-center text-green-600 hover:bg-green-50 overflow-hidden select-none',
+            'h-18 w-40 cursor-pointer overflow-hidden rounded-xl border p-3 text-center text-green-600 select-none hover:bg-green-50',
             className,
         )}
         {...props}
     >
         <TypographyP>
-            <Clock className="inline mr-2" />
+            <Clock className="mr-2 inline" />
             {time}
         </TypographyP>
         <TypographyP>

@@ -1,5 +1,10 @@
-import { Movie as MovieContainer } from '@/containers';
+import { ErrorBoundary } from '@/components';
+import { ErrorFallback, Movie as MovieContainer } from '@/containers';
 /**
- * This page will show all the available  information of the movie
+ * This page will show all the available information of the movie
  */
-export const Movie = () => <MovieContainer />;
+export const Movie = () => (
+    <ErrorBoundary fallback={<ErrorFallback />}>
+        <MovieContainer />
+    </ErrorBoundary>
+);

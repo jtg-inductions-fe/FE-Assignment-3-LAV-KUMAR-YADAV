@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 
 import { ROUTES } from '@/constants';
+import { AuthGuard, ErrorFallback } from '@/containers';
 import { RootLayout } from '@/layouts';
 import {
     Booking,
@@ -27,50 +28,66 @@ import {
 export const router = createBrowserRouter([
     {
         path: ROUTES.HOME,
-        element: <RootLayout />,
+        element: (
+            <AuthGuard>
+                <RootLayout />
+            </AuthGuard>
+        ),
+        errorElement: <ErrorFallback />,
         children: [
             {
                 index: true,
                 element: <Home />,
+                id: ROUTES.HOME,
             },
             {
-                path: ROUTES.SIGNUP,
+                path: ROUTES.PUBLIC.SIGNUP,
+                id: ROUTES.PUBLIC.SIGNUP,
                 element: <SignUp />,
             },
             {
-                path: ROUTES.LOGIN,
+                path: ROUTES.PUBLIC.LOGIN,
+                id: ROUTES.PUBLIC.LOGIN,
                 element: <Login />,
             },
             {
                 path: ROUTES.MOVIES,
+                id: ROUTES.MOVIES,
                 element: <Movies />,
             },
             {
                 path: ROUTES.MOVIE,
+                id: ROUTES.MOVIE,
                 element: <Movie />,
             },
             {
                 path: ROUTES.MOVIE_SLOTS,
+                id: ROUTES.MOVIE_SLOTS,
                 element: <MovieSlots />,
             },
             {
                 path: ROUTES.CINEMAS,
+                id: ROUTES.CINEMAS,
                 element: <Cinemas />,
             },
             {
                 path: ROUTES.CINEMA,
+                id: ROUTES.CINEMA,
                 element: <Cinema />,
             },
             {
-                path: ROUTES.BOOKING,
+                path: ROUTES.PROTECTED.BOOKING,
+                id: ROUTES.PROTECTED.BOOKING,
                 element: <Booking />,
             },
             {
-                path: ROUTES.PROFILE,
+                path: ROUTES.PROTECTED.PROFILE,
+                id: ROUTES.PROTECTED.PROFILE,
                 element: <Profile />,
             },
             {
                 path: ROUTES.NOT_FOUND,
+                id: ROUTES.NOT_FOUND,
                 element: <NotFound />,
             },
         ],

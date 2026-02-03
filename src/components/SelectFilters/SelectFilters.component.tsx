@@ -49,22 +49,16 @@ export const SelectFilters = ({
     const handleOptionsClick = (option: string) => {
         const optionIndex = selected.indexOf(option);
         if (optionIndex > -1) {
-            setSelected((prev) => {
-                const modified = [
-                    ...prev.slice(0, optionIndex),
-                    ...prev.slice(optionIndex + 1),
-                ];
-                onValueChange?.(modified);
-
-                return modified;
-            });
+            const modified = [
+                ...selected.slice(0, optionIndex),
+                ...selected.slice(optionIndex + 1),
+            ];
+            setSelected(modified);
+            onValueChange?.(modified);
         } else {
-            setSelected((prev) => {
-                const modified = [...prev, option];
-                onValueChange?.(modified);
-
-                return modified;
-            });
+            const modified = [...selected, option];
+            setSelected(modified);
+            onValueChange?.(modified);
         }
     };
 
@@ -72,7 +66,7 @@ export const SelectFilters = ({
         <div className={cn('w-full', className)} {...props}>
             <Collapsible onOpenChange={setOpen} open={open}>
                 <div className="flex justify-between">
-                    <CollapsibleTrigger className="cursor-pointer flex justify-center items-center gap-2">
+                    <CollapsibleTrigger className="flex cursor-pointer items-center justify-center gap-2">
                         {open ? <ChevronUp /> : <ChevronDown />}
                         <TypographyH4>{heading}</TypographyH4>
                     </CollapsibleTrigger>
@@ -81,20 +75,24 @@ export const SelectFilters = ({
                     </Button>
                 </div>
                 <CollapsibleContent>
-                    <div className="flex flex-wrap gap-2 mt-4">
-                        {options.map((option, index) => (
-                            <Badge
-                                key={index}
-                                className="cursor-pointer rounded-lg p-2"
-                                variant={
-                                    selected.includes(option)
-                                        ? 'default'
-                                        : 'outline'
-                                }
+                    <div className="mt-4 flex flex-wrap gap-2">
+                        {options.map((option) => (
+                            <button
+                                key={option}
+                                type="button"
                                 onClick={() => handleOptionsClick(option)}
                             >
-                                {capitalizeFirstCharacter(option)}
-                            </Badge>
+                                <Badge
+                                    className="cursor-pointer rounded-lg p-2"
+                                    variant={
+                                        selected.includes(option)
+                                            ? 'default'
+                                            : 'outline'
+                                    }
+                                >
+                                    {capitalizeFirstCharacter(option)}
+                                </Badge>
+                            </button>
                         ))}
                     </div>
                 </CollapsibleContent>

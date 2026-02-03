@@ -1,13 +1,22 @@
 import { TypographyMuted } from '@/components';
 
 import { socialMediaConfig } from './footer.config';
+
 /**
+ * Footer container
  *
- * @returns Footer container
+ * Renders the application footer with social media links and copyright
+ * information.
+ *
+ * @example
+ * ```tsx
+ * <Footer />
+ * ```
  */
+
 export const Footer = () => (
-    <footer>
-        <div className="h-0.5 w-full bg-accent mb-5"></div>
+    <footer className="bg-card">
+        <div className="bg-accent mb-5 h-0.5 w-full"></div>
         <ul
             className="flex items-center justify-center gap-4 p-2"
             aria-label="social media links"
@@ -25,7 +34,7 @@ export const Footer = () => (
                 </li>
             ))}
         </ul>
-        <TypographyMuted className="text-center p-4 select-none">
+        <TypographyMuted className="p-4 text-center select-none">
             Copyright 2026 © Josh Entertainment Pvt. Ltd. All rights reserved.
         </TypographyMuted>
     </footer>

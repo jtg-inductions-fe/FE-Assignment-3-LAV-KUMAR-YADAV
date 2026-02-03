@@ -75,7 +75,7 @@ export const Login = () => {
     };
 
     return (
-        <div className="max-w-240 mx-auto my-10 md:my-30 px-4 md:px-10">
+        <div className="mx-auto my-10 max-w-240 px-4 md:my-30 md:px-10">
             <TypographyH2 className="text-center">
                 Unlock the Big Screen Experience
             </TypographyH2>
@@ -84,12 +84,12 @@ export const Login = () => {
                 night starts here.
             </TypographyLead>
 
-            <div className="flex mt-10 gap-4 items-center">
-                <div className="h-72 w-full hidden md:block">
+            <div className="mt-10 flex items-center gap-4">
+                <div className="hidden h-72 w-full md:block">
                     <img
                         src={loginImage}
                         alt=""
-                        className="w-full h-full object-cover rounded-4xl"
+                        className="h-full w-full rounded-4xl object-cover"
                     />
                 </div>
                 <Form {...form}>
@@ -97,7 +97,7 @@ export const Login = () => {
                         onSubmit={(...args) =>
                             void form.handleSubmit(onSubmit)(...args)
                         }
-                        className="space-y-8 w-full"
+                        className="w-full space-y-8"
                     >
                         <FormField
                             control={form.control}
@@ -154,7 +154,7 @@ export const Login = () => {
                             )}
                         </Button>
                         Don&apos;t have an Account ?{' '}
-                        <Link to={ROUTES.SIGNUP} className="underline">
+                        <Link to={ROUTES.PUBLIC.SIGNUP} className="underline">
                             Click Here.
                         </Link>
                     </form>
